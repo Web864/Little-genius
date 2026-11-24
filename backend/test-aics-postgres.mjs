@@ -33,6 +33,9 @@ test('real PostgreSQL: local auth, backups, AICS authorization, migration and at
    await pool.query('UPDATE local_organizations SET active=FALSE WHERE id=$1',[orgA]);
    assert.equal((await call('teacherA','GET','/api/school/curriculum')).statusCode,403);
    await pool.query('UPDATE local_organizations SET active=TRUE WHERE id=$1',[orgA]);
+   await pool.query("UPDATE local_school_tenants SET expires_at=NOW()-INTERVAL '1 minute' WHERE school_id=$1",[schoolA]);
+   assert.equal((await call('adminA','PUT','/api/school/curriculum',{...schoolConfig,version:2})).statusCode,403);
+   await pool.query("UPDATE local_school_tenants SET expires_at=NOW()+INTERVAL '1 day' WHERE school_id=$1",[schoolA]);
   });
   await t.test('owner release rules, revocation, audit and unreviewed Draft gates',async()=>{
    const packs=await call('owner','GET','/api/curriculum/owner/packs');assert.equal(packs.statusCode,200);assert.ok(packs.json().packs.length);
@@ -74,4 +77,14 @@ test('real PostgreSQL: local auth, backups, AICS authorization, migration and at
    assert.equal((await pool.query('SELECT 1 FROM local_aics_audit WHERE id=$1',[audit.id])).rowCount,0);
   });
  } finally {await app.close();await pool.end();}
+});
+
+test('Fastify handles missing database without exposing connection details',async()=>{
+ const pool={query:async()=>{throw Error('private connection failure');},connect:async()=>{throw Error('private connection failure');}};
+ const app=createApp(pool);
+ try {
+  const health=await app.inject('/api/health/db');assert.equal(health.statusCode,503);assert.equal(health.json().error,'Database unavailable');
+  const response=await app.inject({url:'/api/account/capabilities',headers:{cookie:'lga_local_session='+'a'.repeat(64)}});
+  assert.equal(response.statusCode,503);assert.ok(!response.body.includes('private'));
+ }finally{await app.close();}
 });

@@ -45,7 +45,7 @@ edit.addEventListener('click', async () => {
 async function request(url:string, method='GET', body?:unknown):Promise<unknown> {
   const response=await fetch(url,{method,credentials:'same-origin',headers:{'X-LGA-Local-Client':'1',...(body===undefined?{}:{'Content-Type':'application/json'})},...(body===undefined?{}:{body:JSON.stringify(body)})});
   const data=await response.json();
-  if(!response.ok)throw new Error(data.error ?? 'Local request failed');
+  if(!response.ok)throw Object.assign(new Error(data.error ?? 'Local request failed'),{response:{status:response.status,data}});
   return data;
 }
 async function start(): Promise<void> {
