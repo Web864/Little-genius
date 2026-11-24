@@ -24,7 +24,7 @@ export function grownUpCheck():Promise<boolean>{
  d.classList.add('lga-gate-screen');d.replaceChildren();
  d.setAttribute('aria-labelledby','lga-gate-title');d.removeAttribute('aria-label');
  d.innerHTML='<header class="lga-gate-header"><button type="button" class="lga-gate-back" aria-label="Back to games"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button></header><main class="lga-gate-main"><div class="lga-gate-lock"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 018 0v3"></path></svg></div><h1 id="lga-gate-title">Grown-ups only</h1><p>Press and hold the button to open Parent Corner.</p><div class="lga-gate-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Hold progress"><div></div></div><button class="lga-gate-hold" type="button">Press and hold</button><p class="lga-gate-tip">Hold for 3 seconds. A quick tap does nothing.</p><button type="button" class="lga-gate-alt">Can’t hold?</button></main>';
- const main=d.querySelector<HTMLElement>('.lga-gate-main')!;
+ 
  const progress=d.querySelector<HTMLElement>('.lga-gate-progress')!,bar=progress.firstElementChild as HTMLElement;
  const hold=d.querySelector<HTMLButtonElement>('.lga-gate-hold')!,alt=d.querySelector<HTMLButtonElement>('.lga-gate-alt')!,back=d.querySelector<HTMLButtonElement>('.lga-gate-back')!;
  let timer=0,start=0,holding=false,owner:string|null=null;

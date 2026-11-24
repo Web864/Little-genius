@@ -1,17 +1,17 @@
 
 let enabled = localStorage.getItem('littleGeniusSound') !== 'off';
-let context = null;
+let context: AudioContext | null = null;
 function ctx(){
   if(!enabled) return null;
   try {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if(!AudioContext) return null;
-    context ||= new AudioContext();
+    const AudioCtor = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if(!AudioCtor) return null;
+    context ||= new AudioCtor();
     if(context.state === 'suspended') context.resume();
     return context;
   } catch {return null;}
 }
-function tone(frequency, at, duration, type='sine', volume=.055, slide=0){
+function tone(frequency: number, at: number, duration: number, type: OscillatorType='sine', volume=.055, slide=0){
   const c=ctx(); if(!c)return;
   const oscillator=c.createOscillator(),gain=c.createGain();
   oscillator.type=type;
@@ -30,11 +30,11 @@ export function littleClick(){
  const c=ctx();if(!c)return;const t=c.currentTime+.015;
  tone(540,t,.085,'sine',.025,120);
 }
-export function animalHappy(animalName){
+export function animalHappy(animalName: string){
  const c=ctx();if(!c)return;
  const t=c.currentTime+.04;
  // Original short animal chirps, playful synthesized effects, not actual animal recordings.
- const sounds={
+ const sounds: Record<string, number[][]>={
   Bunny:[[720,120],[860,100],[1040,180]],
   Foxy:[[660,140],[830,140],[950,170]],
   Bear:[[320,190],[410,180],[480,210]],

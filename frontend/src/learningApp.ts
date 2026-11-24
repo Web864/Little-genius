@@ -1,3 +1,7 @@
+type Point={x:number;y:number};
+interface InstallPromptEvent extends Event { prompt():Promise<void>;userChoice:Promise<{outcome:string}> }
+interface Recognition {lang:string;interimResults:boolean;continuous:boolean;maxAlternatives:number;onresult:((event:{results:ArrayLike<ArrayLike<{transcript:string}>>})=>void)|null;onerror:((event:{error:string})=>void)|null;onend:(()=>void)|null;start():void;abort():void}
+const speechWindow=window as Window & {SpeechRecognition?:new()=>Recognition;webkitSpeechRecognition?:new()=>Recognition};
 import { aicsWorlds } from './aics/worlds';
 import { renderDraftJourney } from './draftJourney';
 import { roundsFor, correctChoice, renderThinkingGame, isThinkingGame } from './thinkingGames';
@@ -13,7 +17,7 @@ import { stopSpeech } from './speechHelp';
 import { speakGuidance, voiceDiagnostic } from './speechHelp';
 import './styles.css';
 import './redesign.css';
-import { getSpeechPace, setSpeechPace, rateForSpeech } from './voicePace';
+import { getSpeechPace, setSpeechPace } from './voicePace';
 import { numbersView, activateNumbers } from './numbers';
 import { additionView, activateAddition } from './addition';
 import { questView, activateQuest, questCount } from './quests';
@@ -22,9 +26,9 @@ import { curriculumView, activateCurriculum, curriculumReport, curriculumStats, 
 
 const thinking = { round: 0, score: 0, message: '' };
 function resetThinking(): void { thinking.round = 0; thinking.score = 0; thinking.message = ''; }
-const app = document.querySelector('#app');
-let installPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;});
+const app = document.querySelector<HTMLElement>('#app')!;
+let installPrompt: InstallPromptEvent | null=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();if ('prompt' in e) installPrompt=e as InstallPromptEvent;});
 window.addEventListener('appinstalled',()=>{installPrompt=null;
  const el=document.querySelector('#install-status');
  if(el)el.textContent='App installed. Find Little Genius Adventure on your Android home screen.';
@@ -47,26 +51,21 @@ const lessons = alphabet.map((letter,i) => ({
   meaning: examples[i][2], urName: urNames[i]
 }));
 const stages = ['teach','say-letter','say-phrase','guided','test-big','test-small','draw'];
-const themes={forest:{name:'Magic Forest',icon:'🌳 🦊 🦋'},space:{name:'Space Adventure',icon:'🚀 🪐 ⭐'},ocean:{name:'Ocean World',icon:'🐬 🐠 🪸'}};
-let saved = {};
+let saved: Record<string,boolean> = {};
 try { saved = JSON.parse(localStorage.getItem('littleGeniusProgress') || '{}') || {}; } catch { saved = {}; }
 const state = {
   category:'english',
   tab:'home', index:0, stage:'teach', language:localStorage.getItem('littleGeniusLanguage') === 'ur' ? 'ur' : 'en',
-  progress:saved, msg:'', popup:null, retryChoice:'', strokes:[], drawing:false, drawMode:'guide', heard:false,
-  voiceWarning:'', choiceOrder:0, listening:false, heardWord:'', speechError:'', recognizer:null,
-  theme:['forest','space','ocean'].includes(localStorage.getItem('littleGeniusTheme'))?localStorage.getItem('littleGeniusTheme'):'forest',
-  mode:'learn',reviewOrder:[],reviewPos:0,courseComplete:localStorage.getItem('littleGeniusCourseComplete')==='yes'
+  progress:saved, msg:'', popup:null as string|null, retryChoice:'', strokes:[] as Point[][], drawing:false, drawMode:'guide', heard:false,
+  voiceWarning:'', choiceOrder:0, listening:false, heardWord:'', speechError:'', recognizer:null as Recognition | null,
+  theme:['forest','space','ocean'].includes(localStorage.getItem('littleGeniusTheme') ?? '')?localStorage.getItem('littleGeniusTheme')!:'forest',
+  mode:'learn',reviewOrder:[] as number[],reviewPos:0,courseComplete:localStorage.getItem('littleGeniusCourseComplete')==='yes'
 };
 const L = () => lessons[state.index];
 const save = () => localStorage.setItem('littleGeniusProgress',JSON.stringify(state.progress));
-const label = key => ({
-  home:'Home', learn:'Learn letters', drawing:'Drawing studio', parents:'For parents',
-  listen:'🔊 Listen to Foxy', next:'Next →', guided:'Practice together', done:'I drew it! ⭐'
-})[key];
-function speech(key) {
+function speech(key: string) {
   const l = L(), ur = state.language === 'ur', n=l.urName, letter=l.letter;
-  const script = {
+  const script: Record<string,string> = {
     intro: ur ? `آؤ حرف ${n} سیکھیں۔ یہ بڑا ${n} ہے۔ یہ چھوٹا ${n} ہے۔ اب میرے ساتھ بولو۔ ${n}۔` : `Hello! Look. This is big ${letter}. ... This is small ${l.lower}. ... ${letter} for ${l.word}. ... Can you say ${letter}?`,
     promptLetter: ur ? `پہلا مرحلہ۔ مائیک دباؤ۔ پھر حرف ${n} بولو۔` : `Step one. ... Tap the microphone. ... Say ${letter}.`,
     promptPhrase: ur ? `دوسرا مرحلہ۔ اب بولو، ${n} فار ${l.word}۔` : `Step two. ... Listen. ... ${letter} for ${l.word}. ... Now you say it.`,
@@ -88,7 +87,7 @@ function speech(key) {
   };
   speak(script[key] || script.intro);
 }
-function speak(text){
+function speak(text: string){
  speakGuidance(text,state.language,message=>{
   state.voiceWarning=message;updateVoiceWarning();
   const note=document.querySelector('#urdu-test-status');if(note)note.textContent=message;
@@ -104,7 +103,7 @@ function header() {
  return `<div class="shell theme-${state.theme} kid-app ${state.tab==='parent'?'lga-grown':'lga-child'}">
  <header class="kid-header">
   <button class="brand kid-brand" data-tab="home" aria-label="Go home"><span class="kid-brand-icon"><svg width="40" height="40" viewBox="0 0 36 36" aria-hidden="true" focusable="false"><rect width="36" height="36" rx="10" fill="#205B46"></rect><path d="M8 9l7 5h6l7-5v10c0 5-4.5 9-10 9S8 24 8 19z" fill="#F2B84B"></path><circle cx="14.5" cy="20" r="1.6" fill="#203245"></circle><circle cx="21.5" cy="20" r="1.6" fill="#203245"></circle></svg></span><span>Little Genius<small>Play & Learn</small></span></button>
-  <div class="kid-header-right"><span class="kid-progress" role="status">${c} letters practised</span><!-- Parent access is in the mobile bottom navigation. --><nav class="lga-header-nav" aria-label="Main navigation">${[...nav,['parent','⚙️','Parents']].map(([id,emoji,label])=>`<button type="button" class="lga-header-tab ${activeTab===id?'is-active':''}" data-tab="${id}" aria-current="${activeTab===id?'page':'false'}">${label}</button>`).join('')}</nav></div>
+  <div class="kid-header-right"><span class="kid-progress" role="status">${c} letters practised</span><!-- Parent access is in the mobile bottom navigation. --><nav class="lga-header-nav" aria-label="Main navigation">${[...nav,['parent','⚙️','Parents']].map(([id,_emoji,label])=>`<button type="button" class="lga-header-tab ${activeTab===id?'is-active':''}" data-tab="${id}" aria-current="${activeTab===id?'page':'false'}">${label}</button>`).join('')}</nav></div>
  </header>
  <nav class="kid-mobile-bottom-nav" aria-label="Learning navigation">
  ${[...nav,['parent','⚙️','Settings']].map(([id,emoji,label])=>`<button type="button" class="kid-mobile-tab ${activeTab===id?'is-active':''}" data-tab="${id}" aria-current="${activeTab===id?'page':'false'}"><span class="kid-mobile-tab-icon" aria-hidden="true">${emoji}</span><span class="kid-mobile-tab-label">${label}</span></button>`).join('')}
@@ -134,7 +133,7 @@ function game() {
   if(stage==='draw')return drawing(true);
   let body='';
   if(stage==='say-letter'||stage==='say-phrase') {
-    const supported=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+    const supported=!!(speechWindow.SpeechRecognition||speechWindow.webkitSpeechRecognition);
     const first=stage==='say-letter';
     const target=first?l.letter:`${l.letter} for ${l.word}`;
     body=`<div class="say-word-stage"><div class="step">Speaking ${first?'step 1 of 2':'step 2 of 2'}</div><div class="mascot lg-alphabet-fox">${fullAnimal('Foxy')}</div><div class="say-word-target">${target}</div><p class="question">${first?`Say the letter “${l.letter}”`:`Say “${target}”`}</p><p>Say it if you like!</p><div class="voice-actions"><button class="ghost" data-act="hear">🔊 Hear the instruction</button><button class="btn mic-button" data-act="listen" ${supported?'':'disabled'}>${state.listening?'🎙️ Listening...':'🎤 Tap to speak'}</button></div><div class="speech-result" aria-live="polite">${state.heardWord||''}</div><button class="btn" data-act="skip-speech">Next →</button></div>`;
@@ -146,14 +145,14 @@ function game() {
     body=`<div class="lga-quiz"><button type="button" class="lga-quiz-picture" data-act="quiz-hear" aria-label="Hear ${l.word}"><span role="img" aria-label="${l.word}">${l.emoji}</span></button><div class="lga-quiz-question"><button type="button" class="lga-round lga-quiz-sound" data-act="quiz-hear" aria-label="Hear question"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9zM16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></svg></button><h2>${prompt}</h2></div><div class="choices">${options()}</div><div class="lga-quiz-feedback ${state.popup?'is-correct':state.retryChoice?'is-retry':''}" role="status" aria-live="polite">${state.popup?`<span aria-hidden="true">⭐</span> Great! ${l.letter} is for ${l.word}.`:state.retryChoice?'Almost! Let’s listen again.':''}</div>${state.popup?'<button class="btn lga-quiz-next" data-act="next">Next →</button>':state.retryChoice?'<button class="btn lga-quiz-next" data-act="quiz-retry">Try again</button>':''}</div>`;
     return `<main class="panel game lga-reference-quiz">${body}</main>`;
   }
-  return `<div class="panel game"><span class="step">${state.mode==='review'?'Random practice '+(state.reviewPos+1):'Letter '+(state.index+1)} of 26 · ${stage==='teach'?'1. Learn first':stage==='say-letter'?'2. Say the letter':stage==='say-phrase'?'3. Say the phrase':stage==='guided'?'4. Guided practice':stage==='test-big'?'5. Big letter quiz':'6. Small letter quiz'}</span><div class="progress"><div class="bar" style="width:${((state.mode==='review'?state.reviewPos:state.index)*7+stages.indexOf(stage))/182*100}%"></div></div><h2>${stage==='teach'?`Meet letter ${l.letter}!`:'Foxy’s letter adventure'}</h2>${body}<div class="voice-warning" role="status">${state.voiceWarning}</div></div>`;
+  return `<div class="panel game"><span class="step">${state.mode==='review'?'Random practice '+(state.reviewPos+1):'Letter '+(state.index+1)} of 26 · ${stage==='say-letter'?'2. Say the letter':stage==='say-phrase'?'3. Say the phrase':stage==='guided'?'4. Guided practice':stage==='test-big'?'5. Big letter quiz':'6. Small letter quiz'}</span><div class="progress"><div class="bar" style="width:${((state.mode==='review'?state.reviewPos:state.index)*7+stages.indexOf(stage))/182*100}%"></div></div><h2>Foxy’s letter adventure</h2>${body}<div class="voice-warning" role="status">${state.voiceWarning}</div></div>`;
 }
-function drawing(embedded=false) {
+function drawing(_embedded=false) {
  const l=L();
  return `<main class="panel game lga-reference-draw"><div class="lga-draw-heading"><h1>Trace the letter</h1><button class="lga-draw-alt" type="button" data-act="hear"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"></path><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"></path></svg>Listen</button></div><div class="lga-draw-picker"><label for="pick">Letter</label><select id="pick">${lessons.map((x,i)=>`<option value="${i}" ${i===state.index?'selected':''}>${x.letter} — ${x.word}</option>`).join('')}</select></div><div class="drawing-wrap lga-draw-canvas"><canvas id="board" width="600" height="360" aria-label="Draw letter ${l.letter}"></canvas></div><div class="lga-draw-actions"><button class="lga-draw-alt" type="button" data-act="toggle-guide" aria-pressed="${state.drawMode==='guide'}">Show guide</button><button class="lga-draw-alt" type="button" data-act="erase">Erase</button><button class="lga-draw-main" type="button" data-act="done">Done<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></button></div><svg class="lga-draw-meadow" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 Q 360 40 720 110 T 1440 90 V200 H0z" fill="#BFE8A8"></path><path d="M0 160 Q 400 100 800 150 T 1440 140 V200 H0z" fill="#9ED88B"></path></svg></main>`;
 }
 function library(){
- const baseGroups=[["english","English Adventures",[["lost","🌳","Lost Letters","Rescue letters through picture clues"],["game","🔤","ABC Lessons","Capital, small, speaking and drawing"],["phonics","🎵","Sound Forest","Hear the first sounds"],["words","🧩","Word Builder","Build short words"],["draw","✏️","Drawing Studio","Trace & draw letters"]]],["math","Math & Thinking",[["numbers","🔢","Number Galaxy","Learn numbers 1–10"],["addition","🌼","Addition Garden","Combine groups and count"], ["sorting","🧺","Sorting Safari","Find the matching kind"], ["patterns","🟩","Pattern Parade","Complete repeating patterns"], ["measurement","📏","Measurement Mission","Compare big, small, long and heavy"],["shapes","🔺","Shape Lab","Explore everyday shapes"]]],["stories","Stories & Discovery",[["nature","🌱","Nature Discovery","Explore plants, animals and habitats"],["quest","🗺️","Story Adventure","Help friends in little quests"],["stories","📚","Story Village","Hear stories & answer questions"],["poems","🎵","Poems","Listen and read along"],["daily","🌈","Daily Discovery","A short guided routine"],["review","🧠","Memory Mission","Revisit difficult items"]]],["urdu","Urdu Garden",[["urdu","🌷","Urdu Letters","Identify and practise Urdu letters"]]]];
+ const baseGroups: [string,string,[string,string,string,string][]][]=[["english","English Adventures",[["lost","🌳","Lost Letters","Rescue letters through picture clues"],["game","🔤","ABC Lessons","Capital, small, speaking and drawing"],["phonics","🎵","Sound Forest","Hear the first sounds"],["words","🧩","Word Builder","Build short words"],["draw","✏️","Drawing Studio","Trace & draw letters"]]],["math","Math & Thinking",[["numbers","🔢","Number Galaxy","Learn numbers 1–10"],["addition","🌼","Addition Garden","Combine groups and count"], ["sorting","🧺","Sorting Safari","Find the matching kind"], ["patterns","🟩","Pattern Parade","Complete repeating patterns"], ["measurement","📏","Measurement Mission","Compare big, small, long and heavy"],["shapes","🔺","Shape Lab","Explore everyday shapes"]]],["stories","Stories & Discovery",[["nature","🌱","Nature Discovery","Explore plants, animals and habitats"],["quest","🗺️","Story Adventure","Help friends in little quests"],["stories","📚","Story Village","Hear stories & answer questions"],["poems","🎵","Poems","Listen and read along"],["daily","🌈","Daily Discovery","A short guided routine"],["review","🧠","Memory Mission","Revisit difficult items"]]],["urdu","Urdu Garden",[["urdu","🌷","Urdu Letters","Identify and practise Urdu letters"]]]];
  const aicsPlan=aicsWorlds(baseGroups);const groups=aicsPlan.groups;
  const active=groups.find(x=>x[0]===state.category)||groups[0];
  const practiced=Object.values(state.progress).filter(Boolean).length;
@@ -214,14 +213,14 @@ function resetStage(stage='teach') {
  state.stage=stage; state.msg=''; state.popup=null; state.retryChoice=''; state.strokes=[];state.drawMode='guide';state.choiceOrder++;
  state.heardWord='';state.speechError='';
 }
-function normalizeWord(word) {
+function normalizeWord(word: string) {
   return String(word).toLowerCase().replace(/[^a-z\s-]/g,' ').replace(/[\s-]+/g,' ').trim();
 }
-function wordMatches(transcript, letter, word, stage) {
+function wordMatches(transcript: string, letter: string, word: string, stage: string) {
   const got=normalizeWord(transcript);
   if(!got)return false;
   if(stage==='say-letter') {
-    const letterNames={A:['a','ay','eh'],B:['b','bee','be'],C:['c','see','sea'],D:['d','dee'],E:['e','ee'],F:['f','eff'],G:['g','gee'],H:['h','aitch'],I:['i','eye'],J:['j','jay'],K:['k','kay'],L:['l','el'],M:['m','em'],N:['n','en'],O:['o','oh'],P:['p','pee'],Q:['q','cue','queue'],R:['r','are'],S:['s','ess'],T:['t','tee','tea'],U:['u','you'],V:['v','vee'],W:['w','double u','double you'],X:['x','ex'],Y:['y','why'],Z:['z','zed','zee']};    return (letterNames[letter]||[letter.toLowerCase()]).some(name=>got===name||got==='letter '+name||got==='capital '+name);
+    const letterNames: Record<string,string[]>={A:['a','ay','eh'],B:['b','bee','be'],C:['c','see','sea'],D:['d','dee'],E:['e','ee'],F:['f','eff'],G:['g','gee'],H:['h','aitch'],I:['i','eye'],J:['j','jay'],K:['k','kay'],L:['l','el'],M:['m','em'],N:['n','en'],O:['o','oh'],P:['p','pee'],Q:['q','cue','queue'],R:['r','are'],S:['s','ess'],T:['t','tee','tea'],U:['u','you'],V:['v','vee'],W:['w','double u','double you'],X:['x','ex'],Y:['y','why'],Z:['z','zed','zee']};    return (letterNames[letter]||[letter.toLowerCase()]).some(name=>got===name||got==='letter '+name||got==='capital '+name);
   }
   const expected=normalizeWord(letter+' for '+word);
   return got===expected || got==='letter '+expected;
@@ -236,7 +235,7 @@ function spokenSuccess() {
 }
 function startListening() {
   if(!['say-letter','say-phrase'].includes(state.stage)||state.listening)return;
-  const SpeechAPI=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const SpeechAPI=speechWindow.SpeechRecognition||speechWindow.webkitSpeechRecognition;
   if(!SpeechAPI){state.speechError='Speaking is not available here. Tap Next to keep playing.';render();return;}
   if(window.speechSynthesis)window.speechSynthesis.cancel();
   const recognition=new SpeechAPI();
@@ -289,9 +288,10 @@ function next() {
  const nextStage=state.stage==='guided'?'test-big':state.stage==='test-big'?'test-small':'draw';
  resetStage(nextStage);render();speech(nextStage==='test-big'?'big':nextStage==='test-small'?'small':'draw');
 }
-function chosen(value) {
- if(state.popup)return;
+function chosen(value: string) {
  const target=state.stage==='test-small'?L().lower:L().letter;
+ if(state.popup)return;
+ 
  if(value===target)correct();
  else {state.retryChoice=value;state.msg='Almost! Let’s listen again.';render();speak(state.language==='ur'?`دوبارہ سنو۔ ${L().urName}۔`:`Almost! Let’s listen again. ${L().word}.`);}
 }
@@ -311,7 +311,7 @@ function nextLetter() {
 }function hear() {
  speech(state.stage==='teach'?'intro':state.stage==='say-letter'?'promptLetter':state.stage==='say-phrase'?'promptPhrase':state.stage==='guided'?'guided':state.stage==='test-big'?'big':state.stage==='test-small'?'small':'draw');
 }
-type PageSnapshot={tab:string;category:string;index:number;stage:string;mode:string;reviewOrder:number[];reviewPos:number;drawMode:string;strokes:any[];scroll:number};
+type PageSnapshot={tab:string;category:string;index:number;stage:string;mode:string;reviewOrder:number[];reviewPos:number;drawMode:string;strokes:Point[][];scroll:number};
 const pageSnapshots:PageSnapshot[]=[];
 function capturePage():PageSnapshot{return {tab:state.tab,category:state.category,index:state.index,stage:state.stage,mode:state.mode,reviewOrder:state.reviewOrder.slice(),reviewPos:state.reviewPos,drawMode:state.drawMode,strokes:state.strokes.map(path=>path.slice()),scroll:window.scrollY};}
 function rememberPage(next:string){
@@ -323,7 +323,7 @@ function rememberPage(next:string){
 }
 function restorePage(snapshot:PageSnapshot){
  stopReader();stopListening();window.speechSynthesis?.cancel();
- Object.assign(state,{tab:snapshot.tab,category:snapshot.category,index:snapshot.index,stage:snapshot.stage,mode:snapshot.mode,reviewOrder:snapshot.reviewOrder.slice(),reviewPos:snapshot.reviewPos,drawMode:snapshot.drawMode,strokes:snapshot.strokes.map(path=>path.slice()),popup:null,msg:'',speechError:'',heardWord:''});
+ Object.assign(state,{tab:snapshot.tab,category:snapshot.category,index:snapshot.index,stage:snapshot.stage,mode:snapshot.mode,reviewOrder:snapshot.reviewOrder.slice(),reviewPos:snapshot.reviewPos,drawMode:snapshot.drawMode,strokes:snapshot.strokes.map(path=>path.slice()),popup:null as string|null,msg:'',speechError:'',heardWord:''});
  render();requestAnimationFrame(()=>window.scrollTo(0,snapshot.scroll));
 }
 function goBack(){
@@ -341,6 +341,7 @@ window.addEventListener('popstate',e=>{
 });
 window.addEventListener('resize',()=>{if(state.tab==='library')syncCategoryTabs();});
 app.addEventListener('click',e=>{
+ if (!(e.target instanceof Element)) return;
  const b=e.target.closest('button'); if(!b)return;
  if(b.dataset.thinkingRestart){resetThinking();render();return;}
  if(b.dataset.thinkingNext){thinking.round++;thinking.message='';render();if(isThinkingGame(state.tab) && thinking.round===roundsFor(state.tab as ThinkingGame).length){document.dispatchEvent(new CustomEvent('lga-local-round-complete',{detail:{gameId:state.tab,score:thinking.score,total:thinking.round}}));}return;}
@@ -409,7 +410,6 @@ app.addEventListener('click',e=>{
  if(act==='random'){startRandomPractice();return;}
  if(act==='practice'){stopReader();resetStage('guided');render();speech('guided');return;} if(act==='listen'){startListening();return;}
  if(act==='parent-confirm' && ['say-letter','say-phrase'].includes(state.stage)){
-   const target=state.stage==='say-letter'?L().letter:L().letter+' for '+L().word;
    void grownUpCheck().then(ok=>{if(ok)spokenSuccess();});
    return;
  }
@@ -433,6 +433,7 @@ app.addEventListener('click',e=>{
  }
 });
 app.addEventListener('change',e=>{
+ if (!(e.target instanceof HTMLSelectElement || e.target instanceof HTMLInputElement)) return;
  if(e.target.id==='pace'){
   setSpeechPace(e.target.value);
   render();
@@ -456,8 +457,8 @@ app.addEventListener('change',e=>{
   render();speech('draw');
  }
 });
-function setupCanvas(){ const canvas=document.querySelector('#board');if(!canvas)return;
- const ctx=canvas.getContext('2d');
+function setupCanvas(){ const canvas=document.querySelector<HTMLCanvasElement>('#board');if(!canvas)return;
+ const context=canvas.getContext('2d');if(!context)return;const ctx=context;
  function paint(){
   ctx.clearRect(0,0,600,360);ctx.fillStyle='#FFFDF5';ctx.fillRect(0,0,600,360);
   ctx.strokeStyle='#8A99A8';ctx.lineWidth=3;ctx.setLineDash([8,8]);
@@ -476,14 +477,15 @@ function setupCanvas(){ const canvas=document.querySelector('#board');if(!canvas
    ctx.stroke();
   }
  }
- const pos=e=>{const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*600/r.width,y:(e.clientY-r.top)*360/r.height};};
+ const pos=(e:PointerEvent)=>{const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*600/r.width,y:(e.clientY-r.top)*360/r.height};};
  canvas.onpointerdown=e=>{e.preventDefault();state.drawing=true;state.strokes.push([pos(e)]);canvas.setPointerCapture(e.pointerId);paint();};
- canvas.onpointermove=e=>{if(!state.drawing)return;state.strokes.at(-1).push(pos(e));paint();};
+ canvas.onpointermove=e=>{if(!state.drawing)return;state.strokes[state.strokes.length-1]?.push(pos(e));paint();};
  canvas.onpointerup=()=>state.drawing=false;
  canvas.onpointercancel=()=>state.drawing=false;
  paint();
 }
-document.addEventListener('click',e=>{const menu=document.querySelector<HTMLDetailsElement>('.kid-menu-wrap[open]');if(menu&&!(e.target as HTMLElement).closest('.kid-menu-wrap'))menu.open=false;});
+document.addEventListener('click',e=>{
+  if (!(e.target instanceof Element)) return;const menu=document.querySelector<HTMLDetailsElement>('.kid-menu-wrap[open]');if(menu&&!(e.target as HTMLElement).closest('.kid-menu-wrap'))menu.open=false;});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){const menu=document.querySelector<HTMLDetailsElement>('.kid-menu-wrap[open]');if(menu){menu.open=false;menu.querySelector<HTMLElement>('summary')?.focus();}}});
 const startAicsMigration=()=>{try{void import('./aics/bootstrap').then(m=>m.scheduleAicsBootstrap()).catch(()=>{});}catch{/* migration is optional */}};
 export function mountLearningApp(){ curriculumReset();state.tab='home';pageSnapshots.length=0;history.replaceState({...history.state,lgScreen:'home',lgDepth:0},'');render();startAicsMigration(); }

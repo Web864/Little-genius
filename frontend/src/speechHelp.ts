@@ -1,16 +1,16 @@
 import { rateForSpeech } from './voicePace';
 let generation=0;
 const voices=()=>{try{return window.speechSynthesis?.getVoices?.()||[];}catch{return [];}};
-const isUrdu=v=>/^ur(?:-|_|$)/i.test(v.lang||'');
+const isUrdu=(v: SpeechSynthesisVoice)=>/^ur(?:-|_|$)/i.test(v.lang||'');
 export function stopSpeech(){generation++;window.speechSynthesis?.cancel();}
 function findUrduVoice(){
- return new Promise(resolve=>{
+ return new Promise<SpeechSynthesisVoice | null>(resolve=>{
   const synth=window.speechSynthesis;if(!synth){resolve(null);return;}
   const now=voices().find(isUrdu);if(now){resolve(now);return;}
   let finished=false;
-  let timer;
+  let timer: ReturnType<typeof setTimeout>;
   const onVoices=()=>{const v=voices().find(isUrdu);if(v)done(v);};
-  const done=v=>{if(finished)return;finished=true;clearTimeout(timer);
+  const done=(v: SpeechSynthesisVoice | null)=>{if(finished)return;finished=true;clearTimeout(timer);
     synth.removeEventListener?.('voiceschanged',onVoices);resolve(v);};
   synth.addEventListener?.('voiceschanged',onVoices);
   timer=setTimeout(()=>done(voices().find(isUrdu)||null),1600);
@@ -33,7 +33,7 @@ export async function voiceDiagnostic(language='ur'){
  return {available:language!=='ur',message:'No named English voice found. The browser may still use its default voice; try the audio test.'};
 }
 
-export async function speakGuidance(text,language='en',onError){
+export async function speakGuidance(text: string,language='en',onError?: (message: string) => void){
  const id=++generation;
  if(localStorage.getItem('littleGeniusSound')==='off')return false;
  if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){

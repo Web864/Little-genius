@@ -1,6 +1,5 @@
 import { speakGuidance } from './speechHelp';
 // Concrete-object addition for early learners. All activities stay on this device.
-import { rateForSpeech } from './voicePace';
 const questions=[
   {a:1,b:1,emoji:'🍎'}, {a:2,b:1,emoji:'🍎'}, {a:1,b:2,emoji:'⭐'},
   {a:2,b:2,emoji:'🐠'}, {a:3,b:1,emoji:'🌼'}, {a:1,b:3,emoji:'🍓'},
@@ -8,11 +7,11 @@ const questions=[
 ];
 const state={index:0,stage:'teach',popup:false,message:'',language:'en',success:0};
 const question=()=>questions[state.index];
-const group=(n,emoji)=>Array.from({length:n},(_,i)=>'<button class="addition-object lga-count-object" data-add-count="'+(i+1)+'" aria-label="Count object '+(i+1)+'">'+emoji+'</button>').join('');
-function say(text){
+const group=(n: number,emoji: string)=>Array.from({length:n},(_,i)=>'<button class="addition-object lga-count-object" data-add-count="'+(i+1)+'" aria-label="Count object '+(i+1)+'">'+emoji+'</button>').join('');
+function say(text: string){
  speakGuidance(text,state.language,warning=>{state.message=warning;drawArea();});
 }
-function guide(kind){
+function guide(kind: 'intro' | 'guided' | 'test' | 'correct' | 'wrong'){
  const {a,b}=question();
  if(state.language==='ur'){
    const ur={
@@ -49,10 +48,11 @@ export function additionView(){
 }
 function drawArea(){const node=document.querySelector('.addition-world');if(node)node.outerHTML=additionView();}
 let installed=false;
-export function activateAddition({language}){
+export function activateAddition({language}: { language: string }){
  state.language=language;
  if(installed)return;installed=true;
  document.addEventListener('click',e=>{
+  if (!(e.target instanceof Element)) return;
   const button=e.target.closest('button'),section=e.target.closest('.addition-world');
   if(!section||!button)return;
   const act=button.dataset.addAct,choice=button.dataset.addChoice;

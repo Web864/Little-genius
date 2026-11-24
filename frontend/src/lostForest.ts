@@ -13,33 +13,33 @@ const examples = [
   ['Umbrella','☂️'],['Van','🚐'],['Water','💧'],['X-ray','🩻'],['Yo-yo','🪀'],['Zebra','🦓']
 ];
 const KEY = 'littleGeniusLostLettersV1';
-let saved={};
+let saved: {current?: number; completed?: Record<string,boolean>}={};
 try { saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; } catch { saved={}; }
 const S={
-  current:Number.isInteger(saved.current)?Math.max(0,Math.min(25,saved.current)):0,
-  stage:'intro',second:'path',voice:'en',message:'',dragging:null,
-  selected:null,solved:0,round:0,order:[],startIndex:0,sessionSolved:0,
+  current:Number.isInteger(saved.current)?Math.max(0,Math.min(25,saved.current!)):0,
+  stage:'intro',second:'path',voice:'en',message:'',dragging:null as {value:string;id:number;clone:HTMLElement;startX:number;startY:number}|null,
+  selected:null as string|null,solved:0,round:0,order:[] as string[],startIndex:0,sessionSolved:0,
   animalIndex:0,mode:'course',help:false
 };
-let bound=false;
+
 const letter=()=>alphabet[S.current];
 const nextLetter=()=>alphabet[(S.current+1)%26];
 const word=()=>examples[S.current][0];
 const example=()=>examples[S.current][1];
 const friend=()=>animals[S.animalIndex%animals.length];
 const save=()=>localStorage.setItem(KEY,JSON.stringify({current:S.current,completed:saved.completed||{}}));
-function shuffle(a){
+function shuffle<T>(a: readonly T[]){
  const values=[...a];
  for(let i=values.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[values[i],values[j]]=[values[j],values[i]];}
  return values;
 }
-function options(correct){
+function options(correct: string){
  const others=shuffle(alphabet.filter(v=>v!==correct)).slice(0,3);
  return shuffle([correct,...others]);
 }
-function textFor(kind){
+function textFor(kind: string){
  const L=letter(),name=friend()[1],w=word(),ur=S.voice==='ur';
- const en={
+ const en: Record<string,string>={
  intro:`Oh no! ${name} has lost the letter ${L}. This is big ${L}, and small ${L.toLowerCase()}. ${L} for ${w}. Can you help find ${L}?`,
  hunt:`Look carefully in the forest. Find big letter ${L}. Drag it into ${name}'s backpack!`,
  match:`Now find the small letter ${L.toLowerCase()} that matches big ${L}. Drag it home!`,
@@ -47,7 +47,7 @@ function textFor(kind){
  picture:`Which picture starts with ${L}? Drag the picture of ${w} into the basket.`,
  happy:`Yay! You helped ${name}! ${L} is safe again. Great looking and thinking!`
  };
- const urdu={
+ const urdu: Record<string,string>={
  intro:`اوہ نہیں! ${name} کا حرف گم گیا ہے۔ یہ بڑا ${L} ہے اور یہ چھوٹا ${L.toLowerCase()} ہے۔ ${L} فار ${w}۔ کیا تم اسے ڈھونڈنے میں مدد کرو گے؟`,
  hunt:`جنگل میں غور سے دیکھو۔ بڑا حرف ${L} ڈھونڈ کر دوست کے تھیلے میں رکھو۔`,
  match:`اب بڑے حرف ${L} سے ملتا ہوا چھوٹا حرف تلاش کرو اور تھیلے میں رکھو۔`,
@@ -57,7 +57,7 @@ function textFor(kind){
  };
  return (ur?urdu:en)[kind];
 }
-function talk(kind){
+function talk(kind: string){
  if(!window.speechSynthesis)return;
  speechSynthesis.cancel();
  const voices=speechSynthesis.getVoices();
@@ -73,7 +73,7 @@ function talk(kind){
  utterance.rate=.79; utterance.pitch=1.05;
  speechSynthesis.speak(utterance);
 }
-function newMission(letterIndex,mode='course'){
+function newMission(letterIndex: number,mode='course'){
  S.current=letterIndex; S.mode=mode;S.stage='intro';S.round=0;
  S.message='';S.selected=null;S.dragging=null;S.help=false;
  S.animalIndex=Math.floor(Math.random()*animals.length);
@@ -81,13 +81,13 @@ function newMission(letterIndex,mode='course'){
  S.order=options(letter());S.startIndex=letterIndex;
  save();
 }
-const tile=(value,label)=>`<button class="lost-tile" data-lost-value="${value}" aria-label="${label||'Drag '+value}" type="button"><span>${value}</span><span class="tile-grip" aria-hidden="true">⠿</span></button>`;
-const drops=(label)=>`<div class="lost-drop" data-lost-drop="yes" role="group" aria-label="${label}"><span class="lost-drop-icon">🎒</span><strong>${label}</strong><span class="lost-drop-help">Drop here ↓</span></div>`;
+const tile=(value: string,label: string)=>`<button class="lost-tile" data-lost-value="${value}" aria-label="${label||'Drag '+value}" type="button"><span>${value}</span><span class="tile-grip" aria-hidden="true">⠿</span></button>`;
+const drops=(label: string)=>`<div class="lost-drop" data-lost-drop="yes" role="group" aria-label="${label}"><span class="lost-drop-icon">🎒</span><strong>${label}</strong><span class="lost-drop-help">Drop here ↓</span></div>`;
 function scene(){
  return `<div class="lost-landscape" aria-hidden="true"><div class="lost-cloud">☁️ ☀️ ☁️</div><div class="lost-trees">🌲 🌳 🌿 🌳 🌲</div><div class="lost-animal">${friend()[0]}</div><div class="lost-ground">🌸 🍄 🌷 🍀 🌼</div></div>`;
 }
 function body(){
- const L=letter(),stage=S.stage,kind=stage==='intro'?'intro':stage==='hunt'?'hunt':stage==='happy'?'happy':S.second;
+ const L=letter(),stage=S.stage;
  if(stage==='pause')return `<div class="lost-end"><div class="lost-win">🌻 🦊 🌈</div><h2>Forest friends are happy!</h2><p>You've helped three friends. Great time for a movement break, then you can play again.</p><button class="btn" data-lost-act="resume">Help another friend</button><button class="ghost" data-lost-act="exit">🏡 Choose a different activity</button></div>`;
  if(stage==='intro'){
   return `<div class="lost-dialogue"><div class="lost-speechbubble"><strong>Oh no! My letter ${L} is missing!</strong><p>Can you help me find it? 🥺</p></div><div class="lost-teach"><div><span>Big letter</span><strong>${L}</strong></div><div><span>Small letter</span><strong>${L.toLowerCase()}</strong></div><div><span>${L} for ${word()}</span><strong>${example()}</strong></div></div><div class="lost-actions"><button class="ghost" data-lost-act="hear">🔊 Hear the letter</button><button class="btn" data-lost-act="find">🔎 Let's find ${L}!</button></div></div>`;
@@ -135,7 +135,7 @@ function correct(){
   talk('happy');
  }
 }
-function attempt(value){
+function attempt(value: string){
  if(S.stage!=='hunt'&&S.stage!=='challenge')return;
  const target=S.stage==='hunt'?letter():S.second==='match'?letter().toLowerCase():S.second==='path'?nextLetter():example();
  if(value===target){correct();return;}
@@ -149,12 +149,12 @@ function nextMission(){
 }
 function attachDrag(){
  const root=document.querySelector('.lost-forest');if(!root)return;
- const tiles=root.querySelectorAll('.lost-tile');
+ const tiles=root.querySelectorAll<HTMLElement>('.lost-tile');
  for(const tile of tiles){
   tile.addEventListener('pointerdown',e=>{
    if(e.button!==undefined&&e.button!==0)return;
    e.preventDefault();
-   const value=tile.dataset.lostValue;
+   const value=tile.dataset.lostValue;if(!value)return;
    const clone=document.createElement('div');clone.className='lost-ghost';clone.textContent=value;
    document.body.appendChild(clone);
    clone.style.left=e.clientX+'px';clone.style.top=e.clientY+'px';
@@ -166,27 +166,27 @@ function attachDrag(){
    if(!S.dragging||S.dragging.id!==e.pointerId)return;
    S.dragging.clone.style.left=e.clientX+'px';S.dragging.clone.style.top=e.clientY+'px';
    const drop=document.elementFromPoint(e.clientX,e.clientY)?.closest('.lost-drop');
-   const rootDrop=root.querySelector('.lost-drop');
+   const rootDrop=root.querySelector<HTMLElement>('.lost-drop');
    rootDrop?.classList.toggle('ready',!!drop);
   });
-  const end=e=>{
+  const end=(e: PointerEvent)=>{
    if(!S.dragging||S.dragging.id!==e.pointerId)return;
    const drag=S.dragging;
    const isDrop=!!document.elementFromPoint(e.clientX,e.clientY)?.closest('.lost-drop');
    drag.clone.remove(); S.dragging=null;
-   tile.classList.remove('is-dragging');root.querySelector('.lost-drop')?.classList.remove('ready');
+   tile.classList.remove('is-dragging');root.querySelector<HTMLElement>('.lost-drop')?.classList.remove('ready');
    const moved=Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)>12;
    if(isDrop&&moved){S.selected=null;attempt(drag.value);}
-   else if(!moved){S.selected=drag.value;S.message='Selected '+drag.value+'. Now tap the backpack, or drag it there.';const old=root.querySelector('.lost-feedback');if(old)old.textContent=S.message;root.querySelectorAll('.lost-tile').forEach(t=>t.classList.toggle('selected',t.dataset.lostValue===drag.value));}
+   else if(!moved){S.selected=drag.value;S.message='Selected '+drag.value+'. Now tap the backpack, or drag it there.';const old=root.querySelector('.lost-feedback');if(old)old.textContent=S.message;root.querySelectorAll<HTMLElement>('.lost-tile').forEach(t=>t.classList.toggle('selected',t.dataset.lostValue===drag.value));}
   };
   tile.addEventListener('pointerup',end);tile.addEventListener('pointercancel',end);
   tile.addEventListener('click',()=>{
-   S.selected=tile.dataset.lostValue;S.message='Selected '+S.selected+'. Now choose the backpack.';
-   root.querySelectorAll('.lost-tile').forEach(t=>t.classList.toggle('selected',t.dataset.lostValue===S.selected));
+   S.selected=tile.dataset.lostValue ?? null;S.message='Selected '+S.selected+'. Now choose the backpack.';
+   root.querySelectorAll<HTMLElement>('.lost-tile').forEach(t=>t.classList.toggle('selected',t.dataset.lostValue===S.selected));
    const status=root.querySelector('.lost-feedback');if(status)status.textContent=S.message;
   });
  }
- const drop=root.querySelector('.lost-drop');
+ const drop=root.querySelector<HTMLElement>('.lost-drop');
  if(drop){
   drop.tabIndex=0;
   drop.setAttribute('role','button');
@@ -195,10 +195,11 @@ function attachDrag(){
  }
 }
 let wired=false;
-export function activateLostForest({language}){
+export function activateLostForest({language}: {language:string}){
  S.voice=language;attachDrag();
  if(wired)return;wired=true;
  document.addEventListener('click',e=>{
+  if (!(e.target instanceof Element)) return;
   const b=e.target.closest('button');if(!b||!e.target.closest('.lost-forest'))return;
   const action=b.dataset.lostAct;if(!action)return;
   if(action==='sound-toggle'){toggleSound();renderPanel();return;}
@@ -210,7 +211,7 @@ export function activateLostForest({language}){
   if(action==='retry'){newMission(S.current,'replay');renderPanel();talk('intro');return;}
   if(action==='resume'){S.sessionSolved=0;nextMission();return;}
   if(action==='restart'){S.sessionSolved=0;newMission(0,'course');renderPanel();talk('intro');return;}
-  if(action==='exit'){document.querySelector('[data-tab="home"]')?.click();return;}
+  if(action==='exit'){document.querySelector<HTMLElement>('[data-tab="home"]')?.click();return;}
  });
 }
 export function lostForestSummary(){

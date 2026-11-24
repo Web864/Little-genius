@@ -375,7 +375,8 @@ export function mountLocalAccount(): void {
         if (!email) { notify('Sign in again.'); return; }
         const password = await confirmPassword('Confirm loading Draft practice results', email);
         if (password === null) return;
-        const accountId = current.id;
+        const accountId = current?.id;
+        if (!accountId) return;
         // Each server endpoint verifies the same adult password and active session.
         // A failed read leaves the dashboard locked, not partially populated.
         const [data, alphabetData, legacyData] = await Promise.all([

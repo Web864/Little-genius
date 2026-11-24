@@ -1,11 +1,11 @@
+type PictureOption = {id:string;letter:string;word:string;emoji:string};
 import { fullAnimal } from './animalArt';
 import { speakGuidance } from './speechHelp';
 import { animalHappy, littleClick, warmSound, soundEnabled, toggleSound } from './forestAudio';
-import { rateForSpeech } from './voicePace';
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const familiar = ['A','B','C','D','F','L','M','P','S','T'];
-const images = {
+const images: Record<string, [string,string][]> = {
   A:[['Apple','🍎'],['Ant','🐜']],B:[['Ball','⚽'],['Bird','🐦']],
   C:[['Cat','🐱'],['Car','🚗']],D:[['Dog','🐶'],['Duck','🦆']],
   E:[['Egg','🥚'],['Elephant','🐘']],F:[['Fish','🐟'],['Flower','🌼']],
@@ -22,22 +22,23 @@ const images = {
 };
 const animals=[['🐰','Bunny'],['🦊','Foxy'],['🐻','Bear'],['🦉','Owl'],['🐼','Panda'],['🦌','Deer'],['🐿️','Squirrel'],['🦋','Butterfly']];
 const key='littleGeniusPictureRescue';
-let saved={};
+let saved: {last?:string} & Partial<Record<string, {success:number;wrong:number} | string>>={};
 try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{};}catch{}
-const S={letter:null,animal:0,step:'intro',language:'en',opts:[],remaining:[],chosen:null,drag:null,rescued:0,message:''};
-function shuffle(values){
+const S={letter:'',animal:0,step:'intro',language:'en',opts:[] as PictureOption[],remaining:[] as string[],chosen:null as string|null,drag:null as {id:string;pointer:number;x:number;y:number;ghost:HTMLElement}|null,rescued:0,message:''};
+function shuffle<T>(values: readonly T[]){
  const a=[...values];
  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;
 }
+function scoreFor(letter:string){const value=saved[letter];return typeof value==='object' ? value : undefined;}
 function save(){localStorage.setItem(key,JSON.stringify(saved));}
 function pickLetter(){
- const learned=alphabet.filter(l=>saved[l]?.success);
+ const learned=alphabet.filter(l=>scoreFor(l)?.success);
  const pool=learned.length>=5?alphabet:familiar;
- const unseen=pool.filter(l=>l!==saved.last&&!saved[l]?.success);
+ const unseen=pool.filter(l=>l!==saved.last&&!scoreFor(l)?.success);
  const choices=unseen.length?unseen:pool.filter(l=>l!==saved.last);
  return shuffle(choices)[0]||'L';
 }
-function nextMission(force){
+function nextMission(force?: string){
  const previous=S.animal;
  S.letter=force||pickLetter(); S.animal=shuffle(animals.map((_,i)=>i).filter(i=>i!==previous))[0];
  S.step='intro';S.message='';S.chosen=null;S.remaining=[];S.opts=[];
@@ -47,14 +48,14 @@ function animal(){return animals[S.animal];}
 function allObjects(){
  return Object.entries(images).flatMap(([letter,items])=>items.map(([word,emoji])=>({id:letter+':'+word,letter,word,emoji})));
 }
-function options(correct){
+function options(correct: [string,string][] ){
  const wanted=correct.map(([word,emoji])=>({id:S.letter+':'+word,letter:S.letter,word,emoji}));
  const other=shuffle(allObjects().filter(x=>x.letter!==S.letter));
- const unique=[];const used=new Set();
+ const unique: PictureOption[]=[];const used=new Set();
  for(const x of other){if(!used.has(x.letter)){used.add(x.letter);unique.push(x);}if(unique.length===3)break;}
  return shuffle([...wanted,...unique]);
 }
-function say(message,lang){
+function say(message: string,lang: string){
  speakGuidance(message,lang,warning=>{
   const n=document.querySelector('.picture-audio-note');if(n)n.textContent=warning;
  });
@@ -62,14 +63,14 @@ function say(message,lang){
 function narration(){
  const L=S.letter,friend=animal()[1],word=images[L][0][0];
  if(S.language==='ur'){
-  const lines={
+  const lines: Record<string,string>={
    intro:'اوہ نہیں! '+friend+' کا حرف '+L+' گم گیا ہے۔ یہ بڑا '+L+' اور یہ چھوٹا '+L.toLowerCase()+' ہے۔ '+L+' فار '+word+'۔',
    hunt:'جنگل میں ایسی تصویر ڈھونڈو جس کا انگریزی نام '+L+' سے شروع ہو۔ لفظ سنو اور تصویر تھیلے میں رکھو۔',
    pair:'شاباش! اب دو الگ تصویریں تلاش کرو جن کے نام '+L+' سے شروع ہوتے ہیں۔',
    happy:'واہ! تم نے صحیح لفظ اور حرف تلاش کرکے دوست کی مدد کی!'
   };say(lines[S.step]||lines.hunt,'ur');
  }else{
-  const lines={
+  const lines: Record<string,string>={
    intro:'Oh no! '+friend+' lost the letter '+L+'. This is big '+L+' and small '+L.toLowerCase()+'. '+L+' for '+word+'. Can you help?',
    hunt:'Find a picture whose English name starts with '+L+'. Listen to the words, then tap the right picture.',
    pair:'Well done! Now find TWO different pictures that start with '+L+'. Rescue both one by one.',
@@ -77,7 +78,7 @@ function narration(){
   };say(lines[S.step]||lines.hunt,'en');
  }
 }
-function tile(x){
+function tile(x: PictureOption){
  const selected=S.chosen===x.id?' selected':'';
  return '<div class="picture-card'+selected+'" data-card-id="'+x.id+'">'+
   '<button class="picture-pick" type="button" data-picture-pick="'+x.id+'" aria-label="Choose '+x.word+'">'+
@@ -134,10 +135,10 @@ function update(){
  if(root){root.outerHTML=lostForestView();bindDrag();}
 }
 function win(){ S.step='happy';S.rescued++;
- const score=saved[S.letter]||{success:0,wrong:0};score.success++;saved[S.letter]=score;save();
+ const score=scoreFor(S.letter)||{success:0,wrong:0};score.success++;saved[S.letter]=score;save();
  update();animalHappy(animal()[1]);
 }
-function attempt(id){
+function attempt(id: string){
  const obj=S.opts.find(x=>x.id===id);if(!obj||!['hunt','pair'].includes(S.step))return;
  const allowed=S.step==='hunt'?[S.letter+':'+images[S.letter][0][0]]:S.remaining;
  if(allowed.includes(id)){
@@ -152,19 +153,19 @@ function attempt(id){
    else{S.message='One word rescued. Find another!';update();}
   }
  }else{
-  const score=saved[S.letter]||{success:0,wrong:0};score.wrong++;saved[S.letter]=score;save();
+  const score=scoreFor(S.letter)||{success:0,wrong:0};score.wrong++;saved[S.letter]=score;save();
   S.message='Try again! '+obj.word+' begins with '+obj.letter+'. Listen for '+S.letter+'.';
   update();
   Array.from(document.querySelectorAll<HTMLButtonElement>('[data-picture-pick]')).find(b=>b.dataset.picturePick===id)?.classList.add('lga-retry');
  }
 }
-function mission(force){
- S.letter=null;nextMission(force);update();narration();
+function mission(force?: string){
+ S.letter='';nextMission(force);update();narration();
 }
 function bindDrag(){
  const root=document.querySelector('.picture-forest');if(!root)return;
  for(const card of root.querySelectorAll('.picture-card')){
-  const button=card.querySelector('.picture-pick');
+  const button=card.querySelector<HTMLButtonElement>('.picture-pick');if(!button)continue;
   button.addEventListener('pointerdown',e=>{
    if(e.button!==undefined&&e.button!==0)return;
    e.preventDefault();warmSound();
@@ -176,12 +177,12 @@ function bindDrag(){
   button.addEventListener('pointermove',e=>{
    if(!S.drag||S.drag.pointer!==e.pointerId)return;
    S.drag.ghost.style.left=e.clientX+'px';S.drag.ghost.style.top=e.clientY+'px';
-   root.querySelector('.picture-backpack')?.classList.toggle('ready',!!document.elementFromPoint(e.clientX,e.clientY)?.closest('.picture-backpack'));
+   root.querySelector<HTMLElement>('.picture-backpack')?.classList.toggle('ready',!!document.elementFromPoint(e.clientX,e.clientY)?.closest('.picture-backpack'));
   });
-  const finish=e=>{
+  const finish=(e: PointerEvent)=>{
    if(!S.drag||S.drag.pointer!==e.pointerId)return;
    const drag=S.drag;S.drag=null;drag.ghost.remove();
-   root.querySelector('.picture-backpack')?.classList.remove('ready');
+   root.querySelector<HTMLElement>('.picture-backpack')?.classList.remove('ready');
    if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>12&&document.elementFromPoint(e.clientX,e.clientY)?.closest('.picture-backpack')){
     S.chosen=null;attempt(drag.id);return;
    }
@@ -192,14 +193,14 @@ function bindDrag(){
   button.addEventListener('pointercancel',e=>{
    if(!S.drag||S.drag.pointer!==e.pointerId)return;
    S.drag.ghost.remove();S.drag=null;
-   root.querySelector('.picture-backpack')?.classList.remove('ready');
+   root.querySelector<HTMLElement>('.picture-backpack')?.classList.remove('ready');
   });
   button.addEventListener('click',()=>{
    if(!button.isConnected||!['hunt','pair'].includes(S.step))return;
    if(button.dataset.picturePick)attempt(button.dataset.picturePick);
   });
  }
- const drop=root.querySelector('.picture-backpack');if(drop){
+ const drop=root.querySelector<HTMLElement>('.picture-backpack');if(drop){
   const act=()=>{if(S.chosen){const id=S.chosen;S.chosen=null;attempt(id);}};
   drop.addEventListener('click',act);drop.addEventListener('keydown',e=>{
    if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}
@@ -207,9 +208,10 @@ function bindDrag(){
  }
 }
 let wired=false;
-export function activateLostForest({language}){
+export function activateLostForest({language}: {language:string}){
  S.language=language;bindDrag();if(wired)return;wired=true;
  document.addEventListener('click',e=>{
+  if (!(e.target instanceof Element)) return;
   const b=e.target.closest('button');if(!b||!e.target.closest('.picture-forest'))return;
   const word=b.dataset.pictureHear,act=b.dataset.pictureAction;
   if(word){const obj=S.opts.find(x=>x.id===word);if(obj)say(obj.word,'en');return;}
@@ -220,7 +222,6 @@ export function activateLostForest({language}){
    update();narration();
   }
   if(act==='hint'){
-   const target=S.step==='hunt'?images[S.letter][0][0]:images[S.letter].find(([w])=>S.remaining.includes(S.letter+':'+w))?.[0];
    S.message='Listen for '+S.letter+'.';update();const wrong=S.opts.find(x=>x.letter!==S.letter);if(wrong){const b=Array.from(document.querySelectorAll<HTMLElement>('[data-card-id]')).find(x=>x.dataset.cardId===wrong.id);if(b)b.style.visibility='hidden';}
   }
   if(act==='new'||act==='next'){
@@ -229,16 +230,16 @@ export function activateLostForest({language}){
   }
   if(act==='retry')mission(S.letter);
   if(act==='continue'){S.rescued=0;mission();}
-  if(act==='exit')document.querySelector('[data-tab="home"]')?.click();
+  if(act==='exit')document.querySelector<HTMLElement>('[data-tab="home"]')?.click();
   if(act==='sound'){
   warmSound();animalHappy(animal()[1]);
-  const figure=document.querySelector('.lg-celebration-stage .lg-animal');
+  const figure=document.querySelector<HTMLElement>('.lg-celebration-stage .lg-animal');
   if(figure){figure.classList.remove('lg-animal--celebrate');void figure.offsetWidth;figure.classList.add('lg-animal--celebrate');}
  }
  });
 }
-export function lostForestCount(){return Object.keys(saved).filter(k=>saved[k]?.success).length;}
+export function lostForestCount(){return Object.keys(saved).filter(k=>scoreFor(k)?.success).length;}
 export function lostForestSummary(){
- return '<p class="note"><strong>Lost Letters Forest:</strong> '+Object.keys(saved).filter(k=>saved[k]?.success).length+
+ return '<p class="note"><strong>Lost Letters Forest:</strong> '+Object.keys(saved).filter(k=>scoreFor(k)?.success).length+
   ' different letters rescued. Success means practice, not confirmed letter mastery.</p>';
 }

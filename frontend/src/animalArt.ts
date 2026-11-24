@@ -1,7 +1,7 @@
 // Original, scalable FULL-BODY animal artwork for the preschool game.
 // All SVGs have a visible head, torso, paws/feet, and species-specific features.
 const all=['Bunny','Foxy','Bear','Owl','Panda','Deer','Squirrel','Butterfly'];
-const tones={
+const tones: Record<string, string[]>={
  Bunny:['#F9F6F0','#9A8187','#F5B8C5','#FFFDFC'],
  Foxy:['#EA894C','#8C584C','#F7B99D','#FFF0D9'],
  Bear:['#B88A67','#775E4B','#E9B5A2','#F3DDBF'],
@@ -11,12 +11,12 @@ const tones={
  Squirrel:['#D59059','#875744','#F0B8A3','#FFE3C0'],
  Butterfly:['#A68BDC','#6550A0','#F5B5D4','#DCD2FF']
 };
-const circle=(x,y,r,fill)=>'<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+fill+'"/>';
-const ellipse=(x,y,rx,ry,fill,extra='')=>'<ellipse cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+ry+'" fill="'+fill+'" '+extra+'/>';
-const path=(d,fill,stroke='',width=0)=>'<path d="'+d+'" fill="'+fill+'"'+(stroke?' stroke="'+stroke+'" stroke-width="'+width+'" stroke-linecap="round" stroke-linejoin="round"':'')+'/>';
-function art(name){
+const circle=(x: number,y: number,r: number,fill: string)=>'<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+fill+'"/>';
+const ellipse=(x: number,y: number,rx: number,ry: number,fill: string,extra='')=>'<ellipse cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+ry+'" fill="'+fill+'" '+extra+'/>';
+const path=(d: string,fill: string,stroke='',width=0)=>'<path d="'+d+'" fill="'+fill+'"'+(stroke?' stroke="'+stroke+'" stroke-width="'+width+'" stroke-linecap="round" stroke-linejoin="round"':'')+'/>';
+function art(name: string){
  const c=tones[name]||tones.Foxy,[fur,edge,blush,light]=c;
- const outlined=(x,y,rx,ry,color)=>ellipse(x,y,rx,ry,color,'stroke="'+edge+'" stroke-width="3"');
+ const outlined=(x: number,y: number,rx: number,ry: number,color: string)=>ellipse(x,y,rx,ry,color,'stroke="'+edge+'" stroke-width="3"');
  const eye=ellipse(90,90,5,7,'#2E3645')+ellipse(130,90,5,7,'#2E3645')+circle(89,88,1.5,'#fff')+circle(129,88,1.5,'#fff');
  const face=eye+circle(78,107,8,blush)+circle(142,107,8,blush)+path('M104 111 Q110 118 116 111','#604A4A')+path('M99 121 Q110 132 121 121','none','#604A4A',3);
  const muzzle=ellipse(110,112,25,18,light)+face;
@@ -81,7 +81,7 @@ function art(name){
  path('M101 99 Q110 107 119 99','none',edge,3)+
  path('M106 207 L94 221 M114 207 L126 221','none',edge,4);
 }
-export function fullAnimal(name,celebrate=false){
+export function fullAnimal(name: string,celebrate=false){
  const friend=all.includes(name)?name:'Foxy';
  return '<span class="lg-animal lg-animal--'+friend.toLowerCase()+' '+(celebrate?'lg-animal--celebrate':'')+'" data-animal="'+friend+'">'+
  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 240" aria-hidden="true" focusable="false">'+

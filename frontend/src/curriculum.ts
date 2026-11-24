@@ -3,10 +3,9 @@ import { confirmInApp } from './grownUp';
 import { playReader,stopReader,wordMarkup } from './readingAudio';
 let storyChosen=false;
 // Connected learning adventures for preschool children.
-import { rateForSpeech } from './voicePace';
 // Local progress, gentle review and no timers or streaks.
 const KEY='littleGeniusConnectedCurriculum';
-const DATA={
+const DATA: Record<string,string[][]>={
   phonics:[
     ['m','Moon','🌙','mmm'],['s','Sun','☀️','sss'],['a','Apple','🍎','short a'],
     ['t','Tap','🚰','t'],['p','Pig','🐷','p'],['i','Insect','🐛','short i'],
@@ -39,23 +38,25 @@ const STORIES=[
   {name:'A Little Seed',pages:[['👧 🌱','Sara plants a little seed.'],['💧 ☀️','She gives it water and sunshine.'],['🌻 🦋','A lovely flower grows.']],q:'What helped the seed grow?',answers:['Shoes','Water and sunshine','A toy car'],right:1},
   {name:'Two Ducks',pages:[['🦆 🦆','Two ducks are swimming.'],['🐸 🦆 🦆','A frog jumps near them.'],['🌈 🦆 🦆','They see a bright rainbow.']],q:'How many ducks swam?',answers:['Three','One','Two'],right:2}
 ];
-const TITLES={phonics:'Sound Forest',urdu:'Urdu Garden',words:'Word Builder',shapes:'Shape Lab',stories:'Story Village',review:'Memory Mission',daily:'Daily Discovery'};
-let saved={};
+const TITLES: Record<string,string>={phonics:'Sound Forest',urdu:'Urdu Garden',words:'Word Builder',shapes:'Shape Lab',stories:'Story Village',review:'Memory Mission',daily:'Daily Discovery'};
+type ResultRecord={ok:number;wrong:number;tries:number;due:string};
+let saved: {records:Record<string,ResultRecord>;daily?:{date:string;step:number;done:boolean}|null}={records:{}};
 try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch{}
 saved.records||={};
-const S={world:'phonics',index:0,step:'teach',page:0,lang:'en',msg:'',modal:false,answer:'',draw:[],drawing:false,guide:true,reviewKeys:[],reviewAt:0,reviewRetry:-1,reviewHidden:-1,reviewCorrect:false,urduRetry:'',urduHidden:''};
+const S={world:'phonics',index:0,step:'teach',page:0,lang:'en',msg:'',modal:false,answer:'',draw:[] as {x:number;y:number}[][],drawing:false,guide:true,reviewKeys:[] as string[],reviewAt:0,reviewRetry:-1,reviewHidden:-1,reviewCorrect:false,urduRetry:'',urduHidden:''};
 const day=()=>new Date().toISOString().slice(0,10);
 const persist=()=>localStorage.setItem(KEY,JSON.stringify(saved));
-const key=(w,i)=>w+':'+i;
+const key=(w:string,i:number)=>w+':'+i;
 const source=()=>S.world==='stories'?STORIES:DATA[S.world];
-const current=()=>source()?.[S.index];
-function noteResult(w,i,ok){
+const current=()=>DATA[S.world]?.[S.index] ?? DATA.phonics[0];
+const currentStory=()=>STORIES[S.index];
+function noteResult(w:string,i:number,ok:boolean){
   const k=key(w,i),r=saved.records[k]||{ok:0,wrong:0,tries:0,due:day()};
   r.tries++;if(ok){r.ok++;r.due=new Date(Date.now()+86400000*Math.min(7,r.ok)).toISOString().slice(0,10);}
   else{r.wrong++;r.due=day();}
   saved.records[k]=r;persist();
 }
-function talk(text,lang){
+function talk(text:string,lang:string){
  speakGuidance(text,lang,warning=>{S.msg=warning;rerender();});
  return '';
 }
@@ -65,18 +66,18 @@ function listen(){
   if(S.world==='phonics')text='This is '+v[0]+'. '+v[1]+' starts with '+v[3]+'. Listen to the beginning sound.';
   if(S.world==='words')text='Listen: '+v[0]+'. Point to each letter and blend the sounds together.';
   if(S.world==='shapes')text='This is a '+v[0]+'. '+v[1]+'.';
-  if(S.world==='stories')text=v.pages[S.page][1];
+  if(S.world==='stories')text=currentStory().pages[S.page][1];
   const warning=talk(text,lang);
   if(warning){S.msg=warning;rerender();}
 }
-function choiceButtons(arr){
+function choiceButtons(arr:string[]){
   const rotated=S.index%2?[arr[1],arr[2],arr[0]]:arr;
   return '<div class="learning-answers">'+rotated.map(x=>'<button class="learning-answer" data-c-choice="'+encodeURIComponent(x)+'">'+x+'</button>').join('')+'</div>';
 }
 function intro(){
   const v=current(),w=S.world;
   if(w==='stories'){
-    const p=v.pages[S.page];
+    const v=currentStory();const p=v.pages[S.page];
     return '<div class="lga-reference-reading lga-story-reading"><h1>'+v.name+'</h1><button class="lga-reading-art" type="button" data-c-act="story-picture" aria-label="Hear this story page">'+p[0]+'</button><p class="learning-reading" aria-live="polite">'+wordMarkup(p[1])+'</p><div class="lga-reading-actions"><button class="ghost lga-reading-alt" data-c-act="listen">🔊 Hear the story</button><button class="btn lga-reading-main" data-c-act="page">'+(S.page===v.pages.length-1?'Answer a question →':'Turn page →')+'</button>'+(S.page===v.pages.length-1?'<button class="ghost lga-reading-alt" data-c-act="story-again">Again</button>':'')+'</div><button class="ghost lga-reading-alt" data-c-act="story-choose">Choose story</button><svg class="lga-reading-meadow" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 Q 360 40 720 110 T 1440 90 V200 H0z" fill="#BFE8A8"/><path d="M0 160 Q 400 100 800 150 T 1440 140 V200 H0z" fill="#9ED88B"/></svg></div>';
   }
   return '<button class="learning-visual lga-secondary" data-c-act="listen" aria-label="Hear picture name">'+v[2]+'</button><button class="learning-letter lga-secondary '+(w==='urdu'?'learning-urdu':'')+'" data-c-act="listen" '+(w==='urdu'?'lang="ur" dir="rtl"':'')+'>'+v[0]+'</button>'+
@@ -93,11 +94,11 @@ function question(){
     const letters=v[0].split(''),pool=[...letters,'s','n'].slice(0,4);
     return '<div class="learning-visual">'+v[2]+'</div><h2>Build the word '+v[0]+'</h2>'+
       '<div class="learning-slots">'+letters.map((_,i)=>'<span>'+(S.answer[i]||'_')+'</span>').join('')+'</div>'+
-      '<div class="learning-answers">'+pool.map((x,i)=>'<button class="learning-answer" data-c-letter="'+x+'">'+x+'</button>').join('')+'</div>'+
+      '<div class="learning-answers">'+pool.map(x=>'<button class="learning-answer" data-c-letter="'+x+'">'+x+'</button>').join('')+'</div>'+
       '<button class="ghost" data-c-act="undo">↶ Undo a letter</button>';
   }
   if(w==='stories'){
-    return '<h2>'+v.q+'</h2>'+choiceButtons(v.answers);
+    return '<h2>'+currentStory().q+'</h2>'+choiceButtons(currentStory().answers);
   }
   const pool=DATA[w],candidates=[v[0],pool[(S.index+2)%pool.length][0],pool[(S.index+4)%pool.length][0]];
   return '<h2>'+(w==='phonics'?'Which letter starts '+v[1]+'?':
@@ -120,19 +121,19 @@ function reviewList(){
   const sorted=Object.entries(saved.records).filter(([k])=>{
     const [w,i]=k.split(':');return w==='stories'?!!STORIES[Number(i)]:!!DATA[w]?.[Number(i)];
   }).sort((a,b)=>{
-    const weight=r=>(r.wrong>r.ok?15:0)+(r.due<=day()?7:0)+r.wrong;
+    const weight=(r:ResultRecord)=>(r.wrong>r.ok?15:0)+(r.due<=day()?7:0)+r.wrong;
     return weight(b[1])-weight(a[1]);
   }).map(x=>x[0]);
   return [...new Set([...sorted.slice(0,5),'phonics:0','urdu:0','words:0','shapes:0','stories:0'])].slice(0,5);
 }
 function reviewItem(){
  const k=S.reviewKeys[S.reviewAt];if(!k)return null;
- const [w,str]=k.split(':'),i=Number(str),v=w==='stories'?STORIES[i]:DATA[w][i];
- const original=w==='stories'?v.answers:[v[0],DATA[w][(i+2)%DATA[w].length][0],DATA[w][(i+4)%DATA[w].length][0]];
+ const [w,str]=k.split(':'),i=Number(str),v=DATA[w]?.[i] ?? [],story=STORIES[i];
+ const original=w==='stories'?story.answers:[v[0],DATA[w][(i+2)%DATA[w].length][0],DATA[w][(i+4)%DATA[w].length][0]];
  const shift=(S.reviewAt+i+1)%3;
  const answers=original.slice(shift).concat(original.slice(0,shift));
- const right=( (w==='stories'?v.right:0)-shift+3)%3;
- const prompt=w==='stories'?v.q:w==='phonics'||w==='urdu'?v[1]+' starts with…?':'Find '+v[0];
+ const right=( (w==='stories'?story.right:0)-shift+3)%3;
+ const prompt=w==='stories'?story.q:w==='phonics'||w==='urdu'?v[1]+' starts with…?':'Find '+v[0];
  return {w,i,v,answers,right,prompt};
 }
 function reviewView(){
@@ -166,7 +167,7 @@ function dailyView(){
     '</section>';
 }
 
-function urduArt(v){return v[0]==='ا'?'<svg width="140" height="140" viewBox="0 0 24 24" role="img" aria-label="A pomegranate"><circle cx="12" cy="13.5" r="8" fill="#B3261E"></circle><path d="M8.5 6.5l1.5 2h4l1.5-2-2 .5L12 5l-1.5 2z" fill="#8A1C16"></path></svg>':v[2];}
+function urduArt(v:string[]){return v[0]==='ا'?'<svg width="140" height="140" viewBox="0 0 24 24" role="img" aria-label="A pomegranate"><circle cx="12" cy="13.5" r="8" fill="#B3261E"></circle><path d="M8.5 6.5l1.5 2h4l1.5-2-2 .5L12 5l-1.5 2z" fill="#8A1C16"></path></svg>':v[2];}
 function urduReference(){
  const v=current(),count=source().length,answer=v[0];
  const arr=S.index===0?['ا','ب','ث']:[answer,DATA.urdu[(S.index+2)%count][0],DATA.urdu[(S.index+4)%count][0]];
@@ -175,14 +176,14 @@ function urduReference(){
  const listenButton='<button class="lga-urdu-alt" type="button" data-c-act="listen"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"></path><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"></path></svg> Listen</button>';
  const dots='<div class="lga-urdu-dots" role="img" aria-label="Urdu Garden, '+(S.index+1)+' of '+count+'">'+[0,1,2].map(i=>'<span class="'+(i<=S.index%3?'filled':'')+'"></span>').join('')+'</div>';
  const picture='<button class="lga-urdu-picture" data-c-act="listen" aria-label="Hear picture word">'+urduArt(v)+'</button>';
- const ur=(text)=>'<span lang="ur" dir="rtl" class="lga-urdu-script">'+text+'</span>';
+ const ur=(text:string)=>'<span lang="ur" dir="rtl" class="lga-urdu-script">'+text+'</span>';
  const prompt='<div class="lga-urdu-prompt">'+picture+'<div><h2>'+ur(v[1])+(S.step==='teach'?' · '+ur(answer):' starts with…?')+'</h2>'+listenButton+'</div></div>';
  const tiles='<ul class="lga-urdu-tiles">'+options.map((letter,i)=>'<li><button type="button" data-c-choice="'+encodeURIComponent(letter)+'" class="lga-urdu-tile tile-'+i+(correct?(letter===answer?' is-correct':' is-dim'):wrong===letter?' is-wrong':'')+'" '+(correct?'disabled':'')+(S.urduHidden===letter?' disabled style="visibility:hidden"':'')+' aria-label="Letter '+letter+(correct&&letter===answer?', correct':wrong===letter?', try again':'')+'">'+ur(letter)+'</button></li>').join('')+'</ul>';
  const feedback=correct?'<div class="lga-urdu-success"><svg width="72" height="72" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.2 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" fill="#F2B84B" stroke="#8A5A00" stroke-width="1" stroke-linejoin="round"/></svg><p>Great! '+ur(answer)+' is for '+ur(v[1])+'.</p><button class="lga-urdu-main" data-c-act="next">Next →</button></div>':wrong?'<p>Almost! Let’s listen again.</p><button class="lga-urdu-main" data-c-act="urdu-retry">Try again</button>':'<button class="lga-urdu-alt" data-c-act="urdu-hint">Hint</button>';
  return '<section class="panel game learning-world lga-reference-urdu" data-c-world="urdu">'+dots+prompt+(S.step==='teach'?'<button class="lga-urdu-main" data-c-act="practice">Let me try →</button>':tiles+'<div class="lga-urdu-feedback" aria-live="polite">'+feedback+'</div>')+'<p class="lga-urdu-voice" role="status">'+S.msg+'</p><svg class="lga-urdu-meadow" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 Q 360 40 720 110 T 1440 90 V200 H0z" fill="#BFE8A8"/><path d="M0 160 Q 400 100 800 150 T 1440 140 V200 H0z" fill="#9ED88B"/></svg></section>';
 }
 
-export function curriculumView(world){
+export function curriculumView(world:string){
   if(world==='stories'&&!storyChosen)return '<section class="panel game learning-world lga-reference-reading lga-reading-picker" data-c-world="stories"><h1>Pick a story or a poem</h1><button class="lga-reading-round" data-c-act="story-choices" aria-label="Hear the choices"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></svg></button><div class="lga-reading-grid">'+STORIES.map((v,i)=>'<button class="lga-reading-card tint-'+[0,2,3,2][i%4]+'" data-c-story="'+i+'"><span class="lga-card-art" role="img" aria-label="'+v.name+'">'+v.pages[0][0]+'</span><span class="lga-card-text"><small>Story</small><strong>'+v.name+'</strong></span></button>').join('')+'<button class="lga-reading-card tint-1" data-c-open="poems"><span class="lga-card-art" role="img" aria-label="Little duck">🦆</span><span class="lga-card-text"><small>Poem</small><strong>Poems</strong></span></button></div><svg class="lga-reading-meadow" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 Q 360 40 720 110 T 1440 90 V200 H0z" fill="#BFE8A8"/><path d="M0 160 Q 400 100 800 150 T 1440 140 V200 H0z" fill="#9ED88B"/></svg></section>';
   if(world==='review')return reviewView();
   if(world==='daily')return dailyView();
@@ -199,7 +200,7 @@ export function curriculumView(world){
     '<p class="feedback" aria-live="polite">'+(S.msg||'Take your time. You can do it!')+'</p>'+popup()+'</section>';
 }
 function rerender(){
-  const node=document.querySelector('.learning-world');if(!node)return;
+  const node=document.querySelector<HTMLElement>('.learning-world');if(!node)return;
   const world=node.dataset.cWorld||S.world;
   node.outerHTML=curriculumView(world);
   if(S.step==='draw'&&world!=='daily'&&world!=='review')setupCanvas();
@@ -209,8 +210,8 @@ function next(){
   S.msg='';S.answer='';S.modal=false;S.urduRetry='';S.urduHidden='';S.draw=[];S.guide=true;rerender();
 }
 function setupCanvas(){
-  const c=document.querySelector('#curriculum-canvas');if(!c)return;
-  const ctx=c.getContext('2d');
+  const c=document.querySelector<HTMLCanvasElement>('#curriculum-canvas');if(!c)return;
+  const context=c.getContext('2d');if(!context)return;const ctx=context;
   function paint(){
     ctx.clearRect(0,0,600,330);ctx.fillStyle='#FFFDF5';ctx.fillRect(0,0,600,330);
     ctx.strokeStyle='#8A99A8';ctx.lineWidth=3;ctx.setLineDash([8,8]);
@@ -221,24 +222,25 @@ function setupCanvas(){
     ctx.strokeStyle='#7453d4';ctx.lineWidth=13;ctx.lineCap='round';ctx.lineJoin='round';
     for(const path of S.draw){if(!path.length)continue;ctx.beginPath();ctx.moveTo(path[0].x,path[0].y);path.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();}
   }
-  const point=e=>{const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*600/r.width,y:(e.clientY-r.top)*330/r.height};};
+  const point=(e:PointerEvent)=>{const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*600/r.width,y:(e.clientY-r.top)*330/r.height};};
   c.onpointerdown=e=>{e.preventDefault();S.drawing=true;S.draw.push([point(e)]);c.setPointerCapture(e.pointerId);paint();};
   c.onpointermove=e=>{if(S.drawing){S.draw[S.draw.length-1].push(point(e));paint();}};
   c.onpointerup=()=>S.drawing=false;c.onpointercancel=()=>S.drawing=false;paint();
 }
 let wired=false;
-export function activateCurriculum({world,language}){
+export function activateCurriculum({language}: {world:string;language:string}){
   S.lang=language;if(S.step==='draw')setupCanvas();
   if(wired)return;wired=true;
   document.addEventListener('click',e=>{
-    const b=e.target.closest('button'),root=e.target.closest('.learning-world');
+  if (!(e.target instanceof Element)) return;
+    const b=e.target.closest('button'),root=e.target.closest<HTMLElement>('.learning-world');
     if(!b||!root)return;
     const world=root.dataset.cWorld;
     if(b.dataset.cStory!==undefined){stopReader();storyChosen=true;S.world='stories';S.index=Number(b.dataset.cStory);S.page=0;S.step='teach';S.msg='';S.modal=false;rerender();return;}
-    if(b.dataset.cOpen){document.querySelector('[data-tab="'+b.dataset.cOpen+'"]')?.click();return;}
+    if(b.dataset.cOpen){document.querySelector<HTMLElement>('[data-tab="'+b.dataset.cOpen+'"]')?.click();return;}
     if(b.dataset.cChoice!==undefined){
       const value=decodeURIComponent(b.dataset.cChoice);
-      const expected=S.world==='stories'?current().answers[current().right]:current()[0];
+      const expected=S.world==='stories'?currentStory().answers[currentStory().right]:current()[0];
       if(S.modal)return;
       const ok=value===expected;noteResult(S.world,S.index,ok);
       if(world==='urdu'){S.urduRetry=ok?'':value;S.modal=ok;S.msg='';rerender();talk(ok?'شاباش! '+current()[0]+' سے '+current()[1]:'دوبارہ سنو۔ '+current()[1],'ur');return;}
@@ -262,21 +264,21 @@ export function activateCurriculum({world,language}){
     }
     const act=b.dataset.cAct;
     if(act==='story-choices'){talk('Pick a story or a poem. '+STORIES.map(v=>v.name).join('. ')+'. Poems.','en');return;}
-    if(act==='story-picture'&&world==='stories'&&S.step==='teach'){stopReader();const hear=root.querySelector<HTMLButtonElement>('[data-c-act="listen"]');if(hear)playReader(root,hear,current().pages[S.page][1]);return;}
-    if(act==='listen'){if(world==='stories'&&S.step==='teach'){playReader(root,b,current().pages[S.page][1]);}else listen();return;}
+    if(act==='story-picture'&&world==='stories'&&S.step==='teach'){stopReader();const hear=root.querySelector<HTMLButtonElement>('[data-c-act="listen"]');if(hear)playReader(root,hear,currentStory().pages[S.page][1]);return;}
+    if(act==='listen'){if(world==='stories'&&S.step==='teach'){playReader(root,b,currentStory().pages[S.page][1]);}else listen();return;}
     if(act==='story-choose'){stopReader();storyChosen=false;rerender();return;}
-    if(act==='story-again'){stopReader();S.page=0;S.step='teach';rerender();const nextRoot=document.querySelector<HTMLElement>('.learning-world');const hear=nextRoot?.querySelector<HTMLButtonElement>('[data-c-act="listen"]');if(nextRoot&&hear)playReader(nextRoot,hear,current().pages[0][1]);return;}
+    if(act==='story-again'){stopReader();S.page=0;S.step='teach';rerender();const nextRoot=document.querySelector<HTMLElement>('.learning-world');const hear=nextRoot?.querySelector<HTMLButtonElement>('[data-c-act="listen"]');if(nextRoot&&hear)playReader(nextRoot,hear,currentStory().pages[0][1]);return;}
     if(act==='urdu-retry'){S.urduRetry='';S.msg='';rerender();listen();return;}
-    if(act==='urdu-hint'){const wrong=Array.from(root.querySelectorAll('[data-c-choice]')).find(x=>decodeURIComponent(x.dataset.cChoice)!==current()[0]&&!x.disabled);if(wrong){S.urduHidden=decodeURIComponent(wrong.dataset.cChoice);rerender();}listen();return;}
+    if(act==='urdu-hint'){const wrong=Array.from(root.querySelectorAll<HTMLButtonElement>('[data-c-choice]')).find(x=>decodeURIComponent(x.dataset.cChoice ?? '')!==current()[0]&&!x.disabled);if(wrong){S.urduHidden=decodeURIComponent(wrong.dataset.cChoice ?? '');rerender();}listen();return;}
     if(act==='practice'){S.step='question';S.msg='';S.answer='';S.urduRetry='';S.urduHidden='';rerender();return;}
-    if(act==='page'){stopReader();if(S.page<current().pages.length-1){S.page++;rerender();const r=document.querySelector<HTMLElement>('.learning-world');const hear=r?.querySelector<HTMLButtonElement>('[data-c-act="listen"]');if(r&&hear)playReader(r,hear,current().pages[S.page][1]);}else{S.step='question';rerender();}return;}
+    if(act==='page'){stopReader();if(S.page<currentStory().pages.length-1){S.page++;rerender();const r=document.querySelector<HTMLElement>('.learning-world');const hear=r?.querySelector<HTMLButtonElement>('[data-c-act="listen"]');if(r&&hear)playReader(r,hear,currentStory().pages[S.page][1]);}else{S.step='question';rerender();}return;}
     if(act==='next'){S.modal=false;
       if(['phonics','urdu'].includes(S.world)){S.step='draw';S.draw=[];S.guide=true;S.msg='';rerender();}
       else next();return;
     }
     if(act==='undo'){S.answer=S.answer.slice(0,-1);rerender();return;}
     if(act==='toggle-guide'){S.guide=!S.guide;rerender();return;}
-    if(['guide','free','erase'].includes(act)){if(act!=='erase')S.guide=act==='guide';S.draw=[];rerender();return;}
+    if(['guide','free','erase'].includes(act ?? '')){if(act!=='erase')S.guide=act==='guide';S.draw=[];rerender();return;}
     if(act==='draw-done'){next();return;}
     if(act==='restart'){S.index=0;S.step='teach';S.page=0;S.msg='';rerender();return;}
     if(act==='review-again'){S.reviewKeys=[];S.reviewAt=0;S.reviewRetry=-1;S.reviewHidden=-1;S.reviewCorrect=false;S.msg='';rerender();return;}
@@ -284,7 +286,7 @@ export function activateCurriculum({world,language}){
     if(act==='review-retry'){S.reviewRetry=-1;rerender();return;}
     if(act==='review-hear'){const item=reviewItem();if(item)talk(item.w==='urdu'?item.v[1]:item.prompt,item.w==='urdu'?'ur':'en');return;}
     if(act==='hint'){const item=reviewItem();if(!item||S.reviewHidden>=0||S.reviewCorrect)return;S.reviewHidden=item.answers.findIndex((_,j)=>j!==item.right);if(S.reviewRetry===S.reviewHidden)S.reviewRetry=-1;rerender();return;}
-    if(act==='daily-done'){saved.daily.step++;if(saved.daily.step===4)saved.daily.done=true;persist();rerender();return;}
+    if(act==='daily-done'){if(!saved.daily)return;saved.daily.step++;if(saved.daily.step===4)saved.daily.done=true;persist();rerender();return;}
     if(act==='daily-again'){saved.daily={date:day(),step:0,done:false};persist();rerender();}
   });
 }
@@ -298,9 +300,11 @@ export function curriculumReport(){
  const r=curriculumStats();
  return '<div class="curriculum-report"><div class="stats"><div class="stat"><b>'+r.items+'</b>Items attempted</div><div class="stat"><b>'+r.ok+'</b>Correct answers</div><div class="stat"><b>'+r.wrong+'</b>Retry moments</div><div class="stat"><b>'+r.due+'</b>Due for review</div></div></div>';
 }
+let resetWired=false;
 export function curriculumReset(){
-  if(document.__curriculumResetWired)return;document.__curriculumResetWired=true;
+  if(resetWired)return;resetWired=true;
   document.addEventListener('click',e=>{
+  if (!(e.target instanceof Element)) return;
     const b=e.target.closest('button');if(!b||!b.dataset.cReset)return;
     void confirmInApp('Clear Urdu, phonics, words, stories, shapes and daily practice data?').then(ok=>{if(ok){
       saved.records={};saved.daily=null;persist();
