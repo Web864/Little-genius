@@ -1,0 +1,19 @@
+.lga-local-panel{position:relative;z-index:100;background:#f0f8fc;color:#183b48;border:1px solid #8ab6cc;border-radius:12px;padding:12px 16px;margin:72px auto 12px;max-width:800px;font:14px/1.4 system-ui,sans-serif}
+.lga-local-panel p{margin:6px 0}.lga-local-actions{display:flex;gap:8px;flex-wrap:wrap}
+.lga-local-panel button,.lga-local-modal button{background:#205b46;color:white;border:0;border-radius:8px;padding:9px 12px;font:inherit;cursor:pointer}
+.lga-local-panel button:focus-visible,.lga-local-modal button:focus-visible{outline:3px solid #1966c5;outline-offset:2px}
+.lga-local-modal{position:fixed;inset:0;z-index:2147483640;background:#091a22dd;display:grid;place-items:center;padding:15px}
+.lga-local-modal form{display:grid;gap:12px;max-width:450px;width:100%;padding:24px;background:white;color:#183b48;border-radius:14px}
+.lga-local-modal input{font:inherit;padding:12px;border:1px solid #607d8b;border-radius:8px;min-width:0}
+
+/* Milestone 3.5: account-scoped, password-gated local Draft practice dashboard */
+.lga-progress-dashboard{margin-top:18px;padding:16px;border:1px solid #b4d4cf;border-radius:14px;background:#fff;color:#183b48}
+.lga-progress-dashboard h2{font-size:1.3rem;margin:0 0 6px}
+.lga-progress-dashboard h3{font-size:1rem;margin:0 0 10px}
+.lga-progress-dashboard p{line-height:1.5}
+.lga-progress-note{color:#75511a;font-weight:600}
+.lga-progress-summary{font-weight:700}
+.lga-progress-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:12px 0}
+.lga-progress-card{background:#f0f8f7;padding:14px;border:1px solid #d3e6df;border-radius:12px}
+.lga-progress-card progress{display:block;width:100%;height:16px;accent-color:#205b46;margin-top:10px}
+@media(max-width:440px){.lga-progress-dashboard{padding:12px}.lga-progress-grid{grid-template-columns:1fr}}

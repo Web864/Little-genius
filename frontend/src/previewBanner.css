@@ -1,0 +1,22 @@
+
+.preview-notice{position:fixed;z-index:8500;bottom:0;left:0;right:0;background:#173c2f;color:white;text-align:center;font:600 11px/1.45 system-ui;padding:8px 12px}
+.preview-edit{position:fixed;z-index:8501;top:10px;right:10px;min-height:44px;padding:10px 15px;background:#fff;color:#205b46;border:2px solid #205b46;border-radius:999px;box-shadow:0 4px 15px #0002;font:700 13px system-ui;cursor:pointer}
+.preview-edit:focus-visible{outline:3px solid #f5bf4c;outline-offset:2px}
+.preview-overlay{position:fixed;inset:0;z-index:9400;overflow:auto;padding:25px 10px;background:#f9fdfb;color:#172c25}
+.preview-overlay .lga-ob{max-width:680px;margin:0 auto}
+@media(max-width:550px){.preview-edit{top:auto;right:8px;bottom:35px;font-size:12px;padding:10px}}
+
+/* M3.7 mobile fix: neither preview chrome nor its button overlays play controls.
+   Fixed bottom nav is owned by the learning app and remains unobstructed. */
+@media (max-width: 550px) {
+  .preview-notice {
+    position: relative; inset: auto; z-index: 1; box-sizing: border-box;
+    width: 100%; padding: 6px 12px; font-size: 10px; line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  .preview-edit {
+    position: relative; inset: auto; z-index: 1; display: block;
+    margin: 7px 9px 7px auto; max-width: calc(100% - 18px);
+    min-height: 44px; padding: 7px 12px;
+  }
+}

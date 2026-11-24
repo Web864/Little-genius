@@ -1,0 +1,334 @@
+[
+  {
+    "name": "Verified licensed school sees private school profile",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "school profile server auth",
+      "active annual entitlement",
+      "school profile launch",
+      "Android dark-mode text contrast",
+      "Home feature card readable typography",
+      "forest space ocean theme cards",
+      "no layout shift",
+      "School Portal heading",
+      "Unified responsive high contrast child UI",
+      "school portal design",
+      "multiscreen design consistency",
+      "fixed mobile icon navigation",
+      "safe-area bottom controls",
+      "four/five equal mobile tabs",
+      "licensed-only School Profile bottom tab",
+      "compact logo and title",
+      "child start",
+      "grown-up gate",
+      "six picture tiles",
+      "persistent mobile nav",
+      "reference shared header SVG",
+      "64px header with school branding",
+      "visible desktop header navigation",
+      "active navigation tab",
+      "reference signed-out landing page",
+      "both sign-in calls to action and school portal",
+      "reference child start",
+      "single giant Play action",
+      "reference worlds artboard",
+      "six responsive color tiles",
+      "existing activity categories retained"
+    ],
+    "steps": [
+      "While signed out, compare the landing hero, demo card, seven tinted SVG learning tiles, green closing band and footer to Main.dc.html; verify both sign-in actions and the School Portal link launch the existing verified sign-in flow.",
+      "Sign in with a valid annual school license",
+      "Open School Profile in app header",
+      "Verify school name and license edition",
+      "Compare with demo-only account",
+      "Open Home and tap Play, verify Foxy greeting and picture worlds",
+      "Switch Magic Forest, Space and Ocean and repeat Home readability checks",
+      "Verify public School Portal label",
+      "Inspect Kid Home forest/space/ocean theme colors with dark Android appearance and 390px width",
+      "Visit Worlds, Forest rescue, ABC practice, number, Urdu and parent settings",
+      "Inspect sign-in School Portal, School Profile and Owner Dashboard without changing data",
+      "On 320px and 390px mobile verify four equal tabs for demo and five equal tabs for licensed school, Settings and School in bottom bar only",
+      "Scroll long learning game and check Continue buttons and controls are not obscured by bottom navigation",
+      "Tap Settings or School Profile and check a quick tap does not open grown-up area; hold for 3 seconds or answer adult sum; verify navigation unchanged.",
+      "Compare the shared header against App-Home reference: green fox mark, 40px logo, two-line Nunito title, white rounded status pill in grown-up mode.",
+      "Verify the child lesson header omits the letter-practice pill and the mobile bottom navigation remains identical.",
+      "At desktop and tablet widths use visible Home, Rescue, Worlds and Parents tabs; verify active styling, protected parent access, no wrapping and no overflow. At 390px confirm header tabs hidden and original bottom bar unchanged.",
+      "On Home compare Kid-Start artboard: sky background, actual Foxy in peach circle, greeting, green circular SVG Play control, separate Play label and two green meadow curves. Tap Play and confirm audio unlock and Worlds navigation. Check original bottom bar and shared header remain.",
+      "Open Worlds, compare the reference six tile colors in order (sun, sky, mint, lilac, coral, peach), SVG shapes/book/pencil, 200px tile height, 32px corners, left speaker and positive practice count. Tap each tile to open its game; use the retained categories for additional worlds. Verify mobile has full-width tiles and unchanged bottom navigation."
+    ],
+    "expected": "Active school sees only its own profile; demo-only user cannot fetch school profile. Feature cards retain readable ink on light pastel backgrounds even when Android dark appearance is enabled. Desktop navigation always shows the four reference tabs in one row with active highlighting. The app uses consistent light high-contrast cards, buttons, labels and spacing across all surfaces without changing the secure license controls. On mobile the four or five equal-size icon tabs stay fixed at the bottom without covering learning controls; desktop shows inline navigation. The shared header retains its 64px height, reference mark and typography; custom school logos remain within 40px and the mobile navigation is unchanged. Signed-out landing uses the reference design and existing authentication with the original privacy notice. Child Start follows reference layout using existing Foxy artwork, with one main action and no duplicate Rescue or Worlds buttons. Worlds follows the supplied child artboard with six main activities and original additional category links functioning.",
+    "description": "Checks active school profile plus Android dark-mode Home feature card readability and contrast across learning themes."
+  },
+  {
+    "name": "Branded school edits school name colors and logo",
+    "viewport": "mobile",
+    "covers": [
+      "school branded license",
+      "school profile save",
+      "safe JPEG logo upload",
+      "school header branding"
+    ],
+    "steps": [
+      "Issue paid School-Branded annual key as owner",
+      "Activate as buyer",
+      "Open School Profile and change school name, tagline and color",
+      "Upload school logo and refresh app",
+      "Remove logo",
+      "Upload an extremely wide or tall logo and use an 80-character school name; verify logo stays within 40x40px and header within 64px on mobile and desktop",
+      "Verify School icon has same height and width as other mobile tabs"
+    ],
+    "expected": "School branding persists and updates header; upload is bounded and access-controlled. Logo and long title do not enlarge the header; all bottom icons have equal dimensions.",
+    "description": "Validates branded school profile edits, logo upload, persistent branding and removal."
+  },
+  {
+    "name": "Standard schools cannot self-activate branding",
+    "viewport": "desktop",
+    "covers": [
+      "standard access restriction",
+      "upgrade request",
+      "owner branding management",
+      "license enforcement"
+    ],
+    "steps": [
+      "Activate Standard annual key",
+      "Open School Profile and inspect upgrade option",
+      "Submit branding request",
+      "As owner approve paid branding upgrade",
+      "Reload as buyer and check editing available"
+    ],
+    "expected": "Server blocks unlicensed customization; only owner-controlled paid upgrade enables it.",
+    "description": "Checks Standard licence restrictions and owner-approved paid branding upgrade."
+  },
+  {
+    "name": "Cross-school data and revoked license cannot change branding",
+    "viewport": "desktop",
+    "covers": [
+      "tenant isolation",
+      "email-bound license",
+      "revocation",
+      "logo storage path"
+    ],
+    "steps": [
+      "Activate two separate school licenses",
+      "Set School A branding",
+      "Open School B and verify School A logo/name not present",
+      "Revoke School A access",
+      "Attempt School A branding update"
+    ],
+    "expected": "Schools are isolated and revoked school cannot update branding.",
+    "description": "Verifies school-specific data separation and revocation prevents further edits."
+  },
+  {
+    "name": "Preserve games and speech fallback",
+    "viewport": "mobile",
+    "covers": [
+      "English phonics",
+      "Urdu TTS fallback",
+      "full body animals",
+      "saved learning progress",
+      "owner dashboard",
+      "English and Urdu voice diagnostic",
+      "previous-page Back navigation and Android browser Back",
+      "scrollable categories with arrow buttons",
+      "full-width mobile cards",
+      "remove progress copy",
+      "optional speech",
+      "sound toggle",
+      "in-app confirmation",
+      "large tile design",
+      "child tracing",
+      "Single tap forest rescue",
+      "Number and addition object tapping",
+      "story chooser and speech highlighting",
+      "original poems with line highlights",
+      "Owner licences within Parent Corner",
+      "reference token foundations",
+      "child 120px answer tiles",
+      "adult 48px controls",
+      "English reference quiz inline feedback",
+      "tap to hear question",
+      "correct tile and retry state"
+    ],
+    "steps": [
+      "Open Rescue, ABC and Urdu Garden",
+      "Complete mission and inspect full body animation",
+      "Open ABC and continue without microphone using Next; test optional voice and sound toggle",
+      "Inspect owner dashboard",
+      "Open Parent Corner and test English, Urdu and Check available voices options",
+      "Open Worlds at 320px, tap right and left category arrows and verify single-row smooth scroll and valid category selection",
+      "Open lesson from Worlds and use Back to return to Worlds, then use Android browser Back to return to prior page; verify saved progress",
+      "Inspect 320px home, worlds and parent screens for full-width cards and no clipping; verify unwanted Progress reflects activity paragraph is absent",
+      "Test keyboard focus, narrow mobile bottom navigation, tablet and desktop without overflow",
+      "Check wrong tiles get peach dashed border, tracing Done works without drawing, grown-up reset uses in-app confirmation and cancel leaves records intact.",
+      "Tap the correct forest picture once without dragging and verify rescue progresses",
+      "Open Numbers and Addition, tap objects to count and select answers; check feedback and lesson progress",
+      "Open Story Village, select a story, hear and pause, turn page and replay; select Poems and hear each highlighted line",
+      "As owner unlock Parent Corner and verify Manage licences is located in Licence and data, not child screens",
+      "Check child answer tiles and main actions at mobile and desktop sizes, and adult controls against the supplied design token sizes; compare the unchanged mobile bottom navigation.",
+      "Enter ABC practice, tap the picture or speaker, select a wrong answer, verify peach dashed tile and Try again, then select correct answer and verify green bordered tile, star and Next without popup or microphone. Continue through capital and lowercase recognition to tracing."
+    ],
+    "expected": "Existing games, progress and owner tools remain unchanged; missing Urdu TTS is disclosed. Voice diagnostic honestly reports unavailable Urdu TTS. Category tabs do not wrap; arrow scrolling reveals more categories, back returns to previous page, small-screen cards fill width, progress explanation removed without deleting saved data. Story and poem playback uses browser voices, with supported word boundaries for stories and sequential line highlighting for poems. Single taps complete rescue choices. Owner access remains server protected. Shared components use the supplied design palette, rounded main and secondary actions, and Andika/Nastaliq reading fonts when loaded; the mobile bottom bar is unchanged. English recognition uses inline feedback, no required speech or modal, and preserves lesson progression.",
+    "description": "Confirms educational activities, Urdu speech fallback and owner licensing remain intact."
+  },
+  {
+    "name": "ABC reference screen",
+    "viewport": "mobile",
+    "covers": [
+      "ABC teaching",
+      "sequential Next",
+      "phrase highlight"
+    ],
+    "steps": [
+      "Enter ABC teaching screen; compare original white outlined cards and apple SVG with Kid-Abc.",
+      "Tap letter and image, hear phrase; check yellow highlight when speaking.",
+      "Tap Next repeatedly through B and C; verify speaking not required.",
+      "Tap Practise to enter recognition; confirm existing bottom navigation."
+    ],
+    "expected": "Reference teaching view has separate white cards, original apple, audio highlight and sequential letters; existing quizzes remain available.",
+    "description": "Verifies the ABC reference teaching screen and existing lesson access."
+  },
+  {
+    "name": "Urdu Garden reference screen",
+    "description": "Check reference pomegranate, Urdu typography and inline answer feedback without changing curriculum.",
+    "viewport": "mobile",
+    "covers": [
+      "Urdu reference",
+      "Nastaliq RTL",
+      "hint and retry",
+      "voice fallback",
+      "existing tracing"
+    ],
+    "steps": [
+      "Open Urdu Garden; confirm pomegranate SVG matches انار instead of apple emoji.",
+      "Tap Listen, check voice or honest fallback. Tap Let me try, verify three colored RTL tiles and wrong dashed border, Try again, Hint and correct green border.",
+      "Tap Next and confirm existing tracing then next letter; verify progress retained and bottom navigation unchanged."
+    ],
+    "expected": "Urdu Garden follows reference prompt and palette with pomegranate SVG, correct/retry states, audio fallback and original tracing progression."
+  },
+  {
+    "name": "Drawing Studio reference",
+    "description": "Validate the source drawing artboard for English and Urdu, guide toggle and nonblocking completion.",
+    "viewport": "mobile",
+    "covers": [
+      "reference cream canvas",
+      "three guide lines",
+      "guide toggle preserves drawing",
+      "Done without strokes",
+      "Urdu alif guide"
+    ],
+    "steps": [
+      "Open Drawing Studio at mobile and desktop widths.",
+      "Verify cream canvas, lilac 6px border, 40px corners and three dashed lines at 22%, 50%, 78%.",
+      "Draw a stroke, toggle Show guide off then on; confirm stroke retained.",
+      "Erase and press Done with no strokes; confirm progression.",
+      "Enter Urdu tracing; confirm alif guide matches supplied SVG outline and Done works. Check mobile bottom navigation unchanged."
+    ],
+    "expected": "Drawing UI follows source artboard; existing touch drawing, letter selection, progression and Urdu tracing work; no drawing validation or negative warning."
+  },
+  {
+    "name": "Memory Mission reference",
+    "description": "Validate persistent hints, retry styling, shuffled answers and explicit Next with saved review records.",
+    "viewport": "mobile",
+    "covers": [
+      "memory mission",
+      "gentle retry",
+      "one hint",
+      "correct feedback",
+      "review progression"
+    ],
+    "steps": [
+      "Open Memory Mission and inspect moon picture, answer colors and progress dots.",
+      "Tap Hint; verify exactly one incorrect answer disappears and stays hidden after retry.",
+      "Choose an available wrong answer and verify dashed peach state and gentle feedback.",
+      "Choose correct answer, verify green border and Next; tap Next to progress.",
+      "Complete review and restart; verify records retained and bottom nav unchanged."
+    ],
+    "expected": "Reference-style Memory Mission provides stable hint and retry, correct feedback before progression, and existing review record persistence."
+  },
+  {
+    "name": "Stories and Poems reference",
+    "description": "Verify reference picture-first reading, existing stories and poems, audio highlighting and page turns.",
+    "viewport": "mobile",
+    "covers": [
+      "story chooser",
+      "poem chooser",
+      "word highlighting",
+      "line highlighting",
+      "page turn",
+      "pause",
+      "existing content"
+    ],
+    "steps": [
+      "Open Story Village, verify pastel full-width picture cards and spoken choices.",
+      "Open Milo, tap picture or Hear; pause and resume, verify word highlights when supported.",
+      "Turn page and verify new text reads automatically; finish question or replay.",
+      "Open Poems, verify Little Duck Splash and previous poems remain accessible, read and pause, verify line highlights; tap Done.",
+      "Check desktop and mobile bottom navigation."
+    ],
+    "expected": "Reference layouts implemented, all original content and reading controls preserved, new sample poem available."
+  },
+  {
+    "name": "Grown-up Gate reference",
+    "description": "Verify the supplied phone and desktop gate layout, continuous hold and accessible adult question without bypassing existing authorization.",
+    "viewport": "mobile",
+    "covers": [
+      "reference lock SVG",
+      "three-second hold",
+      "pointer cancel",
+      "keyboard hold",
+      "adult sum",
+      "back to games"
+    ],
+    "steps": [
+      "From a child screen tap Settings or Parents; verify full-screen sky gate with 96px lock, 20px progress and 88px hold button.",
+      "Quick tap and release early: gate remains locked and progress returns to zero.",
+      "Pointer out, pointer cancel, keyboard release, window blur: progress resets.",
+      "Hold continuously for 3 seconds: Parent Corner opens.",
+      "Use Can't hold?; wrong sum stays locked, correct sum opens; Back returns to games without granting access.",
+      "Verify reference at 390px and 1024px, mobile learning bottom bar unchanged."
+    ],
+    "expected": "Reference gate opens only after uninterrupted hold or correct adult sum; cancellation works and existing parent and licence access controls remain."
+  },
+  {
+    "name": "Parent Corner reference",
+    "description": "Reference adult layout with real counts, existing voice controls, installation, themes, alphabet selection and protected licence and reset actions.",
+    "viewport": "desktop",
+    "covers": [
+      "App-Parents reference",
+      "real progress counts",
+      "voice check",
+      "theme",
+      "install",
+      "owner-only licences",
+      "both confirmed resets"
+    ],
+    "steps": [
+      "Unlock Parent Corner through gate.",
+      "Compare cards, typography, adult controls and mobile layout to App-Parents and Phone-App-Parents references.",
+      "Change spoken guide and speed, test voices, choose theme, use Android install controls.",
+      "Verify four progress counts reflect local records; open an alphabet letter.",
+      "Expand Connected Learning Report; verify original record counts remain.",
+      "Confirm both reset buttons are only in Licence and data; cancel confirmation and verify no deletion; confirm with test records and verify counts refresh.",
+      "As owner check Manage licences remains in Licence and data; non-owner cannot access owner dashboard. Bottom navigation unchanged."
+    ],
+    "expected": "Reference adult design uses actual saved values, preserves all settings and school controls, and resets only after in-app confirmation."
+  },
+  {
+    "name": "Number Galaxy redesign",
+    "description": "Check counting, distinct options through ten, persistent counted state and number tracing.",
+    "viewport": "mobile",
+    "covers": [
+      "numbers",
+      "counting",
+      "retry",
+      "tracing"
+    ],
+    "steps": [
+      "Open Number Galaxy, tap objects, continue to counting quiz.",
+      "Select wrong then correct; verify inline feedback and Next.",
+      "Trace and continue through 10; verify distinct answer options and bottom navigation."
+    ],
+    "expected": "Existing 1–10 learning stages work with redesigned large controls."
+  }
+]

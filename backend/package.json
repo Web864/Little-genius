@@ -1,0 +1,20 @@
+{
+  "name": "little-genius-local-api",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "db:init": "node db/init.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "fastify": "^5.0.0",
+    "pg": "^8.0.0",
+    "dotenv": "^16.0.0"
+  }
+}

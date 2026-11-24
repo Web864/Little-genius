@@ -1,0 +1,20 @@
+{
+  "id": "/",
+  "name": "Little Genius Adventure",
+  "short_name": "Little Genius",
+  "description": "Preschool learning adventures with letters, numbers, words and stories.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6f9fb",
+  "theme_color": "#238768",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

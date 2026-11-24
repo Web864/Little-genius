@@ -1,0 +1,42 @@
+
+/* Individual learning worlds and adult management polish; bottom navigation untouched. */
+.kid-app .lga-lesson-progress{display:block;width:100%;height:14px;accent-color:var(--lga-brand);margin:16px 0 24px;border:0;border-radius:999px;overflow:hidden}
+.kid-app .lga-lesson-progress::-webkit-progress-bar{background:#E0E9E5;border-radius:999px}.kid-app .lga-lesson-progress::-webkit-progress-value{background:var(--lga-brand);border-radius:999px}
+.kid-app.lga-child .number-world .number-hero{display:grid;place-items:center;margin:12px auto;width:min(240px,80%);height:auto;aspect-ratio:1;border-radius:50%;border:0;background:var(--lga-sun)!important;box-shadow:none!important;color:var(--lga-ink)!important;font:700 clamp(70px,20vw,144px)/1 Andika,sans-serif}
+.kid-app.lga-child .count-objects{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:20px auto}
+.kid-app .lga-count-object{display:inline-grid;place-items:center;min-width:72px;min-height:72px;border:2px solid transparent;border-radius:20px;background:var(--lga-blue);font-size:clamp(36px,7vw,60px);padding:8px;cursor:pointer}
+.kid-app .lga-count-object.lga-counted{background:var(--lga-correct);border-color:var(--lga-brand)}
+.kid-app .addition-group{background:#DDF0E6!important;border:0!important;box-shadow:none!important;border-radius:28px!important;min-width:0}
+.kid-app .addition-items,.kid-app .addition-combined{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
+.kid-app .addition-count{font-size:22px!important;color:var(--lga-ink)}
+.kid-app.lga-child :is(.addition-choice,.quest-choice){min-height:120px!important;border:3px solid transparent!important;border-radius:24px!important;background:var(--lga-sun)!important;color:var(--lga-ink)!important;font-family:Andika,Nunito,sans-serif!important;box-shadow:none!important}
+.kid-app.lga-child :is(.addition-choice,.quest-choice):nth-child(2){background:var(--lga-mint)!important}
+.kid-app.lga-child :is(.addition-choice,.quest-choice):nth-child(3){background:var(--lga-lilac)!important}
+.kid-app.lga-child :is(.addition-choices,.quest-choices){gap:16px!important}
+.kid-app.lga-child .lga-retry{background:var(--lga-retry)!important;border:3px dashed #B3261E!important}
+.kid-app.lga-child .lga-correct{background:var(--lga-correct)!important;border:6px solid var(--lga-brand)!important}
+.kid-app.lga-child .quest-cards{gap:16px!important}
+.kid-app.lga-child .quest-select{border-radius:28px!important;background:var(--lga-mint)!important;color:var(--lga-ink)!important;min-height:184px;border:0!important}
+.kid-app.lga-child .quest-select:nth-child(2){background:var(--lga-blue)!important}.kid-app.lga-child .quest-select:nth-child(3){background:var(--lga-lilac)!important}
+.kid-app.lga-child .quest-select strong,.kid-app.lga-child .quest-select span{color:var(--lga-ink)!important;font-size:22px}
+.kid-app.lga-child .quest-object{min-width:72px;min-height:72px;font-size:48px;background:var(--lga-peach);border-radius:20px}
+.kid-app.lga-child .picture-forest{padding:clamp(16px,4vw,30px)!important;background:#fff!important;border-radius:28px!important;border:0!important;box-shadow:0 5px 0 #C7DFEA!important}
+.kid-app.lga-child .picture-forest .picture-grid{gap:16px!important}
+.kid-app.lga-child .picture-forest .picture-card{border-radius:24px!important;background:var(--lga-peach)!important;min-width:0}
+.kid-app.lga-child .picture-forest .picture-pick{min-height:120px!important;background:transparent!important;color:var(--lga-ink)!important;border-radius:20px!important}
+.kid-app.lga-child .picture-forest .picture-pick strong{font:700 22px Andika,sans-serif!important}
+.kid-app.lga-child .picture-forest .picture-hear{min-height:72px!important;font-size:22px!important}
+.kid-app.lga-child .picture-forest .lost-actions :is(.btn,.ghost){min-height:72px;font-size:22px!important;border-radius:999px!important}
+.kid-app.lga-child .picture-forest .lost-actions .btn{min-height:88px}
+.kid-app .lga-story-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px;margin:24px 0}
+.kid-app .lga-story-card{display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;min-height:184px;background:var(--lga-lilac);border:0;border-bottom:5px solid #20324525;border-radius:28px;color:var(--lga-ink);padding:24px;font-size:24px;font-weight:800}
+.kid-app .lga-story-card:nth-child(2){background:var(--lga-mint)}.kid-app .lga-story-card:nth-child(3){background:var(--lga-blue)}
+.kid-app .lga-story-card>span{font-size:64px;line-height:1.3}
+.kid-app .learning-story-art{border-radius:28px;background:#DCEBF7!important;padding:30px;font-size:clamp(64px,15vw,128px)!important;line-height:1.3}
+.kid-app .lga-read-active{background:var(--lga-sun)!important;color:var(--lga-ink)!important;border-radius:5px}
+.kid-app .lga-poem-lines p{margin:8px 0;padding:6px;line-height:1.6}
+.kid-app .kid-settings-panel,.school-profile-panel,.licence-owner-workspace{background:#fff!important;color:var(--lga-ink)!important;border-radius:24px!important}
+.kid-app .kid-parent :is(button,select,input),.school-profile-panel :is(button,input),.licence-owner-workspace :is(button,input,select){min-height:48px}
+.kid-app #lga-owner-slot #licence-owner-button{position:static!important;display:inline-flex!important;transform:none!important;margin:12px 0;z-index:auto!important;font-size:16px}
+.school-profile-panel :is(p,small,label),.licence-owner-workspace :is(p,small,label){font-size:max(14px,1em)}
+@media(max-width:599px){.kid-app.lga-child :is(.addition-choices,.quest-choices){display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}.kid-app.lga-child :is(.addition-choices,.quest-choices)>button:last-child:nth-child(odd){grid-column:1/-1}.kid-app .lga-story-grid{grid-template-columns:1fr}.kid-app .lga-count-object{min-width:56px;min-height:72px}.kid-app .addition-scene{max-width:100%;min-width:0}.kid-app.lga-child .picture-forest .picture-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}

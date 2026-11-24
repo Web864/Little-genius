@@ -1,0 +1,24 @@
+/* New Draft mini-games; namespace all rules to avoid changing existing games. */
+.lga-thinking {max-width:820px;margin:1.5rem auto;padding:clamp(1rem,3vw,2rem);background:#fffaf0;border-radius:25px;box-shadow:0 6px 28px #34491b20;color:#233441;text-align:center}
+.lga-thinking h1 {font-size:clamp(1.9rem,4vw,2.7rem);margin:.65rem 0;color:#1d6749}
+.lga-thinking h2 {font-size:clamp(1.2rem,3vw,1.7rem);margin:1.5rem .5rem}
+.lga-thinking-score {font-weight:700;color:#45613f}
+.lga-thinking-board {background:#edf6e8;border-radius:22px;padding:1.2rem;margin:1rem 0}
+.lga-thinking-answers {display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.8rem}
+.lga-thinking-answers button {font:inherit;font-size:1.3rem;font-weight:700;background:#fff;border:3px solid #5c9b79;border-radius:18px;min-height:82px;padding:1rem;cursor:pointer;color:#263e36}
+.lga-thinking-answers button:hover,.lga-thinking-answers button:focus-visible {background:#d8f4e2;outline:3px solid #305a49;outline-offset:2px}
+.lga-thinking-answers button:disabled{opacity:.7;cursor:default}
+.lga-thinking-action {background:#215b46;color:white;border:0;border-radius:15px;padding:.9rem 1.5rem;font:inherit;font-weight:700;cursor:pointer}
+.lga-thinking-message{min-height:2.5rem;font-weight:700}
+.lga-thinking-note {font-size:.87rem;color:#5f6a5e;margin:1.4rem 0}
+.lga-thinking-back {background:transparent;color:#215b46;text-decoration:underline;border:0;cursor:pointer;font:inherit}
+@media(max-width:520px){.lga-thinking-answers {grid-template-columns:1fr}.lga-thinking-answers button{min-height:65px}}
+
+/* Local Draft recommendations never affect official published library order. */
+.lga-draft-journey{margin:20px auto;max-width:1024px;padding:16px;border:2px dashed #b17a3f;border-radius:18px;background:#fff8ea;color:#342819}
+.lga-draft-journey h2{font-size:1.3rem;margin:0 0 8px;color:#54341d}
+.lga-draft-journey p{font-size:.9rem;line-height:1.5;margin:8px 0}
+.lga-draft-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:12px 0}
+.lga-draft-steps button{display:flex;flex-direction:column;gap:6px;text-align:left;border:1px solid #d1ae71;background:#fff;border-radius:12px;padding:13px;min-height:78px;cursor:pointer;color:#203245}
+.lga-draft-steps button small{font-size:.78rem;color:#5b4a35}
+.lga-draft-steps button:focus-visible{outline:3px solid #205b46;outline-offset:2px}
