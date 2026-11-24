@@ -1,8 +1,9 @@
-# Backend and DB discovery
-Read-only inspection of the existing local little_genius_dev database succeeded using the existing backend .env in place. No credentials were copied. PostgreSQL 18 service is running. Schema ledger: 1, 2, 3, 4, 5.
-
-Tables: app_schema_versions, schools, curriculum_packs, local_adults, local_sessions, local_aics_profiles, local_practice_results, local_alphabet_snapshots, local_legacy_game_snapshots. No personal records were read or reported. Schema columns/constraints still require a full compatibility audit.
-
-Original backend on port 4000 was not listening during initial discovery. Win32_Process inventory was denied, so original process provenance could not be established. The isolated master backend subsequently started on 127.0.0.1:4000 (tool session 76212); its source is master/backend/src/server.js. It uses the original local configuration through Node --env-file, without copying it.
-
-Environment names inspected: HOST, PORT, DATABASE_URL. No migration, registration, backup write, password change or production access was performed.
+# Backend and PostgreSQL discovery ? verified continuation
+- Original working baseline: Milestone 4.1 Fastify + pg. Later source packages are unapplied unless explicit live DB evidence says otherwise.
+- Original configuration is loaded in place from E:/LittleGenius-Independent/little-genius-consolidated-local/backend/.env. Only names HOST, PORT, DATABASE_URL were reported. No credentials were copied/committed.
+- Target guard permits localhost little_genius_dev or explicitly named lga_consolidation_test_* databases. Production/remote targets remain refused.
+- Existing PostgreSQL 18 local dev DB: read-only transaction succeeded; app_schema_versions contains 1,2,3,4,5. Nine baseline tables: app_schema_versions, schools, curriculum_packs, local_adults, local_sessions, local_aics_profiles, local_practice_results, local_alphabet_snapshots, local_legacy_game_snapshots. No personal rows were inspected or published.
+- Updated master API /api/health, /api/health/db and /api/auth/me returned 200 after restart. No authenticated mutation requests were sent to the existing dev DB. The agent's prior server alone was stopped after its exact process start timestamp matched the recorded launch.
+- AICS v6 is absent from dev. Existing account/progress routes continue to work; new school/owner routes fail closed until schema and trusted role/membership rows exist. Capabilities return unavailable rather than granting roles.
+- Isolated DB lga_consolidation_test_20261124 was created locally using existing configuration in memory. v1-v6 schemas and fictional example.invalid fixtures were applied ONLY there. No paid resources. Real API auth, backups, school/organization isolation, CAS conflict, expired membership, owner gates and audit rollback tests passed.
+- Original Win32_Process inventory was denied; listener evidence later came from netstat, process start times and the actual server launch outputs. Port and source claims are limited to those observed processes.

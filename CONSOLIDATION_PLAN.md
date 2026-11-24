@@ -1,7 +1,8 @@
-## Plan
-1. Create isolated master under current writable workspace, excluding secrets, databases, dependencies and generated builds.
-2. Reuse Milestone 4.1 backend/frontend; compare AICS modules by hash with Phase 10.
-3. Install dependencies, run existing backend tests, typecheck and build.
-4. Read-only local DB/schema inspection using existing env in place; never copy credentials.
-5. Repair integration gaps with targeted tests; school/owner backend requires reviewed additive migration before existing DB use.
-6. Browser QA and exact documentation; report PARTIAL until every completion condition passes.
+# Consolidation plan ? current implementation
+1. Preserve Milestone 4.1 runtime and all v1-v5 snapshot readers. DONE. Compare source/routes/SQL/tests by actual contents; no later source feature was found to port. Source lookup remains bounded to audited locations.
+2. Resolve strict frontend errors with real contracts. DONE: original 511 diagnostic lines saved in TYPECHECK_BASELINE.txt; state shapes, story/lesson accessors, pointer/canvas types, speech APIs, nullable account handling and unused declarations corrected. No compiler options or strict flags weakened.
+3. Reuse Claude schoolService, ownerCurriculum, packRelease and school/owner UI. DONE. Fastify adapters use verified local cookie-session adult identities; roles and membership come from PostgreSQL only. Teacher read/admin write rules, active organization/school and expiry checks run server-side. Client school/role fields cannot grant access.
+4. Add isolated v6 persistence. DONE in test DB only. Entire service operation/permission lookup/CAS/audit uses a serializable transaction and advisory lock. CAS savepoints roll back preceding operations on conflict; commit ambiguity is surfaced safely. Revocations remain permanent through API; Draft gates stay intact.
+5. Connect UI/account storage safely. DONE: learning modules load only after verified account activation so module-level legacy progress reads use the correct account. Existing vault, quarantine/claim UI, cross-tab conflict handling and sign-out parking are reused. Existing parent/school/owner screens use a standalone fetch adapter with status-aware errors.
+6. Revalidate. DONE for strict typecheck/build, 26 backend tests, 242 targeted AICS tests and real mobile browser smoke against isolated PostgreSQL. Exact coverage and limits are in TEST_RESULTS.md.
+7. Existing dev rollout: PENDING explicit approval of concrete schema-v6.sql and a trusted account-role/membership provisioning decision. No auto-migration and no client-selected owner. Later unseen artifacts, exhaustive game playthrough, commercial licensing and production readiness remain outside current verified scope.

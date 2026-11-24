@@ -1,0 +1,35 @@
+✔ profile access requires a session plus password; account B cannot read or overwrite A (728.3024ms)
+✔ anonymous request and missing password cannot read or write saved profiles (82.3217ms)
+✔ invalid profile and wrong password do not overwrite a saved profile (332.4313ms)
+▶ real PostgreSQL: local auth, backups, AICS authorization, migration and atomicity
+  ✔ anonymous/regular adults cannot claim school or owner permissions (547.5702ms)
+  ✔ school administrator writes; teacher reads only; cross-school records stay isolated (644.0142ms)
+  ✔ owner release rules, revocation, audit and unreviewed Draft gates (460.9064ms)
+  ✔ real account backups retain compatibility and reject wrong identity/password (1655.7991ms)
+  ✔ CAS failure rolls back earlier writes and transaction exception rolls back audit (10.2648ms)
+✔ real PostgreSQL: local auth, backups, AICS authorization, migration and atomicity (4828.4418ms)
+✔ Fastify handles missing database without exposing connection details (11.625ms)
+✔ alphabet backup is explicitly password gated, isolated across two adult accounts (619.1351ms)
+✔ alphabet backup rejects anonymous, wrong password, and invalid snapshots (410.8636ms)
+✔ alphabet backup ignores client adultId and validates alphabet strictness (241.7535ms)
+✔ legacy backup is password protected and account-isolated (612.6011ms)
+✔ legacy backup rejects anonymous, wrong-password, and extra private fields (249.7859ms)
+✔ valid legacy original games snapshot accepts only allow-listed values (5.0215ms)
+✔ rejects extra private data and unexpected game keys (0.6446ms)
+✔ rejects malformed attempt counters and invalid letters (0.5638ms)
+✔ rejects unknown story keys (0.4958ms)
+✔ accepts a well formed AICS profile (2.7327ms)
+✔ rejects extra private fields (0.49ms)
+✔ rejects duplicate languages (0.5796ms)
+✔ rejects missing profile (0.3307ms)
+✔ draft progress is optional, correctly scoped, and retains best score (698.2798ms)
+✔ wrong password, missing cookie, malformed score cannot alter stored practice (407.4458ms)
+✔ no client-provided adult_id is trusted (216.5266ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6023.5739

@@ -1,0 +1,110 @@
+[
+  {
+    "module": "accountScope.ts",
+    "same": true
+  },
+  {
+    "module": "activityRegistry.ts",
+    "same": false
+  },
+  {
+    "module": "audio.ts",
+    "same": true
+  },
+  {
+    "module": "bootstrap.ts",
+    "same": true
+  },
+  {
+    "module": "competencyRegistry.ts",
+    "same": true
+  },
+  {
+    "module": "countryRegistry.ts",
+    "same": true
+  },
+  {
+    "module": "curriculumManager.ts",
+    "same": true
+  },
+  {
+    "module": "curriculumMappings.ts",
+    "same": true
+  },
+  {
+    "module": "curriculumRegistry.ts",
+    "same": true
+  },
+  {
+    "module": "index.ts",
+    "same": true
+  },
+  {
+    "module": "localization.ts",
+    "same": true
+  },
+  {
+    "module": "onboarding.ts",
+    "same": true
+  },
+  {
+    "module": "onboardingService.ts",
+    "same": true
+  },
+  {
+    "module": "ownerCurriculum.ts",
+    "same": true
+  },
+  {
+    "module": "ownership.ts",
+    "same": true
+  },
+  {
+    "module": "packRelease.ts",
+    "same": true
+  },
+  {
+    "module": "packs.ts",
+    "same": true
+  },
+  {
+    "module": "parentControls.ts",
+    "same": true
+  },
+  {
+    "module": "progressService.ts",
+    "same": true
+  },
+  {
+    "module": "publishedGate.ts",
+    "same": true
+  },
+  {
+    "module": "schoolConfig.ts",
+    "same": true
+  },
+  {
+    "module": "schoolService.ts",
+    "same": true
+  },
+  {
+    "module": "schoolSettings.ts",
+    "same": true
+  },
+  {
+    "module": "sha256.ts",
+    "same": true
+  },
+  {
+    "module": "types.ts",
+    "same": true
+  },
+  {
+    "module": "validate.ts",
+    "same": true
+  },
+  {
+    "module": "worlds.ts",
+    "same": false
+  }
+]

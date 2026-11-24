@@ -1,0 +1,81 @@
+[
+  {
+    "archive": "little-genius-local-milestone3-3-measurement-nature (1).zip",
+    "authHash": "56b2d0687b51cc7df1003b2c8de0232ee2f6bba1668c03c8faa5b7a2d4b9c60b",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-local-milestone3-3/backend/db/schema-v2.sql",
+      "little-genius-local-milestone3-3/backend/db/schema.sql"
+    ]
+  },
+  {
+    "archive": "little-genius-local-milestone3-5-progress-dashboard (1).zip",
+    "authHash": "60e87db3a9c2d9152fb99639fd941b161c974d7c5d0d77b9ed0163edd3dc8794",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-local-milestone3-5/backend/db/schema-v2.sql",
+      "little-genius-local-milestone3-5/backend/db/schema-v3.sql",
+      "little-genius-local-milestone3-5/backend/db/schema.sql"
+    ]
+  },
+  {
+    "archive": "little-genius-local-milestone3-5-progress-dashboard (2).zip",
+    "authHash": "60e87db3a9c2d9152fb99639fd941b161c974d7c5d0d77b9ed0163edd3dc8794",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-local-milestone3-5/backend/db/schema-v2.sql",
+      "little-genius-local-milestone3-5/backend/db/schema-v3.sql",
+      "little-genius-local-milestone3-5/backend/db/schema.sql"
+    ]
+  },
+  {
+    "archive": "little-genius-local-milestone4-1-account-progress.zip",
+    "authHash": "f2abe0e96873b3a4b82e6d47e9aa397383b02903e419150232560152cefc8f15",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/alphabet/load",
+      "/api/alphabet/save",
+      "/api/legacy/load",
+      "/api/legacy/save",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-consolidated-local/backend/db/schema-v2.sql",
+      "little-genius-consolidated-local/backend/db/schema-v3.sql",
+      "little-genius-consolidated-local/backend/db/schema.sql",
+      "little-genius-consolidated-local/backend/db/schema-v5.sql",
+      "little-genius-consolidated-local/backend/db/schema-v4.sql"
+    ]
+  }
+]

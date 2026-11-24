@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "frontend": "http://127.0.0.1:4173",
+  "backend": "http://127.0.0.1:61137",
+  "viewport": "390x844",
+  "evidence": [
+    "Mobile 390x844: full onboarding country/curriculum/language selection, Learning Worlds and Number Galaxy PASS",
+    "Parent Corner adult hold gate PASS",
+    "School admin settings UI visible; owner UI absent PASS",
+    "Real school settings save with confirmation and PostgreSQL audit PASS",
+    "Real UI login/logout and shared-browser A/B progress isolation PASS",
+    "Real ABC backup, dashboard load, restore and A account vault recovery PASS",
+    "Owner Curriculum Manager uses real Fastify/PostgreSQL responses PASS",
+    "No uncaught browser page errors PASS"
+  ],
+  "errors": []
+}
