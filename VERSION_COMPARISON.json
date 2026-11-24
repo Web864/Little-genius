@@ -24,7 +24,23 @@
     ],
     "authHash": "f2abe0e96873b3a4b82e6d47e9aa397383b02903e419150232560152cefc8f15",
     "extraProgress": false,
-    "dashboard": false
+    "dashboard": false,
+    "schemaHashes": {
+      "schema-v2.sql": "fbb3eda13710b160783d3e5b6e58f4524cac760f97ef403272ae0eb16eabbba8",
+      "schema-v3.sql": "54a24ad86a7e2c2338c5783c87209c10308bf5c30a38405aaf4f1eab77cd6fc5",
+      "schema-v4.sql": "4283dd279918fdef67c09700b12ddb3062b896813b538ae7f09c34743b6a259b",
+      "schema-v5.sql": "e8a0d690d6e73c50c3840211e2484b9735b21835c0f3ba614f34e0da468e9b4d",
+      "schema.sql": "dfec0984f87daf4642c8808351ae84bc38be83b5497dd801afa3fc3b48d84af8"
+    },
+    "tests": [
+      "test-account-isolation.mjs",
+      "test-alphabet-backup.mjs",
+      "test-legacy-isolation.mjs",
+      "test-legacy-snapshot.mjs",
+      "test-local-auth.mjs",
+      "test-practice-progress.mjs"
+    ],
+    "frontendProgressHash": "e27575d36d998da9f5bba940726780e9e47301a1d36b73fda5ff9c255219e3dc"
   },
   {
     "version": "little-genius-local-milestone2\\backend",
@@ -42,7 +58,15 @@
     ],
     "authHash": "67d2ae27d82a009421f33d71f8142a5b65cac05bfd78ae09f80b7911ff4242b8",
     "extraProgress": false,
-    "dashboard": false
+    "dashboard": false,
+    "schemaHashes": {
+      "schema-v2.sql": "fbb3eda13710b160783d3e5b6e58f4524cac760f97ef403272ae0eb16eabbba8",
+      "schema.sql": "dfec0984f87daf4642c8808351ae84bc38be83b5497dd801afa3fc3b48d84af8"
+    },
+    "tests": [
+      "test-local-auth.mjs"
+    ],
+    "frontendProgressHash": "13c2d906b54277d3d7c5002430fd6051ba706a5094bea5feeca6bb3375ec6ca7"
   },
   {
     "version": "little-genius-local-milestone2-2\\backend",
@@ -60,7 +84,16 @@
     ],
     "authHash": "56b2d0687b51cc7df1003b2c8de0232ee2f6bba1668c03c8faa5b7a2d4b9c60b",
     "extraProgress": false,
-    "dashboard": false
+    "dashboard": false,
+    "schemaHashes": {
+      "schema-v2.sql": "fbb3eda13710b160783d3e5b6e58f4524cac760f97ef403272ae0eb16eabbba8",
+      "schema.sql": "dfec0984f87daf4642c8808351ae84bc38be83b5497dd801afa3fc3b48d84af8"
+    },
+    "tests": [
+      "test-account-isolation.mjs",
+      "test-local-auth.mjs"
+    ],
+    "frontendProgressHash": "172907fb5713b13d2afbdfeeabd87b86c1bcd1c7825513b71b651f6614faaa44"
   },
   {
     "version": "little-genius-local-milestone2-signout-fixed\\little-genius-local-milestone2-m2-1\\backend",
@@ -78,7 +111,15 @@
     ],
     "authHash": "67d2ae27d82a009421f33d71f8142a5b65cac05bfd78ae09f80b7911ff4242b8",
     "extraProgress": false,
-    "dashboard": false
+    "dashboard": false,
+    "schemaHashes": {
+      "schema-v2.sql": "fbb3eda13710b160783d3e5b6e58f4524cac760f97ef403272ae0eb16eabbba8",
+      "schema.sql": "dfec0984f87daf4642c8808351ae84bc38be83b5497dd801afa3fc3b48d84af8"
+    },
+    "tests": [
+      "test-local-auth.mjs"
+    ],
+    "frontendProgressHash": "5de8d750aa6359e74549fcc77dc2664a73416455dc047aa645996a7a530df1df"
   },
   {
     "version": "little-genius-local-milestone3-2\\backend",
@@ -96,7 +137,16 @@
     ],
     "authHash": "56b2d0687b51cc7df1003b2c8de0232ee2f6bba1668c03c8faa5b7a2d4b9c60b",
     "extraProgress": false,
-    "dashboard": false
+    "dashboard": false,
+    "schemaHashes": {
+      "schema-v2.sql": "fbb3eda13710b160783d3e5b6e58f4524cac760f97ef403272ae0eb16eabbba8",
+      "schema.sql": "dfec0984f87daf4642c8808351ae84bc38be83b5497dd801afa3fc3b48d84af8"
+    },
+    "tests": [
+      "test-account-isolation.mjs",
+      "test-local-auth.mjs"
+    ],
+    "frontendProgressHash": "172907fb5713b13d2afbdfeeabd87b86c1bcd1c7825513b71b651f6614faaa44"
   },
   {
     "version": "little-genius-local-milestone3-3\\backend",
@@ -114,7 +164,16 @@
     ],
     "authHash": "56b2d0687b51cc7df1003b2c8de0232ee2f6bba1668c03c8faa5b7a2d4b9c60b",
     "extraProgress": false,
-    "dashboard": false
+    "dashboard": false,
+    "schemaHashes": {
+      "schema-v2.sql": "fbb3eda13710b160783d3e5b6e58f4524cac760f97ef403272ae0eb16eabbba8",
+      "schema.sql": "dfec0984f87daf4642c8808351ae84bc38be83b5497dd801afa3fc3b48d84af8"
+    },
+    "tests": [
+      "test-account-isolation.mjs",
+      "test-local-auth.mjs"
+    ],
+    "frontendProgressHash": "172907fb5713b13d2afbdfeeabd87b86c1bcd1c7825513b71b651f6614faaa44"
   },
   {
     "version": "little-genius-local-milestone3-4\\backend",
@@ -135,7 +194,18 @@
     ],
     "authHash": "60e87db3a9c2d9152fb99639fd941b161c974d7c5d0d77b9ed0163edd3dc8794",
     "extraProgress": false,
-    "dashboard": false
+    "dashboard": false,
+    "schemaHashes": {
+      "schema-v2.sql": "fbb3eda13710b160783d3e5b6e58f4524cac760f97ef403272ae0eb16eabbba8",
+      "schema-v3.sql": "54a24ad86a7e2c2338c5783c87209c10308bf5c30a38405aaf4f1eab77cd6fc5",
+      "schema.sql": "dfec0984f87daf4642c8808351ae84bc38be83b5497dd801afa3fc3b48d84af8"
+    },
+    "tests": [
+      "test-account-isolation.mjs",
+      "test-local-auth.mjs",
+      "test-practice-progress.mjs"
+    ],
+    "frontendProgressHash": "17baf66092d36a0348c1c24e7708eb60152685ba7e45f0ecf1229ae97c136049"
   },
   {
     "version": "little-genius-local-milestone3-5\\backend",
@@ -156,7 +226,18 @@
     ],
     "authHash": "60e87db3a9c2d9152fb99639fd941b161c974d7c5d0d77b9ed0163edd3dc8794",
     "extraProgress": false,
-    "dashboard": false
+    "dashboard": false,
+    "schemaHashes": {
+      "schema-v2.sql": "fbb3eda13710b160783d3e5b6e58f4524cac760f97ef403272ae0eb16eabbba8",
+      "schema-v3.sql": "54a24ad86a7e2c2338c5783c87209c10308bf5c30a38405aaf4f1eab77cd6fc5",
+      "schema.sql": "dfec0984f87daf4642c8808351ae84bc38be83b5497dd801afa3fc3b48d84af8"
+    },
+    "tests": [
+      "test-account-isolation.mjs",
+      "test-local-auth.mjs",
+      "test-practice-progress.mjs"
+    ],
+    "frontendProgressHash": "3920b792a4249ed4e1ef390dcba311b0402193979812e94432f20ad48162383b"
   },
   {
     "version": "little-genius-local-milestone3-6\\backend",
@@ -180,7 +261,20 @@
     ],
     "authHash": "dc1f379a096ce8bb3e87e6303e1780c66540f95b3dd2b645576353220114400e",
     "extraProgress": false,
-    "dashboard": false
+    "dashboard": false,
+    "schemaHashes": {
+      "schema-v2.sql": "fbb3eda13710b160783d3e5b6e58f4524cac760f97ef403272ae0eb16eabbba8",
+      "schema-v3.sql": "54a24ad86a7e2c2338c5783c87209c10308bf5c30a38405aaf4f1eab77cd6fc5",
+      "schema-v4.sql": "4283dd279918fdef67c09700b12ddb3062b896813b538ae7f09c34743b6a259b",
+      "schema.sql": "dfec0984f87daf4642c8808351ae84bc38be83b5497dd801afa3fc3b48d84af8"
+    },
+    "tests": [
+      "test-account-isolation.mjs",
+      "test-alphabet-backup.mjs",
+      "test-local-auth.mjs",
+      "test-practice-progress.mjs"
+    ],
+    "frontendProgressHash": "bb3b9e5b59bf6e39076cecb261c9781aaa1d91475d30f17902f6dc7f90188b58"
   },
   {
     "version": "little-genius-local-milestone4-1\\little-genius-consolidated-local\\backend",
@@ -207,7 +301,23 @@
     ],
     "authHash": "f2abe0e96873b3a4b82e6d47e9aa397383b02903e419150232560152cefc8f15",
     "extraProgress": false,
-    "dashboard": true
+    "dashboard": true,
+    "schemaHashes": {
+      "schema-v2.sql": "fbb3eda13710b160783d3e5b6e58f4524cac760f97ef403272ae0eb16eabbba8",
+      "schema-v3.sql": "54a24ad86a7e2c2338c5783c87209c10308bf5c30a38405aaf4f1eab77cd6fc5",
+      "schema-v4.sql": "4283dd279918fdef67c09700b12ddb3062b896813b538ae7f09c34743b6a259b",
+      "schema-v5.sql": "e8a0d690d6e73c50c3840211e2484b9735b21835c0f3ba614f34e0da468e9b4d",
+      "schema.sql": "dfec0984f87daf4642c8808351ae84bc38be83b5497dd801afa3fc3b48d84af8"
+    },
+    "tests": [
+      "test-account-isolation.mjs",
+      "test-alphabet-backup.mjs",
+      "test-legacy-isolation.mjs",
+      "test-legacy-snapshot.mjs",
+      "test-local-auth.mjs",
+      "test-practice-progress.mjs"
+    ],
+    "frontendProgressHash": "f072fab178df96f3b3b0633b1be77c7b348c5bac719141795784680c2e42e3bd"
   },
   {
     "version": "little-genius-consolidated-local-single-QA.zip",

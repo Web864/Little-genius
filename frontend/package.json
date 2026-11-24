@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:aics": "node --test tests/aics/accounts.test.ts tests/aics/accounts7a.test.ts tests/aics/localization.test.ts tests/aics/onboarding.test.ts tests/aics/packs.test.ts tests/aics/progress.test.ts tests/aics/readiness9.test.ts tests/aics/registry.test.ts tests/aics/release.test.ts tests/aics/revoke9.test.ts tests/aics/school.test.ts tests/aics/settings9.test.ts tests/aics/validation.test.ts",
+    "test:browser": "node tests/browser-smoke.mjs"
   },
   "dependencies": {
     "lucide": "^0.469.0"
@@ -17,6 +19,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.0",
+    "playwright": "^1.65.1",
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.7.0",

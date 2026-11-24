@@ -62,12 +62,13 @@ test('honest gaps are reported rather than hidden', () => {
 });
 
 test('existing activities and legacy keys are unchanged', () => {
-  assert.equal(ACTIVITIES.length, 15);
+  assert.equal(ACTIVITIES.length, 17);
   const keys = Object.fromEntries(ACTIVITIES.map((a) => [a.id, a.legacyKey]));
   assert.deepEqual(keys, {
     'act.lit.abc': 'littleGeniusProgress', 'act.lit.sounds': 'littleGeniusConnectedCurriculum',
     'act.lit.words': 'littleGeniusConnectedCurriculum', 'act.lit.urdu-letters': 'littleGeniusConnectedCurriculum',
     'act.spa.shapes': 'littleGeniusConnectedCurriculum', 'act.lang.stories': 'littleGeniusConnectedCurriculum',
+    'act.spa.sorting-draft': null, 'act.pat.patterns-draft': null,
     'act.lang.poems': null, 'act.num.numbers': null, 'act.num.addition': null,
     'act.pat.quests': 'littleGeniusAdventureQuests', 'act.lit.lost-letters': 'littleGeniusLostLettersV1',
     'act.lit.picture-rescue': 'littleGeniusPictureRescue', 'act.art.draw': null,
@@ -119,7 +120,9 @@ test('no learning screen imports the AICS pack code', async () => {
   const { readdirSync, readFileSync } = await import('node:fs');
   const dir = new URL('../../src/', import.meta.url);
   for (const f of readdirSync(dir).filter((x) => x.endsWith('.ts'))) {
-    assert.ok(!/aics\/(packs|curriculumMappings)/.test(readFileSync(new URL(f, dir), 'utf8')), f);
+    const source=readFileSync(new URL(f, dir), 'utf8');
+    if(f==='draftJourney.ts'){ assert.match(source,/not<\/strong> an approved national syllabus/); assert.match(source,/row.status === 'draft'/); assert.ok(!/aics\/packs/.test(source)); continue; }
+    assert.ok(!/aics\/(packs|curriculumMappings)/.test(source), f);
   }
 });
 

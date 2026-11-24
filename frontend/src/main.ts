@@ -4,8 +4,12 @@ import './previewBanner.css';
 import './localAccount.css';
 import { activateAccount, parkAccount, watchAccountConflict, ACTIVE_OWNER_KEY } from './aics/accountScope';
 import { mountLocalAccount } from './localAccount';
-import { mountLearningApp } from './learningApp';
-import { grownUpCheck } from './grownUp';
+import { grownUpCheck, confirmInApp } from './grownUp';
+import { installSchoolSettings } from './aics/schoolSettings';
+import { installOwnerManager } from './aics/curriculumManager';
+import { syncSchoolDefaults } from './aics/schoolConfig';
+import { installOwnership } from './aics/ownership';
+import { syncPublished } from './aics/publishedGate';
 import { maybeRunOnboarding, openWizard } from './aics/onboarding';
 import { safeLocalStorage } from './aics/bootstrap';
 
@@ -38,6 +42,12 @@ edit.addEventListener('click', async () => {
     } finally { layer.remove(); }
   } finally { editing = false; }
 });
+async function request(url:string, method='GET', body?:unknown):Promise<unknown> {
+  const response=await fetch(url,{method,credentials:'same-origin',headers:{'X-LGA-Local-Client':'1',...(body===undefined?{}:{'Content-Type':'application/json'})},...(body===undefined?{}:{body:JSON.stringify(body)})});
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.error ?? 'Local request failed');
+  return data;
+}
 async function start(): Promise<void> {
   const response = await fetch('/api/auth/me', { credentials: 'same-origin' });
   if (!response.ok) throw new Error('Local account verification unavailable.');
@@ -47,11 +57,26 @@ async function start(): Promise<void> {
     const scope = await activateAccount(storage, adult.id);
     if (!scope.ok) throw new Error('Account storage could not be isolated.');
     watchAccountConflict(window, scope.owner, () => location.reload());
+    installOwnership({userId:()=>adult.id,confirm:confirmInApp});
   } else if (storage?.getItem(ACTIVE_OWNER_KEY)) {
     if (!(await parkAccount(storage)).ok) throw new Error('Account progress could not be parked.');
   }
+  if(!adult)window.addEventListener('storage',event=>{if(event.key===ACTIVE_OWNER_KEY)location.reload();});
+  const api = {
+    async get(url: string) { return { data: await request(url) }; },
+    async put(url: string, body: unknown) { return { data: await request(url, 'PUT', body) }; },
+    async post(url: string, body: unknown) { return { data: await request(url, 'POST', body) }; }
+  };
+  if (adult) {
+    const capabilities = await request('/api/account/capabilities') as { owner?:boolean;school?:boolean };
+    installSchoolSettings({api,isLicensed:()=>capabilities.school===true,confirm:confirmInApp,storage});
+    installOwnerManager({api,isOwner:()=>capabilities.owner===true,confirm:confirmInApp});
+    await syncSchoolDefaults(api,storage,capabilities.school?'licensed':undefined);
+    await syncPublished(api,storage);
+  }
   mountLocalAccount();
   await maybeRunOnboarding(app, { gate: grownUpCheck, storage: safeLocalStorage() });
+  const { mountLearningApp } = await import('./learningApp');
   mountLearningApp();
 }
 void start().catch(() => { app.textContent = 'Unable to verify local account storage. Start the local backend and reload. Saved progress has not been assigned to another account.'; });

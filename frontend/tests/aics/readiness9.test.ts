@@ -26,11 +26,11 @@ test('Urdu and Arabic education content stays Draft: the Urdu activities are Dra
   for (const m of MAPPINGS) assert.equal(m.reviewer, null);
 });
 
-test('International Core and England: the only things missing are (1) two Draft linked activities and (2) owner-recorded reviews', () => {
+test('International Core and England: the only things missing are (1) linked Draft activities and (2) owner-recorded reviews', () => {
   for (const id of ['intl-core', 'eyfs-2026']) {
     const g = evaluateGates(id, [], REAL_WORLD);
     const other = g.blockers.filter((b) => !reviewOnly(b));
-    assert.deepEqual(other.sort(), ['Linked activity act.apl.memory-mission is Draft content', 'Linked activity act.lit.urdu-letters is Draft content'], id);
+    assert.deepEqual(other.sort(), ['Linked activity act.apl.memory-mission is Draft content', 'Linked activity act.lit.urdu-letters is Draft content', ...(id==='intl-core'?['Linked activity act.pat.patterns-draft is Draft content', 'Linked activity act.spa.sorting-draft is Draft content']:[])].sort(), id);
     // a native-language educator is required ONLY because a linked Draft activity is Urdu
     assert.ok(g.requiredRoles.includes('native-educator'), id);
     assert.equal(g.requiredRoles.includes('primary-source'), id === 'eyfs-2026', id + ' primary-source only for the primary-verified pack');

@@ -1,0 +1,62 @@
+import { chromium } from 'playwright';
+import { createServer } from 'vite';
+import { createApp } from '../../backend/src/app.js';
+import { testPool } from '../../backend/test-support/database.js';
+import { seedFixture,PASSWORD } from '../../backend/test-support/fixtures.js';
+import assert from 'node:assert/strict';
+import { writeFile,mkdir } from 'node:fs/promises';
+const pool=testPool(),api=createApp(pool);
+let vite,browser;
+const evidence=[];const errors=[];
+try {
+ const fixture=await seedFixture(api,pool);
+ const backend=await api.listen({host:'127.0.0.1',port:0});
+ vite=await createServer({root:new URL('../',import.meta.url).pathname.replace(/^\/(?:([A-Za-z]):)/,'$1:'),configFile:false,server:{host:'127.0.0.1',port:4173,strictPort:true,proxy:{'/api':backend}}});
+ await vite.listen();const address=vite.httpServer.address();const base='http://127.0.0.1:'+address.port;
+ console.log(JSON.stringify({frontend:base,backend,pid:process.pid,frontendListening:vite.httpServer.listening,backendListening:api.server.listening}));
+ browser=await chromium.launch({headless:true,channel:'chrome'});
+ const context=await browser.newContext({viewport:{width:390,height:844}});const page=await context.newPage();
+ page.on('pageerror',error=>errors.push(error.message));
+ page.on('dialog',dialog=>dialog.accept());
+ const visible=async locator=>{await locator.waitFor({state:'visible',timeout:15000});};
+ const gate=async()=>{const hold=page.getByRole('button',{name:'Press and hold',exact:true});if(await hold.count()){await hold.focus();await page.keyboard.down('Space');await page.waitForTimeout(3200);await page.keyboard.up('Space');}};
+ const skip=async()=>{const button=page.getByRole('button',{name:'Skip setup and use International Core'});if(await button.count())await button.click();};
+ const worlds=async()=>{const button=page.locator('[data-act="play"]');await visible(button);await button.click();await visible(page.locator('.kid-library'));};
+ const parents=async()=>{await page.locator('[data-tab="parent"]:visible').first().click();await gate();await visible(page.getByRole('heading',{name:'Parent Corner',exact:true}));};
+ const login=async role=>{
+  await page.getByRole('button',{name:'Sign in',exact:true}).first().click();await gate();
+  const form=page.getByRole('dialog',{name:'Sign in local test account'});await visible(form);
+  await form.locator('input[type=email]').fill(fixture.accounts[role].email);
+  await form.locator('input[type=password]').fill(PASSWORD);
+  await form.getByRole('button',{name:'Sign in',exact:true}).click();
+  await visible(page.getByText('Signed in: '+fixture.accounts[role].email,{exact:true}));
+  await page.waitForLoadState('networkidle');await gate();await skip();await visible(page.locator('[data-act="play"]'));
+ };
+ await page.goto(base);await visible(page.getByRole('button',{name:'Press and hold',exact:true}));await gate();await visible(page.locator('[data-skip]'));await skip();await worlds();
+ await page.locator('[data-tab="numbers"]').first().click();await visible(page.getByRole('heading',{name:'Number Galaxy'}));
+ await page.getByRole('button',{name:'Next',exact:false}).first().click();
+ evidence.push('Mobile 390x844: real onboarding skip, Learning Worlds, Number Galaxy navigation PASS');
+ await parents();evidence.push('Parent Corner adult hold gate PASS');
+ await login('adminA');
+ await parents();await page.getByRole('button',{name:'School curriculum settings',exact:true}).click();
+ await visible(page.locator('#lga-school-settings'));assert.equal(await page.getByRole('button',{name:'Curriculum packs',exact:true}).count(),0);
+ evidence.push('School admin settings UI visible; owner UI absent PASS');
+ await page.locator('#lga-school-settings [data-ss="close"]').click();
+ // A real game store is parked on logout and must not become the next account's live data.
+ await page.evaluate(()=>localStorage.setItem('littleGeniusProgress',JSON.stringify({A:true})));
+ await page.getByRole('button',{name:'Sign out',exact:true}).click();await gate();
+ await visible(page.getByRole('button',{name:'Sign in',exact:true}).first());
+ await login('adminB');
+ assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('littleGeniusProgress')||'{}').A===true),false);
+ evidence.push('Real UI login/logout and shared-browser A/B progress isolation PASS');
+ await parents();await page.getByRole('button',{name:'Sign out',exact:true}).click();await gate();await visible(page.getByRole('button',{name:'Sign in',exact:true}).first());
+ await login('owner');await parents();await page.getByRole('button',{name:'Curriculum packs',exact:true}).click();await visible(page.locator('#lga-curriculum-manager'));
+ assert.ok(await page.locator('#lga-curriculum-manager [data-pack]').count());evidence.push('Owner Curriculum Manager uses real Fastify/PostgreSQL responses PASS');
+ await mkdir(new URL('../../qa/',import.meta.url),{recursive:true});await page.screenshot({path:new URL('../../qa/browser-owner-mobile.png',import.meta.url).pathname.replace(/^\/(?:([A-Za-z]):)/,'$1:'),fullPage:true});
+ assert.deepEqual(errors,[]);evidence.push('No uncaught browser page errors PASS');
+ console.log(evidence.join('\n'));
+ await writeFile(new URL('../../BROWSER_RESULTS.json',import.meta.url),JSON.stringify({status:'PASS',frontend:base,backend,viewport:'390x844',evidence,errors},null,2));
+} catch(error) {
+ console.error(error);
+ await writeFile(new URL('../../BROWSER_RESULTS.json',import.meta.url),JSON.stringify({status:'FAIL',evidence,errors,error:error.message},null,2));process.exitCode=1;
+} finally {await browser?.close();await vite?.close();await api.close();await pool.end();}

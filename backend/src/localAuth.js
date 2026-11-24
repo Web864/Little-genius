@@ -35,7 +35,7 @@ function parseCookies(header) {
   return cookies;
 }
 const setCookie = (reply, value, maxAge) => reply.header('Set-Cookie', `${SESSION_COOKIE}=${value}; HttpOnly; SameSite=Strict; Path=/api; Max-Age=${maxAge}`);
-function allowMutation(request, reply) {
+export function allowMutation(request, reply) {
   const origin = request.headers.origin;
   if (!ORIGINS.has(origin) || request.headers['x-lga-local-client'] !== '1') {
     reply.code(403).send({ error: 'Local browser origin required.' });
@@ -60,7 +60,7 @@ function blocked(request, reply) {
   }
   return false;
 }
-async function getAdult(request, pool) {
+export async function getAdult(request, pool) {
   const token = parseCookies(request.headers.cookie).get(SESSION_COOKIE);
   if (!token || !/^[a-f0-9]{64}$/.test(token)) return null;
   const { rows } = await pool.query('SELECT a.id,a.email FROM local_sessions s JOIN local_adults a ON a.id=s.adult_id WHERE s.token_hash=$1 AND s.expires_at>NOW()', [hashToken(token)]);
