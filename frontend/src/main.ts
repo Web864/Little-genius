@@ -2,6 +2,7 @@ import './styles.css';
 import './redesign.css';
 import './previewBanner.css';
 import './localAccount.css';
+import { activateAccount, parkAccount, watchAccountConflict, ACTIVE_OWNER_KEY } from './aics/accountScope';
 import { mountLocalAccount } from './localAccount';
 import { mountLearningApp } from './learningApp';
 import { grownUpCheck } from './grownUp';
@@ -38,8 +39,19 @@ edit.addEventListener('click', async () => {
   } finally { editing = false; }
 });
 async function start(): Promise<void> {
+  const response = await fetch('/api/auth/me', { credentials: 'same-origin' });
+  if (!response.ok) throw new Error('Local account verification unavailable.');
+  const { adult } = await response.json();
+  const storage = safeLocalStorage();
+  if (adult) {
+    const scope = await activateAccount(storage, adult.id);
+    if (!scope.ok) throw new Error('Account storage could not be isolated.');
+    watchAccountConflict(window, scope.owner, () => location.reload());
+  } else if (storage?.getItem(ACTIVE_OWNER_KEY)) {
+    if (!(await parkAccount(storage)).ok) throw new Error('Account progress could not be parked.');
+  }
+  mountLocalAccount();
   await maybeRunOnboarding(app, { gate: grownUpCheck, storage: safeLocalStorage() });
   mountLearningApp();
 }
-void start().catch(() => { mountLearningApp(); });
-mountLocalAccount();
+void start().catch(() => { app.textContent = 'Unable to verify local account storage. Start the local backend and reload. Saved progress has not been assigned to another account.'; });

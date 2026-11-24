@@ -1,3 +1,4 @@
+import { parkAccount } from './aics/accountScope';
 import { grownUpCheck } from './grownUp';
 import { safeLocalStorage } from './aics/bootstrap';
 import { readProfile, saveProfile, validateProfile, type AdultProfile } from './aics/onboardingService';
@@ -320,7 +321,7 @@ export function mountLocalAccount(): void {
         event.preventDefault();
         submit.disabled = true;
         void api('auth/' + mode, 'POST', { email: email.value, password: pass.value })
-          .then(async () => { pass.value = ''; overlay.remove(); notify('Signed in to local test account. Device settings have NOT been uploaded.'); await refresh(); })
+          .then(() => { pass.value = ''; location.reload(); })
           .catch(e => { status.textContent = (e as Error).message; })
           .finally(() => { submit.disabled = false; });
       });
@@ -503,8 +504,8 @@ export function mountLocalAccount(): void {
         alphabetStatus.textContent = 'ABC device progress is not saved to accounts automatically.';
         renderDashboard();
         await api('auth/logout', 'POST');
-        notify('Signed out. Browser preferences are unchanged; do not use a shared browser for real information.');
-        await refresh();
+        if (!(await parkAccount(safeLocalStorage())).ok) { location.reload(); return; }
+        location.reload();
       })),
     );
   }

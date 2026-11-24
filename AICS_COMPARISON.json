@@ -1,0 +1,110 @@
+[
+    {
+        "Module":  "accountScope.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "activityRegistry.ts",
+        "Match":  false
+    },
+    {
+        "Module":  "audio.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "bootstrap.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "competencyRegistry.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "countryRegistry.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "curriculumManager.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "curriculumMappings.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "curriculumRegistry.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "index.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "localization.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "onboarding.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "onboardingService.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "ownerCurriculum.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "ownership.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "packRelease.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "packs.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "parentControls.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "progressService.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "publishedGate.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "schoolConfig.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "schoolService.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "schoolSettings.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "sha256.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "types.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "validate.ts",
+        "Match":  true
+    },
+    {
+        "Module":  "worlds.ts",
+        "Match":  false
+    }
+]
