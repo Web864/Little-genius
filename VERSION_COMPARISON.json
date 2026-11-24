@@ -1,0 +1,438 @@
+[
+  {
+    "version": "little-genius-consolidated-local\\backend",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/alphabet/load",
+      "/api/alphabet/save",
+      "/api/legacy/load",
+      "/api/legacy/save",
+      "/api/profile"
+    ],
+    "schemas": [
+      "schema-v2.sql",
+      "schema-v3.sql",
+      "schema-v4.sql",
+      "schema-v5.sql",
+      "schema.sql"
+    ],
+    "authHash": "f2abe0e96873b3a4b82e6d47e9aa397383b02903e419150232560152cefc8f15",
+    "extraProgress": false,
+    "dashboard": false
+  },
+  {
+    "version": "little-genius-local-milestone2\\backend",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile",
+      "/api/profile"
+    ],
+    "schemas": [
+      "schema-v2.sql",
+      "schema.sql"
+    ],
+    "authHash": "67d2ae27d82a009421f33d71f8142a5b65cac05bfd78ae09f80b7911ff4242b8",
+    "extraProgress": false,
+    "dashboard": false
+  },
+  {
+    "version": "little-genius-local-milestone2-2\\backend",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/profile"
+    ],
+    "schemas": [
+      "schema-v2.sql",
+      "schema.sql"
+    ],
+    "authHash": "56b2d0687b51cc7df1003b2c8de0232ee2f6bba1668c03c8faa5b7a2d4b9c60b",
+    "extraProgress": false,
+    "dashboard": false
+  },
+  {
+    "version": "little-genius-local-milestone2-signout-fixed\\little-genius-local-milestone2-m2-1\\backend",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile",
+      "/api/profile"
+    ],
+    "schemas": [
+      "schema-v2.sql",
+      "schema.sql"
+    ],
+    "authHash": "67d2ae27d82a009421f33d71f8142a5b65cac05bfd78ae09f80b7911ff4242b8",
+    "extraProgress": false,
+    "dashboard": false
+  },
+  {
+    "version": "little-genius-local-milestone3-2\\backend",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/profile"
+    ],
+    "schemas": [
+      "schema-v2.sql",
+      "schema.sql"
+    ],
+    "authHash": "56b2d0687b51cc7df1003b2c8de0232ee2f6bba1668c03c8faa5b7a2d4b9c60b",
+    "extraProgress": false,
+    "dashboard": false
+  },
+  {
+    "version": "little-genius-local-milestone3-3\\backend",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/profile"
+    ],
+    "schemas": [
+      "schema-v2.sql",
+      "schema.sql"
+    ],
+    "authHash": "56b2d0687b51cc7df1003b2c8de0232ee2f6bba1668c03c8faa5b7a2d4b9c60b",
+    "extraProgress": false,
+    "dashboard": false
+  },
+  {
+    "version": "little-genius-local-milestone3-4\\backend",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/profile"
+    ],
+    "schemas": [
+      "schema-v2.sql",
+      "schema-v3.sql",
+      "schema.sql"
+    ],
+    "authHash": "60e87db3a9c2d9152fb99639fd941b161c974d7c5d0d77b9ed0163edd3dc8794",
+    "extraProgress": false,
+    "dashboard": false
+  },
+  {
+    "version": "little-genius-local-milestone3-5\\backend",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/profile"
+    ],
+    "schemas": [
+      "schema-v2.sql",
+      "schema-v3.sql",
+      "schema.sql"
+    ],
+    "authHash": "60e87db3a9c2d9152fb99639fd941b161c974d7c5d0d77b9ed0163edd3dc8794",
+    "extraProgress": false,
+    "dashboard": false
+  },
+  {
+    "version": "little-genius-local-milestone3-6\\backend",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/alphabet/load",
+      "/api/alphabet/save",
+      "/api/profile"
+    ],
+    "schemas": [
+      "schema-v2.sql",
+      "schema-v3.sql",
+      "schema-v4.sql",
+      "schema.sql"
+    ],
+    "authHash": "dc1f379a096ce8bb3e87e6303e1780c66540f95b3dd2b645576353220114400e",
+    "extraProgress": false,
+    "dashboard": false
+  },
+  {
+    "version": "little-genius-local-milestone4-1\\little-genius-consolidated-local\\backend",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/alphabet/load",
+      "/api/alphabet/save",
+      "/api/legacy/load",
+      "/api/legacy/save",
+      "/api/profile"
+    ],
+    "schemas": [
+      "schema-v2.sql",
+      "schema-v3.sql",
+      "schema-v4.sql",
+      "schema-v5.sql",
+      "schema.sql"
+    ],
+    "authHash": "f2abe0e96873b3a4b82e6d47e9aa397383b02903e419150232560152cefc8f15",
+    "extraProgress": false,
+    "dashboard": true
+  },
+  {
+    "version": "little-genius-consolidated-local-single-QA.zip",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/alphabet/load",
+      "/api/alphabet/save",
+      "/api/legacy/load",
+      "/api/legacy/save",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-consolidated-local/backend/db/schema-v2.sql",
+      "little-genius-consolidated-local/backend/db/schema.sql",
+      "little-genius-consolidated-local/backend/db/schema-v5.sql",
+      "little-genius-consolidated-local/backend/db/schema-v4.sql",
+      "little-genius-consolidated-local/backend/db/schema-v3.sql"
+    ],
+    "authHash": "f2abe0e96873b3a4b82e6d47e9aa397383b02903e419150232560152cefc8f15",
+    "extraProgress": false
+  },
+  {
+    "version": "little-genius-local-milestone2-2-security-curriculum.zip",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-local-milestone2-2/backend/db/schema-v2.sql",
+      "little-genius-local-milestone2-2/backend/db/schema.sql"
+    ],
+    "authHash": "56b2d0687b51cc7df1003b2c8de0232ee2f6bba1668c03c8faa5b7a2d4b9c60b",
+    "extraProgress": false
+  },
+  {
+    "version": "little-genius-local-milestone2-signout-fixed.zip",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-local-milestone2-m2-1/backend/db/schema.sql",
+      "little-genius-local-milestone2-m2-1/backend/db/schema-v2.sql"
+    ],
+    "authHash": "67d2ae27d82a009421f33d71f8142a5b65cac05bfd78ae09f80b7911ff4242b8",
+    "extraProgress": false
+  },
+  {
+    "version": "little-genius-local-milestone2.zip",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-local-milestone2/backend/db/schema-v2.sql",
+      "little-genius-local-milestone2/backend/db/schema.sql"
+    ],
+    "authHash": "67d2ae27d82a009421f33d71f8142a5b65cac05bfd78ae09f80b7911ff4242b8",
+    "extraProgress": false
+  },
+  {
+    "version": "little-genius-local-milestone3-2-sorting-patterns.zip",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-local-milestone3-2/backend/db/schema.sql",
+      "little-genius-local-milestone3-2/backend/db/schema-v2.sql"
+    ],
+    "authHash": "56b2d0687b51cc7df1003b2c8de0232ee2f6bba1668c03c8faa5b7a2d4b9c60b",
+    "extraProgress": false
+  },
+  {
+    "version": "little-genius-local-milestone3-3-measurement-nature.zip",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-local-milestone3-3/backend/db/schema-v2.sql",
+      "little-genius-local-milestone3-3/backend/db/schema.sql"
+    ],
+    "authHash": "56b2d0687b51cc7df1003b2c8de0232ee2f6bba1668c03c8faa5b7a2d4b9c60b",
+    "extraProgress": false
+  },
+  {
+    "version": "little-genius-local-milestone3-4-draft-journeys-progress.zip",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-local-milestone3-4/backend/db/schema.sql",
+      "little-genius-local-milestone3-4/backend/db/schema-v3.sql",
+      "little-genius-local-milestone3-4/backend/db/schema-v2.sql"
+    ],
+    "authHash": "60e87db3a9c2d9152fb99639fd941b161c974d7c5d0d77b9ed0163edd3dc8794",
+    "extraProgress": false
+  },
+  {
+    "version": "little-genius-local-milestone3-5-progress-dashboard.zip",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-local-milestone3-5/backend/db/schema-v2.sql",
+      "little-genius-local-milestone3-5/backend/db/schema-v3.sql",
+      "little-genius-local-milestone3-5/backend/db/schema.sql"
+    ],
+    "authHash": "60e87db3a9c2d9152fb99639fd941b161c974d7c5d0d77b9ed0163edd3dc8794",
+    "extraProgress": false
+  },
+  {
+    "version": "little-genius-local-milestone3-6-abc-backup.zip",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/alphabet/load",
+      "/api/alphabet/save",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-local-milestone3-6/backend/db/schema-v2.sql",
+      "little-genius-local-milestone3-6/backend/db/schema-v4.sql",
+      "little-genius-local-milestone3-6/backend/db/schema-v3.sql",
+      "little-genius-local-milestone3-6/backend/db/schema.sql"
+    ],
+    "authHash": "dc1f379a096ce8bb3e87e6303e1780c66540f95b3dd2b645576353220114400e",
+    "extraProgress": false
+  },
+  {
+    "version": "little-genius-local-milestone3-7-stabilization.zip",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/alphabet/load",
+      "/api/alphabet/save",
+      "/api/legacy/load",
+      "/api/legacy/save",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-consolidated-local/backend/db/schema-v2.sql",
+      "little-genius-consolidated-local/backend/db/schema-v3.sql",
+      "little-genius-consolidated-local/backend/db/schema.sql",
+      "little-genius-consolidated-local/backend/db/schema-v5.sql",
+      "little-genius-consolidated-local/backend/db/schema-v4.sql"
+    ],
+    "authHash": "f2abe0e96873b3a4b82e6d47e9aa397383b02903e419150232560152cefc8f15",
+    "extraProgress": false
+  },
+  {
+    "version": "little-genius-local-milestone4-1-account-progress (1).zip",
+    "routes": [
+      "/api/auth/register",
+      "/api/auth/login",
+      "/api/auth/logout",
+      "/api/auth/me",
+      "/api/profile/load",
+      "/api/practice/load",
+      "/api/practice/complete",
+      "/api/alphabet/load",
+      "/api/alphabet/save",
+      "/api/legacy/load",
+      "/api/legacy/save",
+      "/api/profile"
+    ],
+    "schemas": [
+      "little-genius-consolidated-local/backend/db/schema-v2.sql",
+      "little-genius-consolidated-local/backend/db/schema-v3.sql",
+      "little-genius-consolidated-local/backend/db/schema.sql",
+      "little-genius-consolidated-local/backend/db/schema-v5.sql",
+      "little-genius-consolidated-local/backend/db/schema-v4.sql"
+    ],
+    "authHash": "f2abe0e96873b3a4b82e6d47e9aa397383b02903e419150232560152cefc8f15",
+    "extraProgress": false
+  }
+]

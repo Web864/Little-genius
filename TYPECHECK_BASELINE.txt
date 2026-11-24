@@ -1,0 +1,511 @@
+master/frontend/src/addition.ts(3,1): error TS6133: 'rateForSpeech' is declared but its value is never read.
+master/frontend/src/addition.ts(11,14): error TS7006: Parameter 'n' implicitly has an 'any' type.
+master/frontend/src/addition.ts(11,16): error TS7006: Parameter 'emoji' implicitly has an 'any' type.
+master/frontend/src/addition.ts(12,14): error TS7006: Parameter 'text' implicitly has an 'any' type.
+master/frontend/src/addition.ts(13,36): error TS7006: Parameter 'warning' implicitly has an 'any' type.
+master/frontend/src/addition.ts(15,16): error TS7006: Parameter 'kind' implicitly has an 'any' type.
+master/frontend/src/addition.ts(23,13): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ intro: string; guided: string; test: string; correct: string; wrong: string; }'.
+master/frontend/src/addition.ts(31,9): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ intro: string; guided: string; test: string; correct: string; wrong: string; }'.
+master/frontend/src/addition.ts(52,35): error TS7031: Binding element 'language' implicitly has an 'any' type.
+master/frontend/src/addition.ts(56,16): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/addition.ts(56,25): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/addition.ts(56,51): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/addition.ts(56,60): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/animalArt.ts(14,15): error TS7006: Parameter 'x' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(14,17): error TS7006: Parameter 'y' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(14,19): error TS7006: Parameter 'r' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(14,21): error TS7006: Parameter 'fill' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(15,16): error TS7006: Parameter 'x' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(15,18): error TS7006: Parameter 'y' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(15,20): error TS7006: Parameter 'rx' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(15,23): error TS7006: Parameter 'ry' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(15,26): error TS7006: Parameter 'fill' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(16,13): error TS7006: Parameter 'd' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(16,15): error TS7006: Parameter 'fill' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(17,14): error TS7006: Parameter 'name' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(18,10): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ Bunny: string[]; Foxy: string[]; Bear: string[]; Owl: string[]; Panda: string[]; Deer: string[]; Squirrel: string[]; Butterfly: string[]; }'.
+master/frontend/src/animalArt.ts(19,18): error TS7006: Parameter 'x' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(19,20): error TS7006: Parameter 'y' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(19,22): error TS7006: Parameter 'rx' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(19,25): error TS7006: Parameter 'ry' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(19,28): error TS7006: Parameter 'color' implicitly has an 'any' type.
+master/frontend/src/animalArt.ts(84,28): error TS7006: Parameter 'name' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(6,1): error TS6133: 'rateForSpeech' is declared but its value is never read.
+master/frontend/src/curriculum.ts(45,7): error TS2339: Property 'records' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(49,12): error TS7006: Parameter 'w' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(49,14): error TS7006: Parameter 'i' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(50,46): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ phonics: string[][]; urdu: string[][]; words: string[][]; shapes: string[][]; }'.
+  No index signature with a parameter of type 'string' was found on type '{ phonics: string[][]; urdu: string[][]; words: string[][]; shapes: string[][]; }'.
+master/frontend/src/curriculum.ts(52,21): error TS7006: Parameter 'w' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(52,23): error TS7006: Parameter 'i' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(52,25): error TS7006: Parameter 'ok' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(53,28): error TS2339: Property 'records' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(56,9): error TS2339: Property 'records' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(58,15): error TS7006: Parameter 'text' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(58,20): error TS7006: Parameter 'lang' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(59,26): error TS7006: Parameter 'warning' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(72,24): error TS7006: Parameter 'arr' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(74,55): error TS7006: Parameter 'x' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(95,51): error TS7006: Parameter '_' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(95,53): error TS7006: Parameter 'i' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(96,52): error TS6133: 'i' is declared but its value is never read.
+master/frontend/src/curriculum.ts(102,14): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ phonics: string[][]; urdu: string[][]; words: string[][]; shapes: string[][]; }'.
+  No index signature with a parameter of type 'string' was found on type '{ phonics: string[][]; urdu: string[][]; words: string[][]; shapes: string[][]; }'.
+master/frontend/src/curriculum.ts(120,37): error TS2339: Property 'records' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(121,74): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ phonics: string[][]; urdu: string[][]; words: string[][]; shapes: string[][]; }'.
+  No index signature with a parameter of type 'string' was found on type '{ phonics: string[][]; urdu: string[][]; words: string[][]; shapes: string[][]; }'.
+master/frontend/src/curriculum.ts(123,18): error TS7006: Parameter 'r' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(130,18): error TS2339: Property 'split' does not exist on type 'never'.
+master/frontend/src/curriculum.ts(130,70): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ phonics: string[][]; urdu: string[][]; words: string[][]; shapes: string[][]; }'.
+master/frontend/src/curriculum.ts(131,47): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ phonics: string[][]; urdu: string[][]; words: string[][]; shapes: string[][]; }'.
+master/frontend/src/curriculum.ts(131,61): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ phonics: string[][]; urdu: string[][]; words: string[][]; shapes: string[][]; }'.
+master/frontend/src/curriculum.ts(131,80): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ phonics: string[][]; urdu: string[][]; words: string[][]; shapes: string[][]; }'.
+master/frontend/src/curriculum.ts(131,94): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ phonics: string[][]; urdu: string[][]; words: string[][]; shapes: string[][]; }'.
+master/frontend/src/curriculum.ts(139,27): error TS2322: Type 'string[]' is not assignable to type 'never[]'.
+  Type 'string' is not assignable to type 'never'.
+master/frontend/src/curriculum.ts(146,27): error TS7006: Parameter 'a' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(146,29): error TS7006: Parameter 'j' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(151,12): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(151,38): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(158,12): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(161,25): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(162,122): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(169,18): error TS7006: Parameter 'v' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(178,12): error TS7006: Parameter 'text' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(185,32): error TS7006: Parameter 'world' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(193,52): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ phonics: string; urdu: string; words: string; shapes: string; stories: string; review: string; daily: string; }'.
+master/frontend/src/curriculum.ts(196,27): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ phonics: string; urdu: string; words: string; shapes: string; stories: string; review: string; daily: string; }'.
+master/frontend/src/curriculum.ts(203,20): error TS2339: Property 'dataset' does not exist on type 'Element'.
+master/frontend/src/curriculum.ts(213,15): error TS2339: Property 'getContext' does not exist on type 'Element'.
+master/frontend/src/curriculum.ts(222,40): error TS2339: Property 'length' does not exist on type 'never'.
+master/frontend/src/curriculum.ts(222,91): error TS2339: Property 'x' does not exist on type 'never'.
+master/frontend/src/curriculum.ts(222,101): error TS2339: Property 'y' does not exist on type 'never'.
+master/frontend/src/curriculum.ts(222,109): error TS2339: Property 'slice' does not exist on type 'never'.
+master/frontend/src/curriculum.ts(222,126): error TS7006: Parameter 'p' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(224,15): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(225,5): error TS2339: Property 'onpointerdown' does not exist on type 'Element'.
+master/frontend/src/curriculum.ts(225,19): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(225,69): error TS2345: Argument of type '{ x: number; y: number; }[]' is not assignable to parameter of type 'never'.
+master/frontend/src/curriculum.ts(226,5): error TS2339: Property 'onpointermove' does not exist on type 'Element'.
+master/frontend/src/curriculum.ts(226,19): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(226,61): error TS2339: Property 'push' does not exist on type 'never'.
+master/frontend/src/curriculum.ts(227,5): error TS2339: Property 'onpointerup' does not exist on type 'Element'.
+master/frontend/src/curriculum.ts(227,39): error TS2339: Property 'onpointercancel' does not exist on type 'Element'.
+master/frontend/src/curriculum.ts(230,37): error TS6133: 'world' is declared but its value is never read.
+master/frontend/src/curriculum.ts(230,37): error TS7031: Binding element 'world' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(230,43): error TS7031: Binding element 'language' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(234,13): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/curriculum.ts(234,22): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/curriculum.ts(234,45): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/curriculum.ts(234,54): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/curriculum.ts(238,85): error TS2339: Property 'click' does not exist on type 'Element'.
+master/frontend/src/curriculum.ts(270,119): error TS18046: 'x' is of type 'unknown'.
+master/frontend/src/curriculum.ts(270,155): error TS18046: 'x' is of type 'unknown'.
+master/frontend/src/curriculum.ts(270,215): error TS2339: Property 'dataset' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(286,137): error TS7006: Parameter '_' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(286,139): error TS7006: Parameter 'j' implicitly has an 'any' type.
+master/frontend/src/curriculum.ts(287,34): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(287,56): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(287,77): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(288,35): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(292,16): error TS2339: Property 'records' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(294,19): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(294,46): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(294,76): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(302,15): error TS2339: Property '__curriculumResetWired' does not exist on type 'Document'.
+master/frontend/src/curriculum.ts(302,54): error TS2339: Property '__curriculumResetWired' does not exist on type 'Document'.
+master/frontend/src/curriculum.ts(304,13): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/curriculum.ts(304,22): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/curriculum.ts(306,13): error TS2339: Property 'records' does not exist on type '{}'.
+master/frontend/src/curriculum.ts(306,30): error TS2339: Property 'daily' does not exist on type '{}'.
+master/frontend/src/forestAudio.ts(3,5): error TS7034: Variable 'context' implicitly has type 'any' in some locations where its type cannot be determined.
+master/frontend/src/forestAudio.ts(7,56): error TS2551: Property 'webkitAudioContext' does not exist on type 'Window & typeof globalThis'. Did you mean 'AudioContext'?
+master/frontend/src/forestAudio.ts(14,15): error TS7006: Parameter 'frequency' implicitly has an 'any' type.
+master/frontend/src/forestAudio.ts(14,26): error TS7006: Parameter 'at' implicitly has an 'any' type.
+master/frontend/src/forestAudio.ts(14,30): error TS7006: Parameter 'duration' implicitly has an 'any' type.
+master/frontend/src/forestAudio.ts(28,122): error TS7005: Variable 'context' implicitly has an 'any' type.
+master/frontend/src/forestAudio.ts(33,29): error TS7006: Parameter 'animalName' implicitly has an 'any' type.
+master/frontend/src/forestAudio.ts(48,27): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ Bunny: number[][]; Foxy: number[][]; Bear: number[][]; Owl: number[][]; Panda: number[][]; Deer: number[][]; Squirrel: number[][]; Butterfly: number[][]; }'.
+master/frontend/src/forestPictureGame.ts(4,1): error TS6133: 'rateForSpeech' is declared but its value is never read.
+master/frontend/src/forestPictureGame.ts(28,18): error TS7006: Parameter 'values' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(34,35): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+master/frontend/src/forestPictureGame.ts(36,40): error TS2339: Property 'last' does not exist on type '{}'.
+master/frontend/src/forestPictureGame.ts(36,47): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+master/frontend/src/forestPictureGame.ts(37,62): error TS2339: Property 'last' does not exist on type '{}'.
+master/frontend/src/forestPictureGame.ts(40,22): error TS7006: Parameter 'force' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(44,8): error TS2339: Property 'last' does not exist on type '{}'.
+master/frontend/src/forestPictureGame.ts(50,18): error TS7006: Parameter 'correct' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(51,29): error TS7031: Binding element 'word' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(51,34): error TS7031: Binding element 'emoji' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(57,14): error TS7006: Parameter 'message' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(57,22): error TS7006: Parameter 'lang' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(58,29): error TS7006: Parameter 'warning' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(63,50): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(66,84): error TS18047: 'L' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(70,9): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ intro: string; hunt: string; pair: string; happy: string; }'.
+  No index signature with a parameter of type 'string' was found on type '{ intro: string; hunt: string; pair: string; happy: string; }'.
+master/frontend/src/forestPictureGame.ts(73,82): error TS18047: 'L' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(77,9): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ intro: string; hunt: string; pair: string; happy: string; }'.
+  No index signature with a parameter of type 'string' was found on type '{ intro: string; hunt: string; pair: string; happy: string; }'.
+master/frontend/src/forestPictureGame.ts(80,15): error TS7006: Parameter 'x' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(97,41): error TS18047: 'L' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(98,35): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(98,65): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(124,15): error TS2554: Expected 1 arguments, but got 0.
+master/frontend/src/forestPictureGame.ts(137,20): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(137,73): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(140,18): error TS7006: Parameter 'id' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(141,29): error TS2339: Property 'id' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(142,53): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(146,37): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(146,53): error TS7031: Binding element 'word' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(147,4): error TS2322: Type 'any[]' is not assignable to type 'never[]'.
+  Type 'any' is not assignable to type 'never'.
+master/frontend/src/forestPictureGame.ts(147,26): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(150,72): error TS2339: Property 'id' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(155,21): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(155,72): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(156,31): error TS2339: Property 'word' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(156,56): error TS2339: Property 'letter' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(161,18): error TS7006: Parameter 'force' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(168,3): error TS18047: 'button' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(169,9): error TS2339: Property 'button' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(169,31): error TS2339: Property 'button' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(171,31): error TS2339: Property 'id' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(171,36): error TS18047: 'button' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(171,43): error TS2339: Property 'dataset' does not exist on type 'Element'.
+master/frontend/src/forestPictureGame.ts(172,100): error TS2339: Property 'emoji' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(172,114): error TS2339: Property 'word' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(173,56): error TS2339: Property 'clientX' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(173,87): error TS2339: Property 'clientY' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(173,103): error TS2322: Type '{ id: any; pointer: any; x: any; y: any; ghost: HTMLDivElement; }' is not assignable to type 'null'.
+master/frontend/src/forestPictureGame.ts(173,118): error TS2339: Property 'id' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(173,131): error TS2339: Property 'pointerId' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(173,145): error TS2339: Property 'clientX' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(173,157): error TS2339: Property 'clientY' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(174,4): error TS18047: 'button' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(174,31): error TS2339: Property 'pointerId' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(176,3): error TS18047: 'button' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(177,23): error TS2339: Property 'pointer' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(177,35): error TS2339: Property 'pointerId' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(178,11): error TS2339: Property 'ghost' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(178,30): error TS2339: Property 'clientX' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(178,50): error TS2339: Property 'ghost' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(178,68): error TS2339: Property 'clientY' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(179,100): error TS2339: Property 'clientX' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(179,110): error TS2339: Property 'clientY' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(181,16): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(182,23): error TS2339: Property 'pointer' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(183,39): error TS2339: Property 'ghost' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(185,33): error TS2339: Property 'x' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(185,50): error TS2339: Property 'y' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(186,32): error TS2339: Property 'id' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(188,33): error TS2339: Property 'x' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(188,50): error TS2339: Property 'y' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(188,71): error TS2339: Property 'id' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(191,3): error TS18047: 'button' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(192,3): error TS18047: 'button' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(193,23): error TS2339: Property 'pointer' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(193,35): error TS2339: Property 'pointerId' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(194,11): error TS2339: Property 'ghost' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(197,3): error TS18047: 'button' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(198,8): error TS18047: 'button' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(199,7): error TS18047: 'button' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(199,14): error TS2339: Property 'dataset' does not exist on type 'Element'.
+master/frontend/src/forestPictureGame.ts(199,42): error TS18047: 'button' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(199,49): error TS2339: Property 'dataset' does not exist on type 'Element'.
+master/frontend/src/forestPictureGame.ts(205,9): error TS2339: Property 'key' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(205,26): error TS2339: Property 'key' does not exist on type 'Event'.
+master/frontend/src/forestPictureGame.ts(210,37): error TS7031: Binding element 'language' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(213,11): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(213,20): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/forestPictureGame.ts(213,46): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/forestPictureGame.ts(213,55): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/forestPictureGame.ts(215,39): error TS2339: Property 'id' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(215,65): error TS2339: Property 'word' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(219,30): error TS2322: Type 'any[]' is not assignable to type 'never[]'.
+  Type 'any' is not assignable to type 'never'.
+master/frontend/src/forestPictureGame.ts(219,53): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(223,10): error TS6133: 'target' is declared but its value is never read.
+master/frontend/src/forestPictureGame.ts(223,40): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(223,63): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/forestPictureGame.ts(223,80): error TS7031: Binding element 'w' implicitly has an 'any' type.
+master/frontend/src/forestPictureGame.ts(223,106): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
+master/frontend/src/forestPictureGame.ts(224,79): error TS2339: Property 'letter' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(224,218): error TS2339: Property 'id' does not exist on type 'never'.
+master/frontend/src/forestPictureGame.ts(228,4): error TS2554: Expected 1 arguments, but got 0.
+master/frontend/src/forestPictureGame.ts(231,36): error TS2554: Expected 1 arguments, but got 0.
+master/frontend/src/forestPictureGame.ts(232,64): error TS2339: Property 'click' does not exist on type 'Element'.
+master/frontend/src/forestPictureGame.ts(236,74): error TS2339: Property 'offsetWidth' does not exist on type 'Element'.
+master/frontend/src/forestPictureGame.ts(240,71): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+master/frontend/src/forestPictureGame.ts(242,95): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+master/frontend/src/grownUp.ts(27,8): error TS6133: 'main' is declared but its value is never read.
+master/frontend/src/learningApp.ts(16,40): error TS6133: 'rateForSpeech' is declared but its value is never read.
+master/frontend/src/learningApp.ts(26,5): error TS7034: Variable 'installPrompt' implicitly has type 'any' in some locations where its type cannot be determined.
+master/frontend/src/learningApp.ts(50,7): error TS6133: 'themes' is declared but its value is never read.
+master/frontend/src/learningApp.ts(58,45): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+master/frontend/src/learningApp.ts(63,7): error TS6133: 'label' is declared but its value is never read.
+master/frontend/src/learningApp.ts(63,15): error TS7006: Parameter 'key' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(63,22): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ home: string; learn: string; drawing: string; parents: string; listen: string; next: string; guided: string; done: string; }'.
+master/frontend/src/learningApp.ts(67,17): error TS7006: Parameter 'key' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(89,9): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ intro: string; promptLetter: string; promptPhrase: string; promptWord: string; heardLetter: string; heardPhrase: string; retryLetter: string; retryPhrase: string; heardCorrect: string; heardWrong: string; ... 7 more ...; finish: string; }'.
+master/frontend/src/learningApp.ts(91,16): error TS7006: Parameter 'text' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(92,36): error TS7006: Parameter 'message' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(107,264): error TS6133: 'emoji' is declared but its value is never read.
+master/frontend/src/learningApp.ts(137,31): error TS2339: Property 'SpeechRecognition' does not exist on type 'Window & typeof globalThis'.
+master/frontend/src/learningApp.ts(137,57): error TS2339: Property 'webkitSpeechRecognition' does not exist on type 'Window & typeof globalThis'.
+master/frontend/src/learningApp.ts(149,154): error TS2367: This comparison appears to be unintentional because the types '"say-letter" | "say-phrase"' and '"teach"' have no overlap.
+master/frontend/src/learningApp.ts(149,538): error TS2367: This comparison appears to be unintentional because the types '"say-letter" | "say-phrase"' and '"teach"' have no overlap.
+master/frontend/src/learningApp.ts(151,18): error TS6133: 'embedded' is declared but its value is never read.
+master/frontend/src/learningApp.ts(163,42): error TS2339: Property 'map' does not exist on type 'string | string[][]'.
+  Property 'map' does not exist on type 'string'.
+master/frontend/src/learningApp.ts(163,48): error TS7031: Binding element 'id' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(163,51): error TS7031: Binding element 'emoji' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(163,57): error TS7031: Binding element 'title' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(163,63): error TS7031: Binding element 'description' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(176,196): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+master/frontend/src/learningApp.ts(187,14): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(190,13): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(191,14): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(195,21): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(208,28): error TS2339: Property 'onresult' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(208,59): error TS2339: Property 'onerror' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(208,89): error TS2339: Property 'onend' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(208,117): error TS2339: Property 'abort' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(217,24): error TS7006: Parameter 'word' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(220,22): error TS7006: Parameter 'transcript' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(220,34): error TS7006: Parameter 'letter' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(220,42): error TS7006: Parameter 'word' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(220,48): error TS7006: Parameter 'stage' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(224,450): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ A: string[]; B: string[]; C: string[]; D: string[]; E: string[]; F: string[]; G: string[]; H: string[]; I: string[]; J: string[]; K: string[]; L: string[]; M: string[]; N: string[]; O: string[]; P: string[]; Q: string[]; R: string[]; S: string[]; T: string[]; U: string[]; ... 4 more ...; Z: string[]; }'.
+master/frontend/src/learningApp.ts(224,500): error TS7006: Parameter 'name' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(239,26): error TS2339: Property 'SpeechRecognition' does not exist on type 'Window & typeof globalThis'.
+master/frontend/src/learningApp.ts(239,52): error TS2339: Property 'webkitSpeechRecognition' does not exist on type 'Window & typeof globalThis'.
+master/frontend/src/learningApp.ts(249,24): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(251,60): error TS18046: 'a' is of type 'unknown'.
+master/frontend/src/learningApp.ts(259,23): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(281,22): error TS2322: Type 'number[]' is not assignable to type 'never[]'.
+  Type 'number' is not assignable to type 'never'.
+master/frontend/src/learningApp.ts(284,2): error TS2322: Type '"correct"' is not assignable to type 'null'.
+master/frontend/src/learningApp.ts(292,17): error TS7006: Parameter 'value' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(299,2): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+master/frontend/src/learningApp.ts(316,260): error TS2339: Property 'slice' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(335,6): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(343,1): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(344,10): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/learningApp.ts(344,19): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/learningApp.ts(358,39): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(362,44): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+master/frontend/src/learningApp.ts(365,68): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(375,7): error TS7005: Variable 'installPrompt' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(380,52): error TS7006: Parameter 'choice' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(396,67): error TS7006: Parameter 'message' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(404,70): error TS7006: Parameter 'error' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(412,10): error TS6133: 'target' is declared but its value is never read.
+master/frontend/src/learningApp.ts(418,53): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(418,119): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(419,120): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(419,186): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(435,1): error TS18047: 'app' is possibly 'null'.
+master/frontend/src/learningApp.ts(436,5): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/learningApp.ts(436,14): error TS2339: Property 'id' does not exist on type 'EventTarget'.
+master/frontend/src/learningApp.ts(437,17): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/learningApp.ts(437,26): error TS2339: Property 'value' does not exist on type 'EventTarget'.
+master/frontend/src/learningApp.ts(443,5): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/learningApp.ts(443,14): error TS2339: Property 'id' does not exist on type 'EventTarget'.
+master/frontend/src/learningApp.ts(444,51): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/learningApp.ts(444,60): error TS2339: Property 'value' does not exist on type 'EventTarget'.
+master/frontend/src/learningApp.ts(444,67): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/learningApp.ts(444,76): error TS2339: Property 'value' does not exist on type 'EventTarget'.
+master/frontend/src/learningApp.ts(444,132): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+master/frontend/src/learningApp.ts(446,5): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/learningApp.ts(446,14): error TS2339: Property 'id' does not exist on type 'EventTarget'.
+master/frontend/src/learningApp.ts(448,18): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/learningApp.ts(448,27): error TS2339: Property 'value' does not exist on type 'EventTarget'.
+master/frontend/src/learningApp.ts(452,5): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/learningApp.ts(452,14): error TS2339: Property 'id' does not exist on type 'EventTarget'.
+master/frontend/src/learningApp.ts(454,22): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/learningApp.ts(454,31): error TS2339: Property 'value' does not exist on type 'EventTarget'.
+master/frontend/src/learningApp.ts(460,19): error TS2339: Property 'getContext' does not exist on type 'Element'.
+master/frontend/src/learningApp.ts(472,13): error TS2339: Property 'length' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(473,39): error TS2339: Property 'x' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(473,49): error TS2339: Property 'y' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(474,24): error TS2339: Property 'slice' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(475,12): error TS2339: Property 'length' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(475,42): error TS2339: Property 'x' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(475,55): error TS2339: Property 'y' does not exist on type 'never'.
+master/frontend/src/learningApp.ts(479,12): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(480,9): error TS2339: Property 'onpointerdown' does not exist on type 'Element'.
+master/frontend/src/learningApp.ts(480,23): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(480,84): error TS2345: Argument of type '{ x: number; y: number; }[]' is not assignable to parameter of type 'never'.
+master/frontend/src/learningApp.ts(481,9): error TS2339: Property 'onpointermove' does not exist on type 'Element'.
+master/frontend/src/learningApp.ts(481,23): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/learningApp.ts(481,66): error TS2550: Property 'at' does not exist on type 'never[]'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+master/frontend/src/learningApp.ts(482,9): error TS2339: Property 'onpointerup' does not exist on type 'Element'.
+master/frontend/src/learningApp.ts(483,9): error TS2339: Property 'onpointercancel' does not exist on type 'Element'.
+master/frontend/src/localAccount.ts(378,27): error TS18047: 'current' is possibly 'null'.
+master/frontend/src/lostForest.ts(19,34): error TS2339: Property 'current' does not exist on type '{}'.
+master/frontend/src/lostForest.ts(19,72): error TS2339: Property 'current' does not exist on type '{}'.
+master/frontend/src/lostForest.ts(24,5): error TS6133: 'bound' is declared but its value is never read.
+master/frontend/src/lostForest.ts(30,91): error TS2339: Property 'completed' does not exist on type '{}'.
+master/frontend/src/lostForest.ts(31,18): error TS7006: Parameter 'a' implicitly has an 'any' type.
+master/frontend/src/lostForest.ts(36,18): error TS7006: Parameter 'correct' implicitly has an 'any' type.
+master/frontend/src/lostForest.ts(40,18): error TS7006: Parameter 'kind' implicitly has an 'any' type.
+master/frontend/src/lostForest.ts(58,9): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ intro: string; hunt: string; match: string; path: string; picture: string; happy: string; }'.
+master/frontend/src/lostForest.ts(60,15): error TS7006: Parameter 'kind' implicitly has an 'any' type.
+master/frontend/src/lostForest.ts(76,21): error TS7006: Parameter 'letterIndex' implicitly has an 'any' type.
+master/frontend/src/lostForest.ts(81,2): error TS2322: Type 'any[]' is not assignable to type 'never[]'.
+  Type 'any' is not assignable to type 'never'.
+master/frontend/src/lostForest.ts(84,13): error TS7006: Parameter 'value' implicitly has an 'any' type.
+master/frontend/src/lostForest.ts(84,19): error TS7006: Parameter 'label' implicitly has an 'any' type.
+master/frontend/src/lostForest.ts(85,14): error TS7006: Parameter 'label' implicitly has an 'any' type.
+master/frontend/src/lostForest.ts(90,33): error TS6133: 'kind' is declared but its value is never read.
+master/frontend/src/lostForest.ts(131,11): error TS2339: Property 'completed' does not exist on type '{}'.
+master/frontend/src/lostForest.ts(131,27): error TS2339: Property 'completed' does not exist on type '{}'.
+master/frontend/src/lostForest.ts(131,47): error TS2339: Property 'completed' does not exist on type '{}'.
+master/frontend/src/lostForest.ts(138,18): error TS7006: Parameter 'value' implicitly has an 'any' type.
+master/frontend/src/lostForest.ts(155,9): error TS2339: Property 'button' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(155,31): error TS2339: Property 'button' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(157,21): error TS2339: Property 'dataset' does not exist on type 'Element'.
+master/frontend/src/lostForest.ts(160,23): error TS2339: Property 'clientX' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(160,54): error TS2339: Property 'clientY' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(161,4): error TS2322: Type '{ value: any; id: any; clone: HTMLDivElement; startX: any; startY: any; }' is not assignable to type 'null'.
+master/frontend/src/lostForest.ts(161,27): error TS2339: Property 'pointerId' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(161,52): error TS2339: Property 'clientX' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(161,69): error TS2339: Property 'clientY' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(162,29): error TS2339: Property 'pointerId' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(166,31): error TS2339: Property 'id' does not exist on type 'never'.
+master/frontend/src/lostForest.ts(166,38): error TS2339: Property 'pointerId' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(167,15): error TS2339: Property 'clone' does not exist on type 'never'.
+master/frontend/src/lostForest.ts(167,34): error TS2339: Property 'clientX' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(167,58): error TS2339: Property 'clone' does not exist on type 'never'.
+master/frontend/src/lostForest.ts(167,76): error TS2339: Property 'clientY' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(168,43): error TS2339: Property 'clientX' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(168,53): error TS2339: Property 'clientY' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(172,13): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/lostForest.ts(173,31): error TS2339: Property 'id' does not exist on type 'never'.
+master/frontend/src/lostForest.ts(176,9): error TS2339: Property 'clone' does not exist on type 'never'.
+master/frontend/src/lostForest.ts(178,42): error TS2339: Property 'startX' does not exist on type 'never'.
+master/frontend/src/lostForest.ts(178,64): error TS2339: Property 'startY' does not exist on type 'never'.
+master/frontend/src/lostForest.ts(179,51): error TS2339: Property 'value' does not exist on type 'never'.
+master/frontend/src/lostForest.ts(180,36): error TS2339: Property 'value' does not exist on type 'never'.
+master/frontend/src/lostForest.ts(180,69): error TS2339: Property 'value' does not exist on type 'never'.
+master/frontend/src/lostForest.ts(180,278): error TS2339: Property 'dataset' does not exist on type 'Element'.
+master/frontend/src/lostForest.ts(180,303): error TS2339: Property 'value' does not exist on type 'never'.
+master/frontend/src/lostForest.ts(184,20): error TS2339: Property 'dataset' does not exist on type 'Element'.
+master/frontend/src/lostForest.ts(185,83): error TS2339: Property 'dataset' does not exist on type 'Element'.
+master/frontend/src/lostForest.ts(191,8): error TS2339: Property 'tabIndex' does not exist on type 'Element'.
+master/frontend/src/lostForest.ts(194,44): error TS2339: Property 'key' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(194,61): error TS2339: Property 'key' does not exist on type 'Event'.
+master/frontend/src/lostForest.ts(198,37): error TS7031: Binding element 'language' implicitly has an 'any' type.
+master/frontend/src/lostForest.ts(202,11): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/lostForest.ts(202,20): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/lostForest.ts(202,46): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/lostForest.ts(202,55): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/lostForest.ts(207,64): error TS2322: Type 'any[]' is not assignable to type 'never[]'.
+  Type 'any' is not assignable to type 'never'.
+master/frontend/src/lostForest.ts(213,68): error TS2339: Property 'click' does not exist on type 'Element'.
+master/frontend/src/lostForest.ts(217,24): error TS2339: Property 'completed' does not exist on type '{}'.
+master/frontend/src/numbers.ts(3,1): error TS6133: 'rateForSpeech' is declared but its value is never read.
+master/frontend/src/numbers.ts(8,16): error TS7006: Parameter 'text' implicitly has an 'any' type.
+master/frontend/src/numbers.ts(9,32): error TS7006: Parameter 'warning' implicitly has an 'any' type.
+master/frontend/src/numbers.ts(20,23): error TS7006: Parameter 'k' implicitly has an 'any' type.
+master/frontend/src/numbers.ts(20,115): error TS2345: Argument of type 'number' is not assignable to parameter of type 'never'.
+master/frontend/src/numbers.ts(20,229): error TS2345: Argument of type 'number' is not assignable to parameter of type 'never'.
+master/frontend/src/numbers.ts(33,74): error TS2339: Property 'getContext' does not exist on type 'Element'.
+master/frontend/src/numbers.ts(39,39): error TS2339: Property 'length' does not exist on type 'never'.
+master/frontend/src/numbers.ts(39,86): error TS2339: Property 'x' does not exist on type 'never'.
+master/frontend/src/numbers.ts(39,96): error TS2339: Property 'y' does not exist on type 'never'.
+master/frontend/src/numbers.ts(39,119): error TS2339: Property 'slice' does not exist on type 'never'.
+master/frontend/src/numbers.ts(41,14): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/numbers.ts(42,4): error TS2339: Property 'onpointerdown' does not exist on type 'Element'.
+master/frontend/src/numbers.ts(42,18): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/numbers.ts(42,69): error TS2345: Argument of type '{ x: number; y: number; }[]' is not assignable to parameter of type 'never'.
+master/frontend/src/numbers.ts(43,4): error TS2339: Property 'onpointermove' does not exist on type 'Element'.
+master/frontend/src/numbers.ts(43,18): error TS7006: Parameter 'e' implicitly has an 'any' type.
+master/frontend/src/numbers.ts(43,69): error TS2339: Property 'push' does not exist on type 'never'.
+master/frontend/src/numbers.ts(44,4): error TS2339: Property 'onpointerup' does not exist on type 'Element'.
+master/frontend/src/numbers.ts(44,41): error TS2339: Property 'onpointercancel' does not exist on type 'Element'.
+master/frontend/src/numbers.ts(47,34): error TS7031: Binding element 'language' implicitly has an 'any' type.
+master/frontend/src/numbers.ts(50,11): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/numbers.ts(50,20): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/numbers.ts(50,46): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/numbers.ts(50,55): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/numbers.ts(52,84): error TS2345: Argument of type 'number' is not assignable to parameter of type 'never'.
+master/frontend/src/numbers.ts(52,107): error TS2345: Argument of type 'number' is not assignable to parameter of type 'never'.
+master/frontend/src/quests.ts(3,1): error TS6133: 'rateForSpeech' is declared but its value is never read.
+master/frontend/src/quests.ts(20,16): error TS7006: Parameter 'text' implicitly has an 'any' type.
+master/frontend/src/quests.ts(21,30): error TS7006: Parameter 'warning' implicitly has an 'any' type.
+master/frontend/src/quests.ts(24,17): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/quests.ts(40,17): error TS7006: Parameter 'items' implicitly has an 'any' type.
+master/frontend/src/quests.ts(40,23): error TS6133: 'target' is declared but its value is never read.
+master/frontend/src/quests.ts(40,23): error TS7006: Parameter 'target' implicitly has an 'any' type.
+master/frontend/src/quests.ts(40,30): error TS7006: Parameter 'type' implicitly has an 'any' type.
+master/frontend/src/quests.ts(41,20): error TS7006: Parameter 'v' implicitly has an 'any' type.
+master/frontend/src/quests.ts(41,22): error TS6133: 'i' is declared but its value is never read.
+master/frontend/src/quests.ts(41,22): error TS7006: Parameter 'i' implicitly has an 'any' type.
+master/frontend/src/quests.ts(41,150): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ Circle: string; Square: string; Triangle: string; Star: string; }'.
+master/frontend/src/quests.ts(45,438): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+master/frontend/src/quests.ts(49,79): error TS2339: Property 'friend' does not exist on type 'never'.
+master/frontend/src/quests.ts(49,92): error TS2339: Property 'item' does not exist on type 'never'.
+master/frontend/src/quests.ts(49,134): error TS2339: Property 'word' does not exist on type 'never'.
+master/frontend/src/quests.ts(49,190): error TS2339: Property 'word' does not exist on type 'never'.
+master/frontend/src/quests.ts(49,239): error TS2554: Expected 3 arguments, but got 2.
+master/frontend/src/quests.ts(49,249): error TS2339: Property 'letter' does not exist on type 'never'.
+master/frontend/src/quests.ts(49,258): error TS2339: Property 'letter' does not exist on type 'never'.
+master/frontend/src/quests.ts(49,281): error TS2339: Property 'letter' does not exist on type 'never'.
+master/frontend/src/quests.ts(49,305): error TS2339: Property 'letter' does not exist on type 'never'.
+master/frontend/src/quests.ts(51,16): error TS2339: Property 'quantity' does not exist on type 'never'.
+master/frontend/src/quests.ts(52,55): error TS2339: Property 'quantity' does not exist on type 'never'.
+master/frontend/src/quests.ts(52,70): error TS2339: Property 'item' does not exist on type 'never'.
+master/frontend/src/quests.ts(52,226): error TS2339: Property 'quantity' does not exist on type 'never'.
+master/frontend/src/quests.ts(52,313): error TS2339: Property 'item' does not exist on type 'never'.
+master/frontend/src/quests.ts(52,399): error TS6133: 'i' is declared but its value is never read.
+master/frontend/src/quests.ts(52,478): error TS2339: Property 'item' does not exist on type 'never'.
+master/frontend/src/quests.ts(52,500): error TS2339: Property 'item' does not exist on type 'never'.
+master/frontend/src/quests.ts(54,84): error TS2339: Property 'shape' does not exist on type 'never'.
+master/frontend/src/quests.ts(54,206): error TS2339: Property 'shape' does not exist on type 'never'.
+master/frontend/src/quests.ts(54,214): error TS2339: Property 'shape' does not exist on type 'never'.
+master/frontend/src/quests.ts(54,253): error TS2339: Property 'shape' does not exist on type 'never'.
+master/frontend/src/quests.ts(54,289): error TS2339: Property 'shape' does not exist on type 'never'.
+master/frontend/src/quests.ts(55,80): error TS2339: Property 'friend' does not exist on type 'never'.
+master/frontend/src/quests.ts(55,131): error TS2339: Property 'finish' does not exist on type 'never'.
+master/frontend/src/quests.ts(56,106): error TS2339: Property 'scene' does not exist on type 'never'.
+master/frontend/src/quests.ts(56,151): error TS2339: Property 'friend' does not exist on type 'never'.
+master/frontend/src/quests.ts(56,225): error TS2339: Property 'name' does not exist on type 'never'.
+master/frontend/src/quests.ts(62,29): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/quests.ts(66,32): error TS7031: Binding element 'language' implicitly has an 'any' type.
+master/frontend/src/quests.ts(70,13): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/quests.ts(70,22): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/quests.ts(70,50): error TS18047: 'e.target' is possibly 'null'.
+master/frontend/src/quests.ts(70,59): error TS2339: Property 'closest' does not exist on type 'EventTarget'.
+master/frontend/src/quests.ts(74,38): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/quests.ts(74,62): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/quests.ts(81,25): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/quests.ts(85,35): error TS2538: Type 'null' cannot be used as an index type.
+master/frontend/src/quests.ts(89,70): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+master/frontend/src/quests.ts(91,99): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+master/frontend/src/speechHelp.ts(4,14): error TS7006: Parameter 'v' implicitly has an 'any' type.
+master/frontend/src/speechHelp.ts(11,7): error TS7034: Variable 'timer' implicitly has type 'any' in some locations where its type cannot be determined.
+master/frontend/src/speechHelp.ts(13,14): error TS7006: Parameter 'v' implicitly has an 'any' type.
+master/frontend/src/speechHelp.ts(13,64): error TS7005: Variable 'timer' implicitly has an 'any' type.
+master/frontend/src/speechHelp.ts(29,58): error TS2339: Property 'name' does not exist on type '{}'.
+master/frontend/src/speechHelp.ts(36,37): error TS7006: Parameter 'text' implicitly has an 'any' type.
+master/frontend/src/speechHelp.ts(36,56): error TS7006: Parameter 'onError' implicitly has an 'any' type.
+master/frontend/src/speechHelp.ts(50,47): error TS2739: Type '{}' is missing the following properties from type 'SpeechSynthesisVoice': default, lang, localService, name, voiceURI
+master/frontend/src/voicePace.ts(7,24): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+master/frontend/src/voicePace.ts(9,31): error TS7006: Parameter 'value' implicitly has an 'any' type.
+master/frontend/src/voicePace.ts(21,33): error TS2538: Type 'null' cannot be used as an index type.

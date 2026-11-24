@@ -42,3 +42,31 @@ No git repositories detected in the inspected candidate roots. No running backen
 4. Read-only local DB/schema inspection using existing env in place; never copy credentials.
 5. Repair integration gaps with targeted tests; school/owner backend requires reviewed additive migration before existing DB use.
 6. Browser QA and exact documentation; report PARTIAL until every completion condition passes.
+
+
+## Continuation: version-by-version discovery
+All backend manifests under E:/LittleGenius-Independent and backend source/schema entries in root ZIP archives were inspected read-only. No version later than 4.1 found in this development root. No newer six-game backup implementation found. Other drives/user Downloads not yet searched.
+
+| Version/source | Schema files | API route count | Extra six-game backup | Eight-card dashboard |
+|---|---:|---:|---|---|
+| little-genius-consolidated-local\backend | 5 | 12 | Not found | False |
+| little-genius-local-milestone2\backend | 2 | 6 | Not found | False |
+| little-genius-local-milestone2-2\backend | 2 | 6 | Not found | False |
+| little-genius-local-milestone2-signout-fixed\little-genius-local-milestone2-m2-1\backend | 2 | 6 | Not found | False |
+| little-genius-local-milestone3-2\backend | 2 | 6 | Not found | False |
+| little-genius-local-milestone3-3\backend | 2 | 6 | Not found | False |
+| little-genius-local-milestone3-4\backend | 3 | 8 | Not found | False |
+| little-genius-local-milestone3-5\backend | 3 | 8 | Not found | False |
+| little-genius-local-milestone3-6\backend | 4 | 10 | Not found | False |
+| little-genius-local-milestone4-1\little-genius-consolidated-local\backend | 5 | 12 | Not found | True |
+| little-genius-consolidated-local-single-QA.zip | 5 | 12 | Not found | ZIP UI not compared |
+| little-genius-local-milestone2-2-security-curriculum.zip | 2 | 6 | Not found | ZIP UI not compared |
+| little-genius-local-milestone2-signout-fixed.zip | 2 | 6 | Not found | ZIP UI not compared |
+| little-genius-local-milestone2.zip | 2 | 6 | Not found | ZIP UI not compared |
+| little-genius-local-milestone3-2-sorting-patterns.zip | 2 | 6 | Not found | ZIP UI not compared |
+| little-genius-local-milestone3-3-measurement-nature.zip | 2 | 6 | Not found | ZIP UI not compared |
+| little-genius-local-milestone3-4-draft-journeys-progress.zip | 3 | 8 | Not found | ZIP UI not compared |
+| little-genius-local-milestone3-5-progress-dashboard.zip | 3 | 8 | Not found | ZIP UI not compared |
+| little-genius-local-milestone3-6-abc-backup.zip | 4 | 10 | Not found | ZIP UI not compared |
+| little-genius-local-milestone3-7-stabilization.zip | 5 | 12 | Not found | ZIP UI not compared |
+| little-genius-local-milestone4-1-account-progress (1).zip | 5 | 12 | Not found | ZIP UI not compared |
