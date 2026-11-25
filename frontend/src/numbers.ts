@@ -1,3 +1,4 @@
+import { recordMathCompletion } from './mathProgress';
 import { speakGuidance } from './speechHelp';
 // A focused, self-contained number-learning world.
 const N={number:1,stage:'teach',message:'',modal:false,lines:[] as {x:number;y:number}[][],drawing:false,free:false,language:'en',counted:[] as number[],retry:0};
@@ -57,7 +58,7 @@ export function activateNumbers({language}: { language: string }){
   if(act==='advance'){advance();return;}
   if(act==='next'){N.modal=false;advance();return;}
   if(['guide','free','erase'].includes(act ?? '')){if(act!=='erase')N.free=act==='free';N.lines=[];N.message='';repaint();return;}
-  if(act==='done'){N.lines=[];N.free=false;N.message='';N.counted=[];N.retry=0;if(N.number===10)N.stage='finish';else{N.number++;N.stage='teach';}repaint();if(N.stage==='finish')audio(N.language==='ur'?'شاباش! تم نے دس نمبر سیکھ لیے۔':'Hooray! All ten numbers completed!');else audio(guide());return;}
+  if(act==='done'){recordMathCompletion('numbers',N.number);N.lines=[];N.free=false;N.message='';N.counted=[];N.retry=0;if(N.number===10)N.stage='finish';else{N.number++;N.stage='teach';}repaint();if(N.stage==='finish')audio(N.language==='ur'?'شاباش! تم نے دس نمبر سیکھ لیے۔':'Hooray! All ten numbers completed!');else audio(guide());return;}
   if(act==='restart'){N.number=1;N.stage='teach';N.message='';N.modal=false;N.counted=[];N.retry=0;repaint();audio(guide());}
  });
 }

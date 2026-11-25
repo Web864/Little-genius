@@ -1,10 +1,11 @@
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
-const root = 'E:/LittleGenius-Independent/little-genius-consolidated-local/backend/';
-const require = createRequire(root + 'package.json');
+const backendDir = new URL('./backend/', import.meta.url);
+const require = createRequire(new URL('package.json', backendDir));
 const { parse } = require('dotenv');
 const { Pool } = require('pg');
-const env = parse(readFileSync(root + '.env'));
+const envPath = process.env.LGA_ENV_FILE ?? new URL('.env', backendDir);
+const env = parse(readFileSync(envPath));
 let pool;
 try {
  const url = new URL(env.DATABASE_URL);

@@ -1,3 +1,5 @@
+import { runRestoreWithRecovery } from './unifiedRestore';
+import { collectSixGameSnapshot, restoreSixGameSnapshot, validSixGameSnapshot, sixGameCounts, type SixGameSnapshot } from './sixGameSnapshot';
 import { parkAccount } from './aics/accountScope';
 import { grownUpCheck } from './grownUp';
 import { safeLocalStorage } from './aics/bootstrap';
@@ -94,7 +96,7 @@ function clearDeviceLegacyProgress(): boolean {
   } catch { return false; }
 }
 
-type Envelope = { adult?: Adult | null; profile?: AdultProfile | null; results?: PracticeResult[]; result?: PracticeResult; snapshot?: AlphabetSnapshot | null; legacySnapshot?: LegacySnapshot | null; count?: number; error?: string; ok?: boolean };
+type Envelope = { adult?: Adult | null; profile?: AdultProfile | null; results?: PracticeResult[]; result?: PracticeResult; snapshot?: AlphabetSnapshot | null; alphabetSnapshot?: AlphabetSnapshot | null; legacySnapshot?: LegacySnapshot | null; sixGameSnapshot?: SixGameSnapshot | null; count?: number; error?: string; ok?: boolean };
 const api = async (path: string, method = 'GET', body?: unknown): Promise<Envelope> => {
   const response = await fetch('/api/' + path, {
     method, credentials: 'same-origin',
@@ -180,6 +182,8 @@ export function mountLocalAccount(): void {
   let resultsOwnerId: string | null = null;
   let savedAlphabet: AlphabetSnapshot | null = null;
   let savedOriginalGames: LegacySnapshot | null = null;
+  let savedSixGames: SixGameSnapshot | null = null;
+  let sixGamesLoaded = false;
   const GAMES = [
     { id: 'sorting', title: 'Sorting Safari' },
     { id: 'patterns', title: 'Pattern Parade' },
@@ -252,6 +256,39 @@ export function mountLocalAccount(): void {
     addSavedCard('Picture Rescue', savedOriginalGames ? Object.values(savedOriginalGames.picture.letters).filter(v => v.success > 0 || v.wrong > 0).length : null, 26, 'letters practised');
     addSavedCard('Story Quests', savedOriginalGames ? savedOriginalGames.quests.completed.length : null, 3, 'quests completed');
     dashboard.append(originals);
+    if (sixGamesLoaded) {
+      const totals = savedSixGames ? sixGameCounts(savedSixGames) : null;
+      dashboard.append(el('h3', 'Six Learning Games · Account Backup'));
+      const sixCards = el('div');
+      sixCards.className = 'lga-progress-grid';
+      const six = [
+        { name: 'Number Galaxy', count: totals?.numbers ?? null, max: 10 },
+        { name: 'Addition Garden', count: totals?.addition ?? null, max: 7 },
+        { name: 'Sound Forest', count: totals?.phonics ?? null, max: 10 },
+        { name: 'Urdu Garden', count: totals?.urdu ?? null, max: 39 },
+        { name: 'Word Builder', count: totals?.words ?? null, max: 8 },
+        { name: 'Shape Lab', count: totals?.shapes ?? null, max: 5 },
+      ];
+      for (const game of six) {
+        const card = el('article');
+        card.className = 'lga-progress-card';
+        card.append(el('h3', game.name));
+        if (game.count === null) {
+          card.append(el('p', 'No account backup saved'));
+        } else {
+          card.append(el('p', `${game.count}/${game.max} recorded`));
+          const meter = el('progress');
+          meter.max = game.max;
+          meter.value = game.count;
+          meter.setAttribute('aria-label', `${game.name}: ${game.count} of ${game.max} recorded`);
+          card.append(meter);
+        }
+        sixCards.append(card);
+      }
+      dashboard.append(sixCards);
+    } else {
+      dashboard.append(el('p', 'Six-game account backups are locked. Select Load Six-Game Account Backup and confirm your password.'));
+    }
     dashboard.append(el('p', 'Account backup snapshots are not automatic progress syncing and do not prove child achievement. Other original games are not yet connected to this dashboard.'));
   }
   renderDashboard();
@@ -338,6 +375,8 @@ export function mountLocalAccount(): void {
       resultsOwnerId = null;
       savedAlphabet = null;
       savedOriginalGames = null;
+      savedSixGames = null;
+      sixGamesLoaded = false;
       progressText.textContent = 'Practice results are not uploaded automatically.';
       alphabetStatus.textContent = 'ABC device progress is not saved to accounts automatically.';
       lastRound = null;
@@ -371,58 +410,205 @@ export function mountLocalAccount(): void {
         notify('Draft practice result saved to your LOCAL test account.');
       })),
       button('Load My Learning Progress', () => protectedAction(async () => {
-        const email = current?.email;
-        if (!email) { notify('Sign in again.'); return; }
-        const password = await confirmPassword('Confirm loading Draft practice results', email);
-        if (password === null) return;
         const accountId = current?.id;
-        if (!accountId) return;
-        // Each server endpoint verifies the same adult password and active session.
-        // A failed read leaves the dashboard locked, not partially populated.
-        const [data, alphabetData, legacyData] = await Promise.all([
-          api('practice/load', 'POST', { password }),
-          api('alphabet/load', 'POST', { password }),
-          api('legacy/load', 'POST', { password }),
-        ]);
-        if (current?.id !== accountId) { notify('Account changed; refresh.'); return; }
-        if (alphabetData.snapshot && (!Array.isArray(alphabetData.snapshot.letters) ||
-            alphabetData.snapshot.letters.some(k => !/^[A-Z]$/.test(k)) ||
-            alphabetData.snapshot.letters.length > 26)) throw new Error('Invalid alphabet account backup.');
-        if (legacyData.legacySnapshot && !validLegacySnapshot(legacyData.legacySnapshot)) throw new Error('Invalid original-games account backup.');
+        const email = current?.email;
+        if (!accountId || !email) return;
+
+        const password = await confirmPassword(
+          'Confirm loading all saved learning progress', email
+        );
+        if (password === null || current?.id !== accountId) return;
+
+        const data = await api('progress/all/load', 'POST', { password });
+        if (current?.id !== accountId) return;
+
+        if (data.legacySnapshot && !validLegacySnapshot(data.legacySnapshot)) {
+          throw new Error('Invalid original-games account backup.');
+        }
+        if (data.sixGameSnapshot && !validSixGameSnapshot(data.sixGameSnapshot)) {
+          throw new Error('Invalid six-game account backup.');
+        }
+        if (data.alphabetSnapshot) {
+          const alphabet = data.alphabetSnapshot;
+          if (!Array.isArray(alphabet.letters) ||
+              alphabet.letters.length > 26 ||
+              new Set(alphabet.letters).size !== alphabet.letters.length ||
+              alphabet.letters.some(k => !/^[A-Z]$/.test(k)) ||
+              typeof alphabet.courseComplete !== 'boolean' ||
+              (alphabet.courseComplete && alphabet.letters.length !== 26)) {
+            throw new Error('Invalid ABC account backup.');
+          }
+        }
+
         savedResults = Array.isArray(data.results) ? data.results : [];
-        savedAlphabet = alphabetData.snapshot ?? null;
-        savedOriginalGames = legacyData.legacySnapshot ?? null;
+        savedAlphabet = data.alphabetSnapshot ?? null;
+        savedOriginalGames = data.legacySnapshot ?? null;
+        savedSixGames = data.sixGameSnapshot ?? null;
+        sixGamesLoaded = true;
         resultsOwnerId = accountId;
+
         renderDashboard();
-        progressText.textContent = savedResults.length ? 'Saved Draft practice results loaded in My Learning Progress below.' : 'This account has no saved Draft practice rounds.';
-        notify('Loaded this account’s Draft practice results and saved original-game backups. My Learning Progress is shown below.');
+        progressText.textContent =
+          'Account learning progress loaded. See My Learning Progress below.';
+        notify('All available account learning progress loaded.');
       })),
-      button('Backup ABC letters to this account', () => protectedAction(async () => {
+      button('Backup All Learning Progress', () => protectedAction(async () => {
+        const accountId = current?.id;
         const email = current?.email;
-        if (!email) { notify('Sign in again.'); return; }
-        const snapshot = readDeviceAlphabet();
-        if (!snapshot) { notify('Browser progress storage is unavailable or invalid.'); return; }
-        if (!confirm(`Back up ${snapshot.letters.length}/26 ABC letters from THIS shared browser to ${email}? This replaces that account's previous ABC backup. No automatic sync.`)) return;
-        const password = await confirmPassword('Confirm ABC alphabet backup', email);
-        if (password === null) return;
-        const data = await api('alphabet/save', 'PUT', { password, snapshot });
-        if (current?.email !== email) { notify('Account changed; refresh.'); return; }
-        savedResults = null; resultsOwnerId = null; savedAlphabet = null; savedOriginalGames = null; renderDashboard();
-        alphabetStatus.textContent = `ABC backup saved: ${data.count ?? snapshot.letters.length}/26 letters in this LOCAL test account. Reload dashboard to see updated backup.`;
-        notify('ABC progress backed up with adult confirmation.');
+        if (!accountId || !email) return;
+
+        // Collect each supported device-local game backup first.
+        // If any source is unavailable, do not overwrite account data.
+        const alphabet = readDeviceAlphabet();
+        const legacy = collectLegacySnapshot();
+        const sixGames = collectSixGameSnapshot();
+
+        if (!alphabet || !legacy || !sixGames) {
+          notify('Device learning progress is unavailable or invalid. Nothing uploaded.');
+          return;
+        }
+
+        const counts = sixGameCounts(sixGames);
+        const details = [
+          `ABC: ${alphabet.letters.length}/26`,
+          legacyCounts(legacy),
+          `Numbers: ${counts.numbers}/10`,
+          `Addition: ${counts.addition}/7`,
+          `Sounds: ${counts.phonics}/10`,
+          `Urdu: ${counts.urdu}/39`,
+          `Words: ${counts.words}/8`,
+          `Shapes: ${counts.shapes}/5`
+        ].join('\n');
+
+        const approved = confirm(
+          `BACKUP ALL DEVICE LEARNING PROGRESS to ${email}?\n\n` +
+          `${details}\n\n` +
+          'This REPLACES this account\'s saved ABC, original-game ' +
+          'and six-game backups with progress from THIS browser.\n\n' +
+          'Draft practice account results and curriculum preferences ' +
+          'will NOT be overwritten.\n\n' +
+          'No automatic syncing. Continue?'
+        );
+        if (!approved || current?.id !== accountId) return;
+
+        const password = await confirmPassword(
+          'Confirm backing up all learning progress', email
+        );
+        if (password === null || current?.id !== accountId) return;
+
+        // One authenticated request, one PostgreSQL transaction.
+        await api('progress/all/save', 'PUT', {
+          password, alphabet, legacy, sixGames
+        });
+
+        if (current?.id !== accountId) {
+          notify('Backup request completed, but the account changed. Reload account progress.');
+          return;
+        }
+
+        // Refresh cards only if their account ownership is already known.
+        if (resultsOwnerId === accountId) {
+          savedAlphabet = alphabet;
+          savedOriginalGames = legacy;
+          savedSixGames = sixGames;
+          sixGamesLoaded = true;
+          renderDashboard();
+        }
+
+        notify(
+          'All supported device learning progress backed up to this account. ' +
+          'Draft practice scores and curriculum preferences remain unchanged.'
+        );
       })),
-      button('Load ABC backup onto this browser', () => protectedAction(async () => {
+      button('Restore All Learning Progress', () => protectedAction(async () => {
+        const accountId = current?.id;
         const email = current?.email;
-        if (!email) { notify('Sign in again.'); return; }
-        const password = await confirmPassword('Confirm loading ABC alphabet backup', email);
-        if (password === null) return;
-        const data = await api('alphabet/load', 'POST', { password });
-        if (current?.email !== email) { notify('Account changed; refresh.'); return; }
-        if (!data.snapshot) { alphabetStatus.textContent = 'This account has no saved ABC alphabet backup.'; return; }
-        const currentDevice = readDeviceAlphabet();
-        if (!confirm(`Restore ${data.snapshot.letters.length}/26 letters from ${email} to THIS browser? Current browser ABC progress (${currentDevice?.letters.length ?? 'unknown'}/26) will be REPLACED. Other account records stay unchanged.`)) return;
-        if (!applyDeviceAlphabet(data.snapshot)) { notify('ABC restore blocked: invalid snapshot or browser storage unavailable.'); return; }
-        notify('ABC alphabet backup restored to this browser. Refreshing…');
+        if (!accountId || !email) return;
+
+        const password = await confirmPassword(
+          'Confirm restoring all learning progress', email
+        );
+        if (password === null || current?.id !== accountId) return;
+
+        // Read all saved snapshots with one adult-confirmed request.
+        const data = await api('progress/all/load', 'POST', { password });
+        if (current?.id !== accountId) return;
+
+        const alphabet = data.alphabetSnapshot;
+        const legacy = data.legacySnapshot;
+        const sixGames = data.sixGameSnapshot;
+
+        if (!alphabet || !legacy || !sixGames) {
+          notify(
+            'This account does not have all three required game backups. ' +
+            'Nothing restored. Use Backup All first on the original browser.'
+          );
+          return;
+        }
+
+        const validAlphabet =
+          Array.isArray(alphabet.letters) &&
+          alphabet.letters.length <= 26 &&
+          alphabet.letters.every(k =>
+            typeof k === 'string' && /^[A-Z]$/.test(k)
+          ) &&
+          new Set(alphabet.letters).size === alphabet.letters.length &&
+          typeof alphabet.courseComplete === 'boolean' &&
+          (!alphabet.courseComplete || alphabet.letters.length === 26);
+
+        if (!validAlphabet ||
+            !validLegacySnapshot(legacy) ||
+            !validSixGameSnapshot(sixGames)) {
+          throw new Error('Account backup is invalid. Nothing restored.');
+        }
+
+        const counts = sixGameCounts(sixGames);
+        const details = [
+          `ABC: ${alphabet.letters.length}/26`,
+          legacyCounts(legacy),
+          `Numbers: ${counts.numbers}/10`,
+          `Addition: ${counts.addition}/7`,
+          `Sounds: ${counts.phonics}/10`,
+          `Urdu: ${counts.urdu}/39`,
+          `Words: ${counts.words}/8`,
+          `Shapes: ${counts.shapes}/5`
+        ].join('\n');
+
+        if (!confirm(
+          `RESTORE ALL GAME PROGRESS from ${email}?\n\n` +
+          `${details}\n\n` +
+          'WARNING: Progress for these games on THIS SHARED BROWSER ' +
+          'will be REPLACED.\n\n' +
+          'Draft practice account scores, curriculum preferences, ' +
+          'daily activity and Story Village are not included.\n\n' +
+          'Continue?'
+        )) return;
+
+        if (current?.id !== accountId) return;
+
+        const result = runRestoreWithRecovery(
+          safeLocalStorage(),
+          () => applyDeviceAlphabet(alphabet) &&
+            restoreLegacySnapshot(legacy) &&
+            restoreSixGameSnapshot(sixGames)
+        );
+
+        if (result === 'unavailable') {
+          notify('Browser storage unavailable. Nothing restored.');
+          return;
+        }
+        if (result === 'recovered') {
+          notify('Restore failed. Original browser progress recovered. No reload.');
+          return;
+        }
+        if (result === 'recovery-failed') {
+          notify(
+            'Restore failed and browser recovery could not be verified. ' +
+            'Do not continue playing until browser progress is checked.'
+          );
+          return;
+        }
+        notify('All supported game progress restored. Reloading...');
         location.reload();
       })),
       button('Check device original-game counts', () => {
@@ -443,32 +629,6 @@ export function mountLocalAccount(): void {
         if (!clearDeviceLegacyProgress()) { notify('Browser storage could not be cleared.'); return; }
         updateLegacyStatus();
         notify('Device-only progress cleared. Check counts (0), then Restore from account backup. Database backups remain safe.');
-      })),
-      button('Backup Forest, Pictures & Story Quests', () => protectedAction(async () => {
-        const email = current?.email; if (!email) return;
-        const snapshot = collectLegacySnapshot();
-        if (!snapshot) { notify('Browser storage is unavailable.'); return; }
-        if (!confirm(`Back up this browser's Forest, Picture Rescue and Story Quests progress to ${email}? Previous backup for this account will be replaced. This is NOT automatic syncing.`)) return;
-        const password = await confirmPassword('Confirm original games backup', email);
-        if (password === null) return;
-        await api('legacy/save', 'PUT', { password, snapshot });
-        if (current?.email !== email) { notify('Account changed; refresh before continuing.'); return; }
-        updateLegacyStatus();
-        savedResults = null; resultsOwnerId = null; savedAlphabet = null; savedOriginalGames = null; renderDashboard();
-        notify('Original games backed up. Reload My Learning Progress to see updated account snapshots.');
-      })),
-      button('Restore Forest, Pictures & Story Quests', () => protectedAction(async () => {
-        const email = current?.email; if (!email) return;
-        const password = await confirmPassword('Confirm original games restore', email);
-        if (password === null) return;
-        const data = await api('legacy/load', 'POST', { password });
-        if (current?.email !== email) { notify('Account changed; nothing restored.'); return; }
-        if (!data.legacySnapshot) { notify('No saved original-game backup for this account.'); return; }
-        if (!validLegacySnapshot(data.legacySnapshot)) { notify('Invalid backup data. Nothing restored.'); return; }
-        if (!confirm(`REPLACE only this browser's Forest, Picture Rescue & Story Quests progress with ${email}'s saved backup? Existing device progress will be overwritten. Other users' database records remain untouched.`)) return;
-        if (!restoreLegacySnapshot(data.legacySnapshot)) { notify('Browser storage unavailable. Nothing restored.'); return; }
-        notify('Original games backup restored on this browser. Reloading…');
-        location.reload();
       })),
       button('Save device choices to this account', () => protectedAction(async () => {
         const storage = safeLocalStorage(); const profile = storage && readProfile(storage);
@@ -501,6 +661,10 @@ export function mountLocalAccount(): void {
       button('Sign out', () => protectedAction(async () => {
         savedResults = null;
         resultsOwnerId = null;
+        savedAlphabet = null;
+        savedOriginalGames = null;
+        savedSixGames = null;
+        sixGamesLoaded = false;
         progressText.textContent = 'Practice results are not uploaded automatically.';
         alphabetStatus.textContent = 'ABC device progress is not saved to accounts automatically.';
         renderDashboard();

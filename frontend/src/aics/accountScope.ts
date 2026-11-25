@@ -18,13 +18,13 @@ export const SIGNOUT_FAILED_KEY = 'lgaAicsSignoutFailedV1'; // set when sign-out
 
 /** Everything that belongs to ONE account on this browser: child progress, per-child preferences, AICS data. */
 export const ACCOUNT_DATA_KEYS: readonly string[] = [
-  ...Object.values(LEGACY_KEYS), 'littleGeniusCourseComplete',
+  ...Object.values(LEGACY_KEYS), 'littleGeniusCourseComplete', 'lga_math_game_progress_v1',
   'littleGeniusLanguage', 'littleGeniusTheme', 'littleGeniusSound', 'littleGeniusSpeechPace',
   AICS_KEYS.progress, AICS_KEYS.flag, PROFILE_KEY, PROMPT_DISMISSED_KEY, SCHOOL_DEFAULTS_CACHE_KEY,
 ];
 const DATA_KEY_SET = new Set(ACCOUNT_DATA_KEYS);
 /** Keys that hold a child's saved progress. Preferences, the curriculum choice and the school cache are not progress. */
-export const PROGRESS_KEYS: readonly string[] = [...Object.values(LEGACY_KEYS), 'littleGeniusCourseComplete', AICS_KEYS.progress, AICS_KEYS.flag];
+export const PROGRESS_KEYS: readonly string[] = [...Object.values(LEGACY_KEYS), 'littleGeniusCourseComplete', 'lga_math_game_progress_v1', AICS_KEYS.progress, AICS_KEYS.flag];
 
 export type ScopeFailure = 'no-identity' | 'storage-unavailable' | 'stash-failed' | 'clear-failed' | 'restore-failed' | 'pointer-failed';
 export type ScopeResult =

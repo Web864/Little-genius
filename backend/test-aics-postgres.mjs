@@ -53,6 +53,210 @@ test('real PostgreSQL: local auth, backups, AICS authorization, migration and at
    assert.ok((await call('owner','GET','/api/curriculum/owner/audit')).json().audit.some(x=>x.actor===a.adminA.id));
    assert.equal((await app.inject({method:'POST',url:'/api/curriculum/owner/create',headers:{cookie:a.owner.cookie},payload:{frameworkId:'intl-core'}})).statusCode,403);
   });
+  await t.test('six-game backups are account-isolated and reject invalid writes',async()=>{
+    const snapshot={
+      version:1,
+      math:{numbers:[1,2,10],addition:[1,7]},
+      curriculum:{records:{
+        'phonics:0':{ok:2,wrong:1,tries:3,due:'2026-11-25'},
+        'urdu:37':{ok:1,wrong:0,tries:1,due:'2026-11-25'}
+      }}
+    };
+
+    // Account A saves its six-game progress.
+    assert.equal(
+      (await call('adult','PUT','/api/six-games/save',
+        {password:PASSWORD,snapshot})).statusCode,200
+    );
+
+    // Account A retrieves exactly its own backup.
+    assert.deepEqual(
+      (await call('adult','POST','/api/six-games/load',
+        {password:PASSWORD})).json().sixGameSnapshot,
+      snapshot
+    );
+
+    // Account B cannot read Account A's backup.
+    const other=await call('adminB','POST','/api/six-games/load',
+      {password:PASSWORD,adultId:a.adult.id});
+
+    assert.equal(other.statusCode,200);
+    assert.equal(other.json().sixGameSnapshot,null);
+
+    // Wrong password must not allow a read.
+    assert.equal(
+      (await call('adult','POST','/api/six-games/load',
+        {password:'WrongPassword_2026'})).statusCode,401
+    );
+
+    // Invalid replacement must be rejected.
+    const invalid={
+      ...snapshot,
+      math:{numbers:[1,1],addition:[1,7]}
+    };
+
+    assert.equal(
+      (await call('adult','PUT','/api/six-games/save',
+        {password:PASSWORD,snapshot:invalid})).statusCode,400
+    );
+
+    // Previous valid backup must remain unchanged.
+    assert.deepEqual(
+      (await call('adult','POST','/api/six-games/load',
+        {password:PASSWORD})).json().sixGameSnapshot,
+      snapshot
+    );
+
+    // Database ownership must come from the authenticated session.
+    const stored=await pool.query(
+      'SELECT adult_id FROM local_six_game_snapshots WHERE adult_id=$1',
+      [a.adult.id]
+    );
+
+    assert.equal(stored.rowCount,1);
+  });
+  await t.test('unified progress APIs save and load account-scoped backups',async()=>{
+    const alphabet={letters:['D','E'],courseComplete:false};
+    const legacy={
+      lost:{current:2,completed:['A','B']},
+      picture:{last:'A',letters:{A:{success:2,wrong:1}}},
+      quests:{completed:['forest']}
+    };
+    const sixGames={
+      version:1,
+      math:{numbers:[1,2,10],addition:[1,7]},
+      curriculum:{records:{
+        'phonics:0':{ok:2,wrong:0,tries:2,due:'2026-11-25'},
+        'words:0':{ok:1,wrong:1,tries:2,due:'2026-11-25'}
+      }}
+    };
+    const payload={password:PASSWORD,alphabet,legacy,sixGames};
+
+    const save=await call('adult','PUT','/api/progress/all/save',payload);
+    assert.equal(save.statusCode,200,save.body);
+    assert.equal(save.json().ok,true);
+
+    const load=await call('adult','POST','/api/progress/all/load',
+      {password:PASSWORD});
+    assert.equal(load.statusCode,200,load.body);
+    assert.deepEqual(load.json().alphabetSnapshot,alphabet);
+    assert.deepEqual(load.json().legacySnapshot,legacy);
+    assert.deepEqual(load.json().sixGameSnapshot,sixGames);
+    assert.ok(Array.isArray(load.json().results));
+
+    // A submitted adultId must never override authenticated ownership.
+    const other=await call('adminB','POST','/api/progress/all/load',
+      {password:PASSWORD,adultId:a.adult.id});
+    assert.equal(other.statusCode,200,other.body);
+    assert.notDeepEqual(other.json().sixGameSnapshot,sixGames);
+
+    const wrong=await call('adult','POST','/api/progress/all/load',
+      {password:'WrongPassword_2026'});
+    assert.equal(wrong.statusCode,401);
+
+    const anonymous=await call(null,'POST','/api/progress/all/load',
+      {password:PASSWORD});
+    assert.equal(anonymous.statusCode,401);
+
+    const invalid=await call('adult','PUT','/api/progress/all/save',{
+      ...payload,
+      sixGames:{
+        ...sixGames,
+        math:{numbers:[1,1],addition:[1,7]}
+      }
+    });
+    assert.equal(invalid.statusCode,400,invalid.body);
+
+    // Validation failure must not replace any saved snapshot.
+    const after=await call('adult','POST','/api/progress/all/load',
+      {password:PASSWORD});
+    assert.equal(after.statusCode,200,after.body);
+    assert.deepEqual(after.json().alphabetSnapshot,alphabet);
+    assert.deepEqual(after.json().legacySnapshot,legacy);
+    assert.deepEqual(after.json().sixGameSnapshot,sixGames);
+
+    // Individual APIs must remain compatible.
+    const old=await call('adult','POST','/api/legacy/load',
+      {password:PASSWORD});
+    assert.deepEqual(old.json().legacySnapshot,legacy);
+  });
+  await t.test('unified backup rolls back earlier writes when final database write fails',async()=>{
+    const beforeResponse=await call(
+      'adult','POST','/api/progress/all/load',{password:PASSWORD}
+    );
+    assert.equal(beforeResponse.statusCode,200,beforeResponse.body);
+    const before=beforeResponse.json();
+
+    assert.ok(before.alphabetSnapshot);
+    assert.ok(before.legacySnapshot);
+    assert.ok(before.sixGameSnapshot);
+
+    // Reuse the real PostgreSQL pool, but simulate a failure on the
+    // THIRD INSERT of the unified save. Earlier writes really execute
+    // inside the transaction and must then be rolled back.
+    const failingPool={
+      query:(...args)=>pool.query(...args),
+      connect:async()=>{
+        const db=await pool.connect();
+        return {
+          query:(sql,...args)=>{
+            if(typeof sql==='string' &&
+               /INSERT INTO local_six_game_snapshots/i.test(sql)){
+              return Promise.reject(
+                new Error('simulated-third-write-failure')
+              );
+            }
+            return db.query(sql,...args);
+          },
+          release:()=>db.release()
+        };
+      }
+    };
+
+    const failingApp=createApp(failingPool);
+
+    try {
+      const changedAlphabet={
+        letters:['X','Y','Z'],courseComplete:false
+      };
+      const changedLegacy={
+        lost:{current:5,completed:['X','Y']},
+        picture:{last:'X',letters:{
+          X:{success:5,wrong:0}
+        }},
+        quests:{completed:['space']}
+      };
+
+      const response=await failingApp.inject({
+        method:'PUT',
+        url:'/api/progress/all/save',
+        headers:{...headers,cookie:a.adult.cookie},
+        payload:{
+          password:PASSWORD,
+          alphabet:changedAlphabet,
+          legacy:changedLegacy,
+          sixGames:before.sixGameSnapshot
+        }
+      });
+
+      assert.equal(response.statusCode,500,response.body);
+      assert.ok(!response.body.includes('simulated-third-write-failure'));
+    }finally{
+      await failingApp.close();
+    }
+
+    // The first two updates MUST NOT survive the failed transaction.
+    const afterResponse=await call(
+      'adult','POST','/api/progress/all/load',{password:PASSWORD}
+    );
+    assert.equal(afterResponse.statusCode,200,afterResponse.body);
+    const after=afterResponse.json();
+
+    assert.deepEqual(after.alphabetSnapshot,before.alphabetSnapshot);
+    assert.deepEqual(after.legacySnapshot,before.legacySnapshot);
+    assert.deepEqual(after.sixGameSnapshot,before.sixGameSnapshot);
+    assert.deepEqual(after.results,before.results);
+  });
   await t.test('real account backups retain compatibility and reject wrong identity/password',async()=>{
    const snapshot={letters:['A','B'],courseComplete:false};
    assert.equal((await call('adult','PUT','/api/alphabet/save',{password:PASSWORD,snapshot})).statusCode,200);

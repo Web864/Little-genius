@@ -20,6 +20,7 @@ import './redesign.css';
 import { getSpeechPace, setSpeechPace } from './voicePace';
 import { numbersView, activateNumbers } from './numbers';
 import { additionView, activateAddition } from './addition';
+import { isAlphabetCourseComplete } from './abcProgress';
 import { questView, activateQuest, questCount } from './quests';
 import { lostForestView, activateLostForest, lostForestCount } from './forestPictureGame';
 import { curriculumView, activateCurriculum, curriculumReport, curriculumStats, curriculumReset } from './curriculum';
@@ -57,10 +58,14 @@ const state = {
   category:'english',
   tab:'home', index:0, stage:'teach', language:localStorage.getItem('littleGeniusLanguage') === 'ur' ? 'ur' : 'en',
   progress:saved, msg:'', popup:null as string|null, retryChoice:'', strokes:[] as Point[][], drawing:false, drawMode:'guide', heard:false,
-  voiceWarning:'', choiceOrder:0, listening:false, heardWord:'', speechError:'', recognizer:null as Recognition | null,
-  theme:['forest','space','ocean'].includes(localStorage.getItem('littleGeniusTheme') ?? '')?localStorage.getItem('littleGeniusTheme')!:'forest',
-  mode:'learn',reviewOrder:[] as number[],reviewPos:0,courseComplete:localStorage.getItem('littleGeniusCourseComplete')==='yes'
+ voiceWarning:'', choiceOrder:0, listening:false, heardWord:'', speechError:'', recognizer:null as Recognition | null,
+ theme:['forest','space','ocean'].includes(localStorage.getItem('littleGeniusTheme') ?? '')?localStorage.getItem('littleGeniusTheme')!:'forest',
+ mode:'learn',reviewOrder:[] as number[],reviewPos:0,courseComplete:false
 };
+state.courseComplete=isAlphabetCourseComplete(state.progress);
+if(localStorage.getItem('littleGeniusCourseComplete')==='yes' && !state.courseComplete){
+  localStorage.removeItem('littleGeniusCourseComplete');
+}
 const L = () => lessons[state.index];
 const save = () => localStorage.setItem('littleGeniusProgress',JSON.stringify(state.progress));
 function speech(key: string) {
@@ -306,7 +311,12 @@ function nextLetter() {
   if(state.reviewPos===26){resetStage('finished');render();speech('finish');return;}
   state.index=state.reviewOrder[state.reviewPos];resetStage('say-letter');render();speech('promptLetter');return;
  }
- if(state.index===25){state.courseComplete=true;localStorage.setItem('littleGeniusCourseComplete','yes');resetStage('finished');render();speech('finish');return;}
+ if(state.index===25){
+  state.courseComplete=isAlphabetCourseComplete(state.progress);
+  if(state.courseComplete) localStorage.setItem('littleGeniusCourseComplete','yes');
+  else localStorage.removeItem('littleGeniusCourseComplete');
+  resetStage('finished');render();speech('finish');return;
+ }
  state.index++;resetStage();render();speech('intro');
 }function hear() {
  speech(state.stage==='teach'?'intro':state.stage==='say-letter'?'promptLetter':state.stage==='say-phrase'?'promptPhrase':state.stage==='guided'?'guided':state.stage==='test-big'?'big':state.stage==='test-small'?'small':'draw');

@@ -1,3 +1,4 @@
+import { recordMathCompletion } from './mathProgress';
 import { speakGuidance } from './speechHelp';
 // Concrete-object addition for early learners. All activities stay on this device.
 const questions=[
@@ -40,8 +41,8 @@ function overlay(){
  return state.popup?`<div class="celebration-backdrop"><div class="celebration-card" role="dialog" aria-modal="true" aria-label="Correct addition answer"><div class="celebration-spark">⭐ 🎉 ✨</div><div class="celebration-mascot">🦊 🌼</div><h2>Great counting!</h2><p>${question().a} + ${question().b} = <strong>${question().a+question().b}</strong></p><button class="btn" data-add-act="next">Next challenge →</button></div></div>`:'';
 }
 export function additionView(){
- const q=question(),total=q.a+q.b;
  if(state.stage==='finished')return `<section class="panel addition-world game"><div class="addition-trophy">🏆 🦊 🌈</div><h2>Little Addition Champion!</h2><p>You practised putting small groups together. Try it with blocks or toys!</p><button class="btn" data-add-act="restart">Play again ↺</button></section>`;
+ const q=question(),total=q.a+q.b;
  const showTotal=state.stage==='teach';
  const prompt=state.stage==='teach'?'Let’s learn how to put things together!':state.stage==='guided'?'Count with Foxy!':'Count all the objects yourself!';
  return `<section class="panel game addition-world"><div class="addition-kicker">🌼 Addition Garden · ${state.index+1} of ${questions.length}</div><progress class="lga-lesson-progress" max="${questions.length*3}" value="${state.index*3+['teach','guided','test'].indexOf(state.stage)}" aria-label="Addition progress"></progress><div class="addition-fox">🦊 ✨</div><h2>${prompt}</h2><div class="addition-scene"><div class="addition-group"><span class="addition-group-label">First group</span><div class="addition-items">${group(q.a,q.emoji)}</div><span class="addition-count">${showTotal?q.a:'Count me'}</span></div><div class="addition-join" aria-label="plus">+</div><div class="addition-group"><span class="addition-group-label">Second group</span><div class="addition-items">${group(q.b,q.emoji)}</div><span class="addition-count">${showTotal?q.b:'Count me'}</span></div></div>${showTotal?`<div class="addition-result"><span>${q.a} + ${q.b} = <b>${total}</b></span><div class="addition-combined">${group(total,q.emoji)}</div></div>`:`<p class="question">How many altogether?</p><div class="addition-choices">${choiceSet()}</div>`}<p class="feedback" aria-live="polite">${state.message||'One step at a time. You can do it! 💜'}</p><div class="addition-tools"><button class="ghost" data-add-act="hear">🔊 Listen</button>${state.stage==='teach'?'<button class="btn" data-add-act="begin">Let me try! →</button>':''}</div>${overlay()}</section>`;
@@ -60,7 +61,7 @@ export function activateAddition({language}: { language: string }){
   if(choice!==undefined){
     if(state.popup)return;
     if(Number(choice)===question().a+question().b){
-      state.popup=true;state.message='';state.success++;drawArea();document.querySelector('[data-add-choice="'+choice+'"]')?.classList.add('lga-correct');say(guide('correct'));
+      if(state.stage==='test')recordMathCompletion('addition',state.index+1);state.popup=true;state.message='';state.success++;drawArea();document.querySelector('[data-add-choice="'+choice+'"]')?.classList.add('lga-correct');say(guide('correct'));
     }else{state.message='Almost! Let’s count again.';drawArea();document.querySelector('[data-add-choice="'+choice+'"]')?.classList.add('lga-retry');say(guide('wrong'));}
     return;
   }

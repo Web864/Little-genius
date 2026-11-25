@@ -1,3 +1,4 @@
+import { validateSixGameSnapshot } from './sixGameSnapshot.js';
 import { randomBytes, randomUUID, createHash, scrypt as scryptCallback, timingSafeEqual } from 'node:crypto';
 import { promisify } from 'node:util';
 
@@ -268,6 +269,183 @@ export function registerLocalRoutes(app, pool) {
       VALUES ($1,$2::jsonb) ON CONFLICT(adult_id) DO UPDATE SET
       snapshot=EXCLUDED.snapshot,updated_at=NOW()`, [adult.id, JSON.stringify(result.snapshot)]);
     return { ok: true };
+  });
+  // Adult-confirmed manual backups for six existing learning games.
+  // Adult identity comes only from the authenticated session.
+  app.post('/api/six-games/load', async (request, reply) => {
+    const adult = await authorizeProfileChange(request, reply, pool);
+    if (!adult) return;
+
+    const { rows } = await pool.query(
+      'SELECT snapshot FROM local_six_game_snapshots WHERE adult_id=$1',
+      [adult.id]
+    );
+
+    const stored = rows[0]?.snapshot ?? null;
+
+    if (stored === null) return { sixGameSnapshot: null };
+
+    const validation = validateSixGameSnapshot(stored);
+
+    if (!validation.valid) {
+      return reply.code(500).send({
+        error: 'Saved six-game backup is invalid. Nothing restored.'
+      });
+    }
+
+    return { sixGameSnapshot: validation.snapshot };
+  });
+
+  app.put('/api/six-games/save', async (request, reply) => {
+    const adult = await authorizeProfileChange(request, reply, pool);
+    if (!adult) return;
+
+    const validation = validateSixGameSnapshot(
+      request.body?.snapshot
+    );
+
+    if (!validation.valid) {
+      return reply.code(400).send({
+        error: validation.message
+      });
+    }
+
+    await pool.query(
+      `INSERT INTO local_six_game_snapshots(adult_id,snapshot)
+       VALUES($1,$2::jsonb)
+       ON CONFLICT(adult_id) DO UPDATE SET
+         snapshot=EXCLUDED.snapshot,
+         updated_at=NOW()`,
+      [adult.id, JSON.stringify(validation.snapshot)]
+    );
+
+    return { ok: true };
+  });
+  // Unified progress loading. Every read is protected by the adult session
+  // and re-confirmed password. No client-supplied adult ID is trusted.
+  app.post('/api/progress/all/load', async (request, reply) => {
+    const adult = await authorizeProfileChange(request, reply, pool);
+    if (!adult) return;
+
+    const db = await pool.connect();
+    try {
+      await db.query('BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY');
+
+      const alphabet = await db.query(
+        'SELECT letters,course_complete FROM local_alphabet_snapshots WHERE adult_id=$1',
+        [adult.id]
+      );
+      const legacy = await db.query(
+        'SELECT snapshot FROM local_legacy_game_snapshots WHERE adult_id=$1',
+        [adult.id]
+      );
+      const six = await db.query(
+        'SELECT snapshot FROM local_six_game_snapshots WHERE adult_id=$1',
+        [adult.id]
+      );
+      const practice = await db.query(
+        'SELECT game_id,best_score,last_score,attempts FROM local_practice_results WHERE adult_id=$1 ORDER BY game_id',
+        [adult.id]
+      );
+
+      const a = alphabet.rows[0];
+      const alphabetSnapshot = a
+        ? { letters: a.letters, courseComplete: a.course_complete }
+        : null;
+      const legacySnapshot = legacy.rows[0]?.snapshot ?? null;
+      const sixGameSnapshot = six.rows[0]?.snapshot ?? null;
+
+      if (alphabetSnapshot && !validateAlphabetSnapshot(alphabetSnapshot).valid)
+        throw new Error('Invalid stored alphabet backup.');
+      if (legacySnapshot && !validateLegacyGameSnapshot(legacySnapshot).valid)
+        throw new Error('Invalid stored original-games backup.');
+      if (sixGameSnapshot && !validateSixGameSnapshot(sixGameSnapshot).valid)
+        throw new Error('Invalid stored six-game backup.');
+
+      const results = practice.rows.map(r => ({
+        gameId: r.game_id,
+        bestScore: r.best_score,
+        lastScore: r.last_score,
+        attempts: r.attempts
+      }));
+
+      await db.query('COMMIT');
+
+      return {
+        alphabetSnapshot,
+        legacySnapshot,
+        sixGameSnapshot,
+        results
+      };
+    } catch (error) {
+      await db.query('ROLLBACK').catch(() => {});
+      request.log.error({ err: error }, 'Unified progress database operation failed');
+      return reply.code(500).send({
+        error: 'Learning progress operation failed. No changes confirmed.'
+      });
+    } finally {
+      db.release();
+    }
+  });
+
+  // Atomic, adult-confirmed backup of all device-local game snapshots.
+  // Existing account-owned Draft practice results remain untouched.
+  app.put('/api/progress/all/save', async (request, reply) => {
+    const adult = await authorizeProfileChange(request, reply, pool);
+    if (!adult) return;
+
+    const alphabet = validateAlphabetSnapshot(request.body?.alphabet);
+    const legacy = validateLegacyGameSnapshot(request.body?.legacy);
+    const six = validateSixGameSnapshot(request.body?.sixGames);
+
+    if (!alphabet.valid || !legacy.valid || !six.valid) {
+      return reply.code(400).send({
+        error: 'Invalid unified learning-progress backup. Nothing saved.'
+      });
+    }
+
+    const db = await pool.connect();
+    try {
+      await db.query('BEGIN');
+
+      await db.query(
+        `INSERT INTO local_alphabet_snapshots(adult_id,letters,course_complete)
+         VALUES($1,$2::jsonb,$3)
+         ON CONFLICT(adult_id) DO UPDATE SET
+           letters=EXCLUDED.letters,
+           course_complete=EXCLUDED.course_complete,
+           updated_at=NOW()`,
+        [adult.id, JSON.stringify(alphabet.snapshot.letters),
+         alphabet.snapshot.courseComplete]
+      );
+
+      await db.query(
+        `INSERT INTO local_legacy_game_snapshots(adult_id,snapshot)
+         VALUES($1,$2::jsonb)
+         ON CONFLICT(adult_id) DO UPDATE SET
+           snapshot=EXCLUDED.snapshot,updated_at=NOW()`,
+        [adult.id, JSON.stringify(legacy.snapshot)]
+      );
+
+      await db.query(
+        `INSERT INTO local_six_game_snapshots(adult_id,snapshot)
+         VALUES($1,$2::jsonb)
+         ON CONFLICT(adult_id) DO UPDATE SET
+           snapshot=EXCLUDED.snapshot,updated_at=NOW()`,
+        [adult.id, JSON.stringify(six.snapshot)]
+      );
+
+      await db.query('COMMIT');
+      return { ok: true, saved: ['alphabet', 'legacy', 'sixGames'] };
+    } catch (error) {
+      await db.query('ROLLBACK').catch(() => {});
+      request.log.error({ err: error }, 'Unified progress database operation failed');
+      return reply.code(500).send({
+        error: 'Learning progress operation failed. No changes confirmed.'
+      });
+    } finally {
+      db.release();
+    }
   });
   app.put('/api/profile', async (request, reply) => {
     const adult = await authorizeProfileChange(request, reply, pool);

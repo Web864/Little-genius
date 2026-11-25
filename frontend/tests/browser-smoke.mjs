@@ -63,13 +63,13 @@ try {
  assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('littleGeniusProgress')||'{}').A===true),true);
  await parents();
  const confirmPassword=async()=>{const dialog=page.getByRole('dialog',{name:'Confirm adult password'});await visible(dialog);await dialog.locator('input[type=password]').fill(PASSWORD);await dialog.getByRole('button',{name:'Confirm password',exact:true}).click();};
- await page.getByRole('button',{name:'Backup ABC letters to this account',exact:true}).click();await gate();await confirmPassword();await visible(page.getByText('ABC progress backed up with adult confirmation.',{exact:true}));
+ await page.getByRole('button',{name:'Backup All Learning Progress',exact:true}).click();await gate();await confirmPassword();await visible(page.getByText('All supported device learning progress backed up to this account.',{exact:false}));
  await page.getByRole('button',{name:'Load My Learning Progress',exact:true}).click();await gate();await confirmPassword();
  await visible(page.getByText('My Learning Progress',{exact:true}));
  await page.evaluate(()=>localStorage.setItem('littleGeniusProgress','{}'));
- await page.getByRole('button',{name:'Load ABC backup onto this browser',exact:true}).click();await gate();await confirmPassword();await visible(page.locator('[data-act="play"]'));
+ await page.getByRole('button',{name:'Restore All Learning Progress',exact:true}).click();await gate();await confirmPassword();await visible(page.locator('[data-act="play"]'));
  assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('littleGeniusProgress')||'{}').A===true),true);
- evidence.push('Real ABC backup, dashboard load, restore and A account vault recovery PASS');
+ evidence.push('Real unified backup, dashboard load, restore and A account vault recovery PASS');
  await parents();await page.getByRole('button',{name:'Sign out',exact:true}).click();await gate();await visible(page.getByRole('button',{name:'Sign in',exact:true}).first());
  await login('owner');await parents();await page.getByRole('button',{name:'Curriculum packs',exact:true}).click();await visible(page.locator('#lga-curriculum-manager'));
  await visible(page.locator('#lga-curriculum-manager [data-pack]').first());assert.ok(await page.locator('#lga-curriculum-manager [data-pack]').count());evidence.push('Owner Curriculum Manager uses real Fastify/PostgreSQL responses PASS');
